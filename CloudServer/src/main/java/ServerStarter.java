@@ -3,7 +3,7 @@ import com.sun.net.httpserver.HttpServer;
 
 public class ServerStarter {
     final static String HOST = "localhost";
-    final static String PORT = "8080";
+    final static String PORT = "8480";
     public static void main(String[] args){
         try{
             HttpServer server = HttpServerFactory.create("http://"+HOST+":"+PORT+"/");

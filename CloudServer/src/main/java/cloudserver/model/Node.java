@@ -11,6 +11,8 @@ public class Node {
     private int id, sensorsPort, otherNodesPort, xPos, yPos;
     private String selfIp;
 
+    public Node(){}
+
     public Node(int id, int sensorsPort, int otherNodesPort, int xPos, int yPos, String selfIp){
         this.id=id;
         this.sensorsPort=sensorsPort;
@@ -46,6 +48,11 @@ public class Node {
 
     public String getSelfIp() {
         return selfIp;
+    }
+
+    @Override
+    public String toString(){
+        return this.id + ", porta dedicata ai sensori: "+sensorsPort+", porta per altri nodi edge: "+otherNodesPort+", x: "+xPos+", y:"+yPos+", ip: "+selfIp;
     }
 
 

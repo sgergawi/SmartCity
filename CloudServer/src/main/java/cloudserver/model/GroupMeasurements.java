@@ -11,7 +11,4 @@ import java.util.List;
 public class GroupMeasurements {
     List<Measurement> localMeasurements;
     float globalMean;
-
-
-
 }
