@@ -7,14 +7,18 @@ import cloudserver.model.Node;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Vector;
 
-@Path("/nodes")
+@Path("/cloud-server/nodes")
 public class CloudServerInterfaces {
     @GET
     @Produces("application/xml")
-    public Response getCityStates(){
-        return Response.ok().entity(new Vector<Node>()).build();
+    public Response getNodesState(@QueryParam("xcoord")int xPos, @QueryParam("ycoord")int yPos){
+        System.out.println("ciao");
+        Node node= new Node(12,1002,2002,20,10,"http://localhost:8080");
+        return Response.ok().entity(new ArrayList<Node>(node)).build();
     }
 
     @POST
@@ -43,12 +47,6 @@ public class CloudServerInterfaces {
     @Consumes("application/xml")
     public Response refreshMeasurements(GroupMeasurements measurements){
     return Response.ok().build();
-    }
-
-    @GET
-    @Produces("application/xml")
-    public Response getClosestNode(@QueryParam("xcoord")int xPos, @QueryParam("ycoord")int yPos){
-        return Response.ok(new Node()).build();
     }
 
     @GET

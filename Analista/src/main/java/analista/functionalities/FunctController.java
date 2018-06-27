@@ -4,6 +4,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
+import javax.ws.rs.core.MediaType;
 import java.util.Scanner;
 public class FunctController {
 
@@ -18,8 +19,8 @@ public class FunctController {
     }
     public void getCityState(){
         Client client = Client.create();
-        WebResource webResource = client.resource("http://localhost:8080/cloud-server/city-states");
-        ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
+        WebResource webResource = client.resource("http://localhost:8080/cloud-server/nodes");
+        ClientResponse response = webResource.accept(MediaType.TEXT_XML).get(ClientResponse.class);
         String output=response.getEntity(String.class);
         System.out.println("Ho ricevuto: "+output);
     }
