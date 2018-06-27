@@ -15,8 +15,6 @@ public class CloudServerInterfaces {
     @Produces({"application/json","application/xml"})
     public Response getNodesState(@QueryParam("xcoord")Integer xPos, @QueryParam("ycoord")Integer yPos){
         CityMap map = CityMap.getInstance();
-        CityMap.getInstance().addNode(new Node(123,8080,8080,21,21,"80.80.80.80"),null);
-        CityMap.getInstance().addNode(new Node(123,8080,8080,50,50,"80.80.80.80"),null);
         if(xPos != null && yPos!=null){
             //se vengono specificati vuol dire che mi sta chiamando un sensore quindi
             //vuole conoscere quali sono i nodi più vicini a lui
@@ -26,7 +24,12 @@ public class CloudServerInterfaces {
                     return (Math.abs(o1.getxPos()-xPos)+Math.abs(o1.getyPos()-yPos)) - (Math.abs(o2.getxPos()-xPos)+Math.abs(o2.getyPos()-yPos));
                 }
             }).collect(Collectors.toList());
-            return Response.ok().entity(new Nodes(nodes)).build();
+
+            if(nodes!=null && !nodes.isEmpty()){
+                return Response.ok().entity(nodes!=null && !nodes.isEmpty()?nodes.get(0):null).build();
+            } else{
+                return Response.status(404).build();
+            }
         }
         return Response.ok().entity(CityMap.getInstance().getNodes()).build();
     }

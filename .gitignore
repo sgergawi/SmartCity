@@ -3,6 +3,4 @@ out/
 Analista/.idea/
 CloudServer/.idea/
 EdgeNode/.idea/
-Analista/target/
-CloudServer/target/
-EdgeNode/target/
+**/target/
