@@ -1,28 +1,38 @@
 package cloudserver.controller;
 
 
-import cloudserver.model.GroupMeasurements;
-import cloudserver.model.Measurement;
-import cloudserver.model.Node;
+import cloudserver.model.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Vector;
+import java.util.*;
+import java.math.*;
+import java.util.stream.Collectors;
 
 @Path("/cloud-server/nodes")
 public class CloudServerInterfaces {
     @GET
-    @Produces("application/xml")
-    public Response getNodesState(@QueryParam("xcoord")int xPos, @QueryParam("ycoord")int yPos){
-        System.out.println("ciao");
-        Node node= new Node(12,1002,2002,20,10,"http://localhost:8080");
-        return Response.ok().entity(new ArrayList<Node>(node)).build();
+    @Produces({"application/json","application/xml"})
+    public Response getNodesState(@QueryParam("xcoord")Integer xPos, @QueryParam("ycoord")Integer yPos){
+        CityMap map = CityMap.getInstance();
+        CityMap.getInstance().addNode(new Node(123,8080,8080,21,21,"80.80.80.80"),null);
+        CityMap.getInstance().addNode(new Node(123,8080,8080,50,50,"80.80.80.80"),null);
+        if(xPos != null && yPos!=null){
+            //se vengono specificati vuol dire che mi sta chiamando un sensore quindi
+            //vuole conoscere quali sono i nodi più vicini a lui
+            List<Node> nodes = map.getNodes().getNodes().stream().filter(node -> Math.abs(node.getxPos()-xPos)+Math.abs(node.getyPos()-yPos)<20).sorted(new Comparator<Node>() {
+                @Override
+                public int compare(Node o1, Node o2) {
+                    return (Math.abs(o1.getxPos()-xPos)+Math.abs(o1.getyPos()-yPos)) - (Math.abs(o2.getxPos()-xPos)+Math.abs(o2.getyPos()-yPos));
+                }
+            }).collect(Collectors.toList());
+            return Response.ok().entity(new Nodes(nodes)).build();
+        }
+        return Response.ok().entity(CityMap.getInstance().getNodes()).build();
     }
 
     @POST
-    @Consumes("application/xml")
+    @Consumes({"application/xml","application/json"})
     public Response addNode(Node node){
         System.out.println(node);
         return Response.ok().build();
@@ -36,7 +46,7 @@ public class CloudServerInterfaces {
     }
 
     @GET
-    @Produces("application/xml")
+    @Produces({"application/xml","application/json"})
     @Path("/measurements")
     public Response getMeasurements(){
         return Response.ok().entity(new GroupMeasurements()).build();
@@ -44,13 +54,13 @@ public class CloudServerInterfaces {
 
     @Path("/measurements")
     @POST
-    @Consumes("application/xml")
+    @Consumes({"application/xml","application/json"})
     public Response refreshMeasurements(GroupMeasurements measurements){
     return Response.ok().build();
     }
 
     @GET
-    @Produces("application/xml")
+    @Produces({"application/xml","application/json"})
     @Path("/{nodeid}/measurements")
     public Response getNodeMeasurements(@PathParam("nodeid")int nodeId){
         return Response.ok().entity(new Vector<Measurement>()).build();

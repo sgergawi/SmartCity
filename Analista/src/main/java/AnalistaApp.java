@@ -1,9 +1,8 @@
-import analista.functionalities.FunctController;
+import analista.controller.AnalistaController;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Objects;
 
 public class AnalistaApp {
     public static void main(String[] args){
@@ -25,7 +24,7 @@ public class AnalistaApp {
                     anotherChoice = false;
                 } else{
                     Integer choice = Integer.valueOf(option);
-                    FunctController functs = new FunctController();
+                    AnalistaController functs = new AnalistaController();
 
                     switch (choice){
                         case 1:
