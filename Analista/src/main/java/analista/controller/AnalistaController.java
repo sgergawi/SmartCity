@@ -12,12 +12,12 @@ import java.util.Scanner;
 public class AnalistaController {
     private final String CLOUDHOST = "http://localhost";
     private final int CLOUDPORT = 8480;
-    private final String ROOT="/cloud-server";
+    private final String ROOT="/cloud-server/nodes";
 
     public void getCityState(){
         try{
             Client client = Client.create();
-            WebResource webResource = client.resource(CLOUDHOST+":"+CLOUDPORT+ROOT+"/nodes");
+            WebResource webResource = client.resource(CLOUDHOST+":"+CLOUDPORT+ROOT);
             ClientResponse response = webResource.accept(MediaType.APPLICATION_OCTET_STREAM).get(ClientResponse.class);
             System.out.println(response);
             if(response.getStatus()==200){
@@ -64,7 +64,7 @@ public class AnalistaController {
             int statsNumber = AnalistaUtility.getStatsNumber(scanner);
             Client client = Client.create();
             WebResource resource = client.resource(CLOUDHOST+":"+CLOUDPORT+ROOT+"/measurements").queryParam("n",""+statsNumber);
-            ClientResponse response = resource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+            ClientResponse response = resource.accept(MediaType.APPLICATION_OCTET_STREAM).get(ClientResponse.class);
             if(AnalistaUtility.ifOKResponse(response)){
                 byte[] output = response.getEntity(byte[].class);
                 //TODO non so ancora che tipo potrò restituire
@@ -83,7 +83,7 @@ public class AnalistaController {
             int nodeId = scanner.nextInt();
             Client client = Client.create();
             WebResource resource = client.resource(CLOUDHOST+":"+CLOUDPORT+ROOT+"/"+nodeId+"/statistics").queryParam("n",""+statsNumber);
-            ClientResponse response = resource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+            ClientResponse response = resource.accept(MediaType.APPLICATION_OCTET_STREAM).get(ClientResponse.class);
             if(AnalistaUtility.ifOKResponse(response)){
                 byte[] output = response.getEntity(byte[].class);
                 SmartCity.AggregatedStatistic aggregate = SmartCity.AggregatedStatistic.parseFrom(output);
@@ -99,7 +99,7 @@ public class AnalistaController {
             int statsNumber = AnalistaUtility.getStatsNumber(scanner);
             Client client = Client.create();
             WebResource resource = client.resource(CLOUDHOST+":"+CLOUDPORT+ROOT+"/statistics").queryParam("n",""+statsNumber);
-            ClientResponse response = resource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+            ClientResponse response = resource.accept(MediaType.APPLICATION_OCTET_STREAM).get(ClientResponse.class);
             if(AnalistaUtility.ifOKResponse(response)){
                 byte[] output = response.getEntity(byte[].class);
                 SmartCity.AggregatedStatistic aggregate = SmartCity.AggregatedStatistic.parseFrom(output);

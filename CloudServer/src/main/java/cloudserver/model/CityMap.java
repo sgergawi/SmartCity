@@ -1,5 +1,8 @@
 package cloudserver.model;
 
+import cloudserver.utility.CloudServerUtility;
+
+import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Vector;
 import java.util.stream.Collectors;
@@ -26,9 +29,7 @@ public class CityMap {
     }
 
     public synchronized void addNode(SmartCity.Node node, SmartCity.NodeMeasurements measurements){
-        if(this.cityNodes.stream().allMatch(nd -> nd.getNode().getId()!=node.getId())){
-            this.cityNodes.add(new CityNode(node, measurements));
-        }
+        this.cityNodes.add(new CityNode(node, measurements));
     }
     public List<CityNode> getCityNodes(){
         return this.cityNodes;

@@ -22,12 +22,7 @@ public class CloudServerInterfaces {
         if(xPos != null && yPos!=null) {
             //se vengono specificati vuol dire che mi sta chiamando un sensore quindi
             //vuole conoscere quali sono i nodi più vicini a lui
-            List<SmartCity.Node> nodes = map.getNodes().getNodesList().stream().filter(node -> Math.abs(node.getXPos() - xPos) + Math.abs(node.getYPos() - yPos) < 20).sorted(new Comparator<SmartCity.Node>() {
-                @Override
-                public int compare(SmartCity.Node o1, SmartCity.Node o2) {
-                    return (Math.abs(o1.getXPos() - xPos) + Math.abs(o1.getYPos() - yPos)) - (Math.abs(o2.getXPos() - xPos) + Math.abs(o2.getYPos() - yPos));
-                }
-            }).collect(Collectors.toList());
+            List<SmartCity.Node> nodes = map.getNodes().getNodesList().stream().filter(node -> CloudServerUtility.getNodesDistance(node,xPos,yPos)<20).sorted(CloudServerUtility.getNodesDistanceComparator(xPos, yPos)).collect(Collectors.toList());
             if (nodes != null && !nodes.isEmpty()) {
                 byte[] toSend = nodes.get(0).toByteArray();
                 return Response.ok().entity(toSend).header(HttpHeaders.CONTENT_LENGTH, toSend.length).build();
@@ -45,9 +40,25 @@ public class CloudServerInterfaces {
 
     @POST
     @Consumes(MediaType.APPLICATION_OCTET_STREAM)
-    public Response addNode(SmartCity.Node node){
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response addNode(byte[] input){
+        CityMap map = CityMap.getInstance();
 
-        return Response.ok().build();
+        try{
+            SmartCity.Node node = SmartCity.Node.parseFrom(input);
+            System.out.println(node);
+            List<SmartCity.Node> nodes = map.getNodes().getNodesList();
+            List<SmartCity.Node> nodesAroundOrEqual = nodes.stream().filter(nd -> nd.getId()==node.getId() || CloudServerUtility.getNodesDistance(nd,node.getXPos(),node.getYPos())<20).collect(Collectors.toList());
+            if(nodesAroundOrEqual!=null && !nodesAroundOrEqual.isEmpty()){
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            }
+            map.addNode(node,SmartCity.NodeMeasurements.newBuilder().addAllStatistics(new Vector<>()).build());
+        } catch(Exception e){
+            System.out.println("Errore durante l'aggiunta del nodo");
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+
+        return Response.ok().entity(map.getNodes().toByteArray()).build();
     }
 
     @DELETE
