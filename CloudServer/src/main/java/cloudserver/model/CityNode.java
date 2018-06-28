@@ -3,25 +3,24 @@ package cloudserver.model;
 import java.util.List;
 
 public class CityNode {
-    private Node node;
-    private List<Measurement> measurements;
+    private SmartCity.Node node;
+    private SmartCity.NodeMeasurements nodeMeasurements;
 
-    public Node getNode(){
+    public SmartCity.Node getNode(){
         return this.node;
     }
-
-    public List<Measurement> getMeasurements(){
-        return this.measurements;
+    public SmartCity.NodeMeasurements getNodeMeasurements(){
+        return this.nodeMeasurements;
     }
 
-    public CityNode(Node node, List<Measurement> measurements){
+    public CityNode(SmartCity.Node node, SmartCity.NodeMeasurements measurements){
         this.node = node;
-        this.measurements = measurements;
+        this.nodeMeasurements = measurements;
     }
     public CityNode(){}
 
     @Override
     public String toString(){
-        return this.node + ", Measurements: "+measurements;
+        return this.node + ", Measurements: "+nodeMeasurements;
     }
 }

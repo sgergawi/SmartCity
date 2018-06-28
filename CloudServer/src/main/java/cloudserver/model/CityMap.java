@@ -5,28 +5,34 @@ import java.util.Vector;
 import java.util.stream.Collectors;
 
 public class CityMap {
+
     private List<CityNode> cityNodes;
     private float globalStats;
-    private static CityMap cityMap;
+    private static CityMap map;
 
-    public synchronized Nodes getNodes(){
-        return cityNodes==null?new Nodes():new Nodes(this.cityNodes.stream().map(CityNode::getNode).collect(Collectors.toList()));
+    public synchronized static CityMap getInstance(){
+        if(map==null){
+            map = new CityMap();
+        }
+        return map;
     }
 
-    public synchronized void addNode(Node node, List<Measurement> measurements){
+    private CityMap(){
+        this.cityNodes = new Vector<CityNode>();
+    }
+
+    public SmartCity.Nodes getNodes(){
+        return cityNodes == null ? null : SmartCity.Nodes.newBuilder().addAllNodes(cityNodes.stream().map(nd -> nd.getNode()).collect(Collectors.toList())).build();
+    }
+
+    public synchronized void addNode(SmartCity.Node node, SmartCity.NodeMeasurements measurements){
         if(this.cityNodes.stream().allMatch(nd -> nd.getNode().getId()!=node.getId())){
             this.cityNodes.add(new CityNode(node, measurements));
         }
     }
-
-
-    public synchronized static CityMap getInstance(){
-        if(cityMap==null){
-            cityMap = new CityMap();
-        }
-        return cityMap;
+    public List<CityNode> getCityNodes(){
+        return this.cityNodes;
     }
-    public CityMap(){ this.cityNodes = new Vector<>();}
     @Override
     public String toString(){
         return this.cityNodes.toString() + ", global statistics: "+globalStats;
