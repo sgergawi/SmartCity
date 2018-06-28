@@ -29,6 +29,7 @@ public class AnalistaController {
             } else{
                 System.out.println("Si è verificato un errore.");
             }
+            response.close();
         } catch(Exception e){
             System.out.println("Errore nella connessione con cloud server");
         }

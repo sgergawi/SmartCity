@@ -5,6 +5,7 @@ import cloudserver.model.*;
 import cloudserver.utility.CloudServerUtility;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.*;
@@ -16,25 +17,30 @@ public class CloudServerInterfaces {
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getNodesState(@QueryParam("xcoord")Integer xPos, @QueryParam("ycoord")Integer yPos){
         CityMap map = CityMap.getInstance();
-        if(xPos != null && yPos!=null){
+        SmartCity.Node nd = SmartCity.Node.newBuilder().setId(1234).setOtherNodesPort(234).setSensorsPort(234).setXPos(50).setXPos(70).setSelfIp("ciao").build();
+        map.addNode(nd,null);
+        if(xPos != null && yPos!=null) {
             //se vengono specificati vuol dire che mi sta chiamando un sensore quindi
             //vuole conoscere quali sono i nodi più vicini a lui
-            List<SmartCity.Node> nodes = map.getNodes().getNodesList().stream().filter(node -> Math.abs(node.getXPos()-xPos)+Math.abs(node.getYPos()-yPos)<20).sorted(new Comparator<SmartCity.Node>() {
+            List<SmartCity.Node> nodes = map.getNodes().getNodesList().stream().filter(node -> Math.abs(node.getXPos() - xPos) + Math.abs(node.getYPos() - yPos) < 20).sorted(new Comparator<SmartCity.Node>() {
                 @Override
                 public int compare(SmartCity.Node o1, SmartCity.Node o2) {
-                    return (Math.abs(o1.getXPos()-xPos)+Math.abs(o1.getYPos()-yPos)) - (Math.abs(o2.getXPos()-xPos)+Math.abs(o2.getYPos()-yPos));
+                    return (Math.abs(o1.getXPos() - xPos) + Math.abs(o1.getYPos() - yPos)) - (Math.abs(o2.getXPos() - xPos) + Math.abs(o2.getYPos() - yPos));
                 }
             }).collect(Collectors.toList());
-
-            if(nodes!=null && !nodes.isEmpty()){
-                return Response.ok().entity(nodes!=null && !nodes.isEmpty()?nodes.get(0).toByteArray():null).build();
-            } else{
+            if (nodes != null && !nodes.isEmpty()) {
+                byte[] toSend = nodes.get(0).toByteArray();
+                return Response.ok().entity(toSend).header(HttpHeaders.CONTENT_LENGTH, toSend.length).build();
+            } else {
                 return Response.status(404).build();
             }
         }
-
-        byte[] output = CityMap.getInstance().getNodes().toByteArray();
-        return Response.ok().entity(output).build();
+        List<SmartCity.Node> nodes = map.getNodes()!=null?map.getNodes().getNodesList():new Vector<>();
+        if(nodes.isEmpty()){
+            return Response.status(404).build();
+        } else{
+            return Response.ok().entity(map.getNodes().toByteArray()).build();
+        }
     }
 
     @POST
