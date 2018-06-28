@@ -14,7 +14,7 @@ public class CityMap {
     }
 
     public synchronized void addNode(Node node, List<Measurement> measurements){
-        if(!this.cityNodes.isEmpty() && this.cityNodes.stream().allMatch(nd -> nd.getNode().getId()!=node.getId())){
+        if(this.cityNodes.stream().allMatch(nd -> nd.getNode().getId()!=node.getId())){
             this.cityNodes.add(new CityNode(node, measurements));
         }
     }
