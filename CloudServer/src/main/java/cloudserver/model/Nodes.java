@@ -8,7 +8,7 @@ import java.util.Vector;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Nodes {
+public class Nodes{
 
     private List<Node> nodes;
 

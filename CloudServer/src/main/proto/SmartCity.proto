@@ -1,0 +1,15 @@
+syntax = "proto3";
+package cloudserver.model;
+
+message Node{
+    int32 id = 1;
+    int32 sensorsPort = 2;
+    int32 otherNodesPort = 3;
+    int32 xPos = 4;
+    int32 yPos = 5;
+    string selfIp = 6;
+}
+
+message Nodes{
+    repeated Node nodes = 1;
+}

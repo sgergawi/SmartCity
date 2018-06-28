@@ -6,14 +6,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Measurement {
-    private float value;
-    private int timestamp;
+public class Statistic {
+    private float mean, devstd;
 
-    public Measurement(float value, int timestamp){
-        this.value = value;
-        this.timestamp = timestamp;
+    public Statistic(float mean, float devstd){
+        this.mean = mean;
+        this.devstd = devstd;
     }
+    public Statistic(){}
 
-    public Measurement(){}
 }

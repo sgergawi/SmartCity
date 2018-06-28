@@ -31,9 +31,17 @@ public class AnalistaApp {
                             functs.getCityState();
                             break;
                         case 2:
+                            functs.getEdgeNodeStats();
+                            break;
                         case 3:
+                            functs.getGlobalAndLocalStats();
+                            break;
                         case 4:
+                            functs.getStdDevMeanSingleNode();
+                            break;
                         case 5:
+                            functs.getStdDevMeanNodes();
+                            break;
                         default:
                             System.out.println("Input non riconosciuto");
                             break;

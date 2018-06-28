@@ -10,6 +10,7 @@ public class AnalistaController {
     private final String CLOUDHOST = "http://localhost";
     private final int CLOUDPORT = 8480;
     private final String ROOT="/cloud-server";
+
     public int getStatsNumber(Scanner scanner) throws Exception {
         System.out.print("Inserire il numero di statistiche desiderate: ");
         try{
@@ -87,6 +88,13 @@ public class AnalistaController {
             int statsNumber = getStatsNumber(scanner);
             System.out.print("Inserire l'ID del nodo edge interessato: ");
             String nodeId = scanner.next();
+            Client client = Client.create();
+            WebResource resource = client.resource(CLOUDHOST+":"+CLOUDPORT+"/"+ROOT+"/"+nodeId+"/statistics");
+            ClientResponse response = resource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+            if(ifOKResponse(response)){
+                String output = response.getEntity(String.class);
+                System.out.println("Deviazione std e media delle N statistiche del nodo: "+output);
+            }
         } catch( Exception io){
             System.out.println("Errore nella ricezione dei dati in input");
         }
@@ -95,6 +103,13 @@ public class AnalistaController {
         try{
             Scanner scanner = new Scanner(System.in);
             int statsNumber = getStatsNumber(scanner);
+            Client client = Client.create();
+            WebResource resource = client.resource(CLOUDHOST+":"+CLOUDPORT+"/"+ROOT+"/statistics");
+            ClientResponse response = resource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+            if(ifOKResponse(response)){
+                String output = response.getEntity(String.class);
+                System.out.println("Deviazione std e media delle N statistiche: "+output);
+            }
         } catch( Exception io){
             System.out.println("Errore nella ricezione dei dati in input");
         }

@@ -3,10 +3,3 @@ out/
 Analista/.idea/
 CloudServer/.idea/
 EdgeNode/.idea/
-<<<<<<< HEAD
-Analista/target/
-CloudServer/target/
-EdgeNode/target/
-=======
-**/target/
->>>>>>> b39eba525b487bfdd99aee3cdbc8428c4032fbbe
