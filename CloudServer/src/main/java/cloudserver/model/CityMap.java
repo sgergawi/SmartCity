@@ -27,17 +27,17 @@ public class CityMap {
     public SmartCity.Nodes getNodes(){
         return cityNodes == null ? null : SmartCity.Nodes.newBuilder().addAllNodes(cityNodes.stream().map(nd -> nd.getNode()).collect(Collectors.toList())).build();
     }
-
     public synchronized void addNode(SmartCity.Node node, SmartCity.NodeMeasurements measurements){
         this.cityNodes.add(new CityNode(node, measurements));
     }
 
     public synchronized void removeNode(int nodeId){
-        this.getNodes().getNodesList().removeIf(nd -> nd.getId()==nodeId);
+        this.cityNodes.removeIf(cn -> cn.getNode().getId()==nodeId);
     }
     public List<CityNode> getCityNodes(){
         return this.cityNodes;
     }
+
     @Override
     public String toString(){
         return this.cityNodes.toString() + ", global statistics: "+globalStats;

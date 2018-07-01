@@ -2,8 +2,10 @@ import cloudserver.model.SmartCity;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -38,16 +40,16 @@ public class NodeMain {
             SmartCity.Nodes nodes = initializeNodeServerSide(node);
             //presentarsi agli altri nodi in broadcast
             integrateInto(node,nodes);
-            //TODO se l'integrazione non è andata bene deve prima eliminarsi lato server e poi chiudersi.
             startToWork(node);
         } catch(Exception e){
             System.out.println("Errore inizializzazione dati nodo edge");
+
             System.exit(0);
         }
 
 
     }
-    public static void startToWork(SmartCity.Node node){
+    public static void startToWork(SmartCity.Node node) throws IOException {
         try{
             ServerSocket selfSocket = new ServerSocket(node.getOtherNodesPort());
             while(true){
@@ -71,7 +73,7 @@ public class NodeMain {
             }
         } catch(Exception e){
             System.out.println("Il nodo edge: "+node.getId()+" non è riuscito a connettersi");
-            //TODO dovrei cancellarlo lato server cloud
+            deleteNodeServerSide(node);
         }
     }
     public static void integrateInto(SmartCity.Node node, SmartCity.Nodes nodes) throws IOException {
@@ -106,7 +108,6 @@ public class NodeMain {
                 }
                 ndSocket.close();
             } catch(Exception e){
-                System.out.println(e);
                 System.out.println("Errore creazione connessione con nodo: "+nd.getId());
             }
         }
@@ -133,10 +134,8 @@ public class NodeMain {
                 byte[] responseMsgByteArr = response.getEntity(byte[].class);
                 SmartCity.InitializationMassage responseMsg = SmartCity.InitializationMassage.parseFrom(responseMsgByteArr);
                 if(responseMsg.getErrortype()!=SmartCity.ErrorType.COORD_NOT_ALLOWED){
-                    System.out.println("Nodo già esistente o errore avvenuto server-side");
                     retry=10;
                 } else{
-                    System.out.println("ritento");
                     retry++;
                 }
                 xPos = rand.nextInt(100);
@@ -153,5 +152,11 @@ public class NodeMain {
         }
         SmartCity.Nodes nodes = SmartCity.InitializationMassage.parseFrom(response.getEntity(byte[].class)).getNodes();
         return nodes;
+    }
+
+    public static void deleteNodeServerSide(SmartCity.Node node){
+        Client client = Client.create();
+        WebResource resource = client.resource(CLOUDHOST+":"+CLOUDPORT+ROOT+"/"+node.getId());
+        resource.accept(MediaType.APPLICATION_OCTET_STREAM).delete(ClientResponse.class);
     }
 }

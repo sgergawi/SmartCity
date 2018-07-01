@@ -1,7 +1,5 @@
 package cloudserver.model;
 
-import java.util.List;
-
 public class CityNode {
     private SmartCity.Node node;
     private SmartCity.NodeMeasurements nodeMeasurements;
