@@ -3,7 +3,6 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
-import javax.print.attribute.standard.Media;
 import javax.ws.rs.core.MediaType;
 import java.io.*;
 import java.net.ServerSocket;
@@ -16,13 +15,15 @@ public class NodeMain {
     private final static int CLOUDPORT=8480;
     private final static String ROOT="/cloud-server/nodes";
     private final static String SELFIP="localhost";
+    //TODO questo avrà problemi di concorrenza
     private static SmartCity.Node coordinator=null;
+    //TODO questo avrà problemi di concorrenza
+    private static SmartCity.Nodes majorThanMe=SmartCity.Nodes.newBuilder().build();
     public static void main(String[] args){
         Random rand = new Random();
         int nodeId, nodesPort, sensorsPort, xPos, yPos;
         SmartCity.Node node;
         try{
-
             System.out.println("Inserire id del nodo");
             Scanner scanner = new Scanner(System.in);
             nodeId = scanner.nextInt();
@@ -34,10 +35,20 @@ public class NodeMain {
             yPos = rand.nextInt(100);
             //Provo a piazzare il nodo nella rete
             node = SmartCity.Node.newBuilder().setId(nodeId).setOtherNodesPort(nodesPort).setSensorsPort(sensorsPort).setSelfIp(SELFIP).setXPos(xPos).setYPos(yPos).build();
-            SmartCity.Nodes nodes = intializeNodeServerSide(node);
+            SmartCity.Nodes nodes = initializeNodeServerSide(node);
             //presentarsi agli altri nodi in broadcast
             integrateInto(node,nodes);
             //TODO se l'integrazione non è andata bene deve prima eliminarsi lato server e poi chiudersi.
+            startToWork(node);
+        } catch(Exception e){
+            System.out.println("Errore inizializzazione dati nodo edge");
+            System.exit(0);
+        }
+
+
+    }
+    public static void startToWork(SmartCity.Node node){
+        try{
             ServerSocket selfSocket = new ServerSocket(node.getOtherNodesPort());
             while(true){
                 Socket connectionSocket = selfSocket.accept();
@@ -46,36 +57,38 @@ public class NodeMain {
                 inputStream.read(message,0,message.length);
                 DataOutputStream outputStream = new DataOutputStream(connectionSocket.getOutputStream());
                 SmartCity.HelloMessage request = SmartCity.HelloMessage.parseFrom(message);
+                if(request.getNode().getId()>node.getId()){
+                    majorThanMe=majorThanMe.toBuilder().addNodes(node).build();
+                }
                 SmartCity.HelloMessage response = SmartCity.HelloMessage.newBuilder().setTypemessage(SmartCity.MessageType.WELCOME).build();
-                if(coordinator.getId()==node.getId()){
-                    response = response.toBuilder().setNode(coordinator).build();
+                if(NodeMain.coordinator.getId()==node.getId()){
+                    response = response.toBuilder().setNode(NodeMain.coordinator).build();
                 }
                 byte[] output = response.toByteArray();
                 outputStream.writeInt(output.length);
                 outputStream.write(output);
-
-                System.out.println();
+                connectionSocket.close();
             }
-            //tutti i nodi quando ricevono un avviso di ingresso, salvano il nodo nella loro lista di nodi attivi se è maggiore del loro ID
-            // Se il nodo coordinatore ha ricevuto l'avviso di ingresso, deve rispondere anche con il suo ID
         } catch(Exception e){
-            System.out.println("Errore inzializzazione dati nodo edge");
-            System.exit(0);
+            System.out.println("Il nodo edge: "+node.getId()+" non è riuscito a connettersi");
+            //TODO dovrei cancellarlo lato server cloud
         }
-
-
     }
-
     public static void integrateInto(SmartCity.Node node, SmartCity.Nodes nodes) throws IOException {
-        try{
-            if(nodes.getNodesList().isEmpty()){
-                NodeMain.coordinator=node;
-                return;
-            }
-            for(SmartCity.Node nd: nodes.getNodesList()){
-                //devo mandare a tutti un hello
-                //TODO gestire i casi in cui un nodo non è raggiungibile
-                //TODO questo nodo non deve far crashare tutto
+        /**
+         Il metodo consente di connettere questo nodo con tutti gli altri già registrati nella città
+         in modo tale da salvarsi internamente i nodi con ID maggiore al suo e in modo tale da presentarsi
+         agli altri nodi per farsi conoscere e per conoscere il coordinatore.
+         Gli altri nodi lo salveranno nella loro lista se l'id del presente nodo è superiore al loro.
+         Ogni connessione con gli altri nodi è gestita da thread diversi in modo tale da effettuare comunicazioni in parallelo
+         come da traccia del progetto.
+         */
+        if(nodes.getNodesList().isEmpty()){
+            NodeMain.coordinator=node;
+            return;
+        }
+        for(SmartCity.Node nd: nodes.getNodesList()){
+            try{
                 Socket ndSocket = new Socket(nd.getSelfIp(),nd.getOtherNodesPort());
                 DataOutputStream outToNodes = new DataOutputStream(ndSocket.getOutputStream());
                 DataInputStream inFromOtherNodes = new DataInputStream(ndSocket.getInputStream());
@@ -88,48 +101,57 @@ public class NodeMain {
                 if(resp.getNode()!=null){
                     NodeMain.coordinator=resp.getNode();
                 }
+                if(nd.getId()>node.getId()){
+                    majorThanMe=majorThanMe.toBuilder().addNodes(nd).build();
+                }
                 ndSocket.close();
+            } catch(Exception e){
+                System.out.println(e);
+                System.out.println("Errore creazione connessione con nodo: "+nd.getId());
             }
-            System.out.println("Il coordinatore è: "+coordinator);
-
-        } catch(Exception e){
-            System.out.println("Errore creazione connessione");
-
-            throw e;
         }
-
     }
-    public static SmartCity.Nodes intializeNodeServerSide(SmartCity.Node node){
+
+    public static SmartCity.Nodes initializeNodeServerSide(SmartCity.Node node) throws IOException {
+        /**
+         * Tenta di connettersi al server cloud e ritenta per un massimo di 10 volte. Se non riesce ad ottenere un OK
+         * il processo del nodo deve terminare. Tenta con posizioni diverse. Il server insieme allo stato http restituisce anche
+         * un codice più esplicativo per far capire al nodo il motivo per cui non è andata bene l'inizializzazione.
+         * Se il motivo è dovuto alle posizioni oppure a un problema generico del server allora il nodo edge ritenterà per un
+         * massimo di 10 volte altrimenti termina subito.
+         */
         Random rand = new Random();
         int retry=0, xPos, yPos;
-        try{
-            Client client = Client.create();
-            WebResource resource = client.resource(CLOUDHOST+":"+CLOUDPORT+ROOT);
-            ClientResponse response = resource.accept(MediaType.APPLICATION_OCTET_STREAM).post(ClientResponse.class, node.toByteArray());
-            //Genero le posizioni x,y random comprese tra 0-99 entrambe
 
-            while(retry<10){
-                if(response.getStatus()!=ClientResponse.Status.OK.getStatusCode()){
-                    retry++;
-                    //TODO dovrei controllare che in realtà sia stato rifiutato per la posizione e non per ID già esistente
-                    xPos = rand.nextInt(100);
-                    yPos = rand.nextInt(100);
-                    node = node.toBuilder().setXPos(xPos).setYPos(yPos).build();
-                    response = resource.post(ClientResponse.class, node.toByteArray());
+        Client client = Client.create();
+        WebResource resource = client.resource(CLOUDHOST+":"+CLOUDPORT+ROOT);
+        ClientResponse response = resource.accept(MediaType.APPLICATION_OCTET_STREAM).post(ClientResponse.class, node.toByteArray());
+        while(retry<10){
+            if(response.getStatus()!=ClientResponse.Status.OK.getStatusCode()){
+                //Genero le posizioni x,y random comprese tra 0-99 entrambe
+                //Controllo che in realtà sia stato rifiutato per la posizione e non per ID già esistente
+                byte[] responseMsgByteArr = response.getEntity(byte[].class);
+                SmartCity.InitializationMassage responseMsg = SmartCity.InitializationMassage.parseFrom(responseMsgByteArr);
+                if(responseMsg.getErrortype()!=SmartCity.ErrorType.COORD_NOT_ALLOWED){
+                    System.out.println("Nodo già esistente o errore avvenuto server-side");
+                    retry=10;
                 } else{
-                    break;
+                    System.out.println("ritento");
+                    retry++;
                 }
+                xPos = rand.nextInt(100);
+                yPos = rand.nextInt(100);
+                node = node.toBuilder().setXPos(xPos).setYPos(yPos).build();
+                response = resource.post(ClientResponse.class, node.toByteArray());
+            } else{
+                break;
             }
-            if(retry>=10){
-                System.out.println("Non è stato possibile connettersi con il cloud server");
-                return null;
-            }
-            //dovrei proseguire continuando a rimanere in ascolto per misurazioni
-            SmartCity.Nodes nodes = SmartCity.Nodes.parseFrom(response.getEntity(byte[].class));
-            return nodes;
-        } catch(Exception e){
-            System.out.println("Errore inserimento nodo nella mappa");
-            return null;
         }
+        if(retry>=10){
+            System.out.println("Non è stato possibile connettersi con il cloud server");
+            throw new IOException();
+        }
+        SmartCity.Nodes nodes = SmartCity.InitializationMassage.parseFrom(response.getEntity(byte[].class)).getNodes();
+        return nodes;
     }
 }

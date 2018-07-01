@@ -112,6 +112,113 @@ public final class SmartCity {
     // @@protoc_insertion_point(enum_scope:cloudserver.model.MessageType)
   }
 
+  /**
+   * Protobuf enum {@code cloudserver.model.ErrorType}
+   */
+  public enum ErrorType
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>COORD_NOT_ALLOWED = 0;</code>
+     */
+    COORD_NOT_ALLOWED(0),
+    /**
+     * <code>DUPLICATED_ID = 1;</code>
+     */
+    DUPLICATED_ID(1),
+    /**
+     * <code>UNEXPECTED_ERROR = 2;</code>
+     */
+    UNEXPECTED_ERROR(2),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <code>COORD_NOT_ALLOWED = 0;</code>
+     */
+    public static final int COORD_NOT_ALLOWED_VALUE = 0;
+    /**
+     * <code>DUPLICATED_ID = 1;</code>
+     */
+    public static final int DUPLICATED_ID_VALUE = 1;
+    /**
+     * <code>UNEXPECTED_ERROR = 2;</code>
+     */
+    public static final int UNEXPECTED_ERROR_VALUE = 2;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static ErrorType valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static ErrorType forNumber(int value) {
+      switch (value) {
+        case 0: return COORD_NOT_ALLOWED;
+        case 1: return DUPLICATED_ID;
+        case 2: return UNEXPECTED_ERROR;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<ErrorType>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        ErrorType> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<ErrorType>() {
+            public ErrorType findValueByNumber(int number) {
+              return ErrorType.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return cloudserver.model.SmartCity.getDescriptor().getEnumTypes().get(1);
+    }
+
+    private static final ErrorType[] VALUES = values();
+
+    public static ErrorType valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private ErrorType(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:cloudserver.model.ErrorType)
+  }
+
   public interface NodeOrBuilder extends
       // @@protoc_insertion_point(interface_extends:cloudserver.model.Node)
       com.google.protobuf.MessageOrBuilder {
@@ -3488,6 +3595,677 @@ public final class SmartCity {
 
   }
 
+  public interface InitializationMassageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:cloudserver.model.InitializationMassage)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>.cloudserver.model.ErrorType errortype = 1;</code>
+     */
+    int getErrortypeValue();
+    /**
+     * <code>.cloudserver.model.ErrorType errortype = 1;</code>
+     */
+    cloudserver.model.SmartCity.ErrorType getErrortype();
+
+    /**
+     * <code>.cloudserver.model.Nodes nodes = 2;</code>
+     */
+    boolean hasNodes();
+    /**
+     * <code>.cloudserver.model.Nodes nodes = 2;</code>
+     */
+    cloudserver.model.SmartCity.Nodes getNodes();
+    /**
+     * <code>.cloudserver.model.Nodes nodes = 2;</code>
+     */
+    cloudserver.model.SmartCity.NodesOrBuilder getNodesOrBuilder();
+  }
+  /**
+   * Protobuf type {@code cloudserver.model.InitializationMassage}
+   */
+  public  static final class InitializationMassage extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:cloudserver.model.InitializationMassage)
+      InitializationMassageOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use InitializationMassage.newBuilder() to construct.
+    private InitializationMassage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private InitializationMassage() {
+      errortype_ = 0;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private InitializationMassage(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              int rawValue = input.readEnum();
+
+              errortype_ = rawValue;
+              break;
+            }
+            case 18: {
+              cloudserver.model.SmartCity.Nodes.Builder subBuilder = null;
+              if (nodes_ != null) {
+                subBuilder = nodes_.toBuilder();
+              }
+              nodes_ = input.readMessage(cloudserver.model.SmartCity.Nodes.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(nodes_);
+                nodes_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cloudserver.model.SmartCity.internal_static_cloudserver_model_InitializationMassage_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cloudserver.model.SmartCity.internal_static_cloudserver_model_InitializationMassage_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cloudserver.model.SmartCity.InitializationMassage.class, cloudserver.model.SmartCity.InitializationMassage.Builder.class);
+    }
+
+    public static final int ERRORTYPE_FIELD_NUMBER = 1;
+    private int errortype_;
+    /**
+     * <code>.cloudserver.model.ErrorType errortype = 1;</code>
+     */
+    public int getErrortypeValue() {
+      return errortype_;
+    }
+    /**
+     * <code>.cloudserver.model.ErrorType errortype = 1;</code>
+     */
+    public cloudserver.model.SmartCity.ErrorType getErrortype() {
+      cloudserver.model.SmartCity.ErrorType result = cloudserver.model.SmartCity.ErrorType.valueOf(errortype_);
+      return result == null ? cloudserver.model.SmartCity.ErrorType.UNRECOGNIZED : result;
+    }
+
+    public static final int NODES_FIELD_NUMBER = 2;
+    private cloudserver.model.SmartCity.Nodes nodes_;
+    /**
+     * <code>.cloudserver.model.Nodes nodes = 2;</code>
+     */
+    public boolean hasNodes() {
+      return nodes_ != null;
+    }
+    /**
+     * <code>.cloudserver.model.Nodes nodes = 2;</code>
+     */
+    public cloudserver.model.SmartCity.Nodes getNodes() {
+      return nodes_ == null ? cloudserver.model.SmartCity.Nodes.getDefaultInstance() : nodes_;
+    }
+    /**
+     * <code>.cloudserver.model.Nodes nodes = 2;</code>
+     */
+    public cloudserver.model.SmartCity.NodesOrBuilder getNodesOrBuilder() {
+      return getNodes();
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (errortype_ != cloudserver.model.SmartCity.ErrorType.COORD_NOT_ALLOWED.getNumber()) {
+        output.writeEnum(1, errortype_);
+      }
+      if (nodes_ != null) {
+        output.writeMessage(2, getNodes());
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (errortype_ != cloudserver.model.SmartCity.ErrorType.COORD_NOT_ALLOWED.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, errortype_);
+      }
+      if (nodes_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getNodes());
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof cloudserver.model.SmartCity.InitializationMassage)) {
+        return super.equals(obj);
+      }
+      cloudserver.model.SmartCity.InitializationMassage other = (cloudserver.model.SmartCity.InitializationMassage) obj;
+
+      boolean result = true;
+      result = result && errortype_ == other.errortype_;
+      result = result && (hasNodes() == other.hasNodes());
+      if (hasNodes()) {
+        result = result && getNodes()
+            .equals(other.getNodes());
+      }
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + ERRORTYPE_FIELD_NUMBER;
+      hash = (53 * hash) + errortype_;
+      if (hasNodes()) {
+        hash = (37 * hash) + NODES_FIELD_NUMBER;
+        hash = (53 * hash) + getNodes().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static cloudserver.model.SmartCity.InitializationMassage parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cloudserver.model.SmartCity.InitializationMassage parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cloudserver.model.SmartCity.InitializationMassage parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cloudserver.model.SmartCity.InitializationMassage parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cloudserver.model.SmartCity.InitializationMassage parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cloudserver.model.SmartCity.InitializationMassage parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cloudserver.model.SmartCity.InitializationMassage parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cloudserver.model.SmartCity.InitializationMassage parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cloudserver.model.SmartCity.InitializationMassage parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static cloudserver.model.SmartCity.InitializationMassage parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cloudserver.model.SmartCity.InitializationMassage parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cloudserver.model.SmartCity.InitializationMassage parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(cloudserver.model.SmartCity.InitializationMassage prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code cloudserver.model.InitializationMassage}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:cloudserver.model.InitializationMassage)
+        cloudserver.model.SmartCity.InitializationMassageOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cloudserver.model.SmartCity.internal_static_cloudserver_model_InitializationMassage_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cloudserver.model.SmartCity.internal_static_cloudserver_model_InitializationMassage_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cloudserver.model.SmartCity.InitializationMassage.class, cloudserver.model.SmartCity.InitializationMassage.Builder.class);
+      }
+
+      // Construct using cloudserver.model.SmartCity.InitializationMassage.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        errortype_ = 0;
+
+        if (nodesBuilder_ == null) {
+          nodes_ = null;
+        } else {
+          nodes_ = null;
+          nodesBuilder_ = null;
+        }
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cloudserver.model.SmartCity.internal_static_cloudserver_model_InitializationMassage_descriptor;
+      }
+
+      public cloudserver.model.SmartCity.InitializationMassage getDefaultInstanceForType() {
+        return cloudserver.model.SmartCity.InitializationMassage.getDefaultInstance();
+      }
+
+      public cloudserver.model.SmartCity.InitializationMassage build() {
+        cloudserver.model.SmartCity.InitializationMassage result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public cloudserver.model.SmartCity.InitializationMassage buildPartial() {
+        cloudserver.model.SmartCity.InitializationMassage result = new cloudserver.model.SmartCity.InitializationMassage(this);
+        result.errortype_ = errortype_;
+        if (nodesBuilder_ == null) {
+          result.nodes_ = nodes_;
+        } else {
+          result.nodes_ = nodesBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cloudserver.model.SmartCity.InitializationMassage) {
+          return mergeFrom((cloudserver.model.SmartCity.InitializationMassage)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cloudserver.model.SmartCity.InitializationMassage other) {
+        if (other == cloudserver.model.SmartCity.InitializationMassage.getDefaultInstance()) return this;
+        if (other.errortype_ != 0) {
+          setErrortypeValue(other.getErrortypeValue());
+        }
+        if (other.hasNodes()) {
+          mergeNodes(other.getNodes());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cloudserver.model.SmartCity.InitializationMassage parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cloudserver.model.SmartCity.InitializationMassage) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private int errortype_ = 0;
+      /**
+       * <code>.cloudserver.model.ErrorType errortype = 1;</code>
+       */
+      public int getErrortypeValue() {
+        return errortype_;
+      }
+      /**
+       * <code>.cloudserver.model.ErrorType errortype = 1;</code>
+       */
+      public Builder setErrortypeValue(int value) {
+        errortype_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.cloudserver.model.ErrorType errortype = 1;</code>
+       */
+      public cloudserver.model.SmartCity.ErrorType getErrortype() {
+        cloudserver.model.SmartCity.ErrorType result = cloudserver.model.SmartCity.ErrorType.valueOf(errortype_);
+        return result == null ? cloudserver.model.SmartCity.ErrorType.UNRECOGNIZED : result;
+      }
+      /**
+       * <code>.cloudserver.model.ErrorType errortype = 1;</code>
+       */
+      public Builder setErrortype(cloudserver.model.SmartCity.ErrorType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        errortype_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.cloudserver.model.ErrorType errortype = 1;</code>
+       */
+      public Builder clearErrortype() {
+        
+        errortype_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private cloudserver.model.SmartCity.Nodes nodes_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cloudserver.model.SmartCity.Nodes, cloudserver.model.SmartCity.Nodes.Builder, cloudserver.model.SmartCity.NodesOrBuilder> nodesBuilder_;
+      /**
+       * <code>.cloudserver.model.Nodes nodes = 2;</code>
+       */
+      public boolean hasNodes() {
+        return nodesBuilder_ != null || nodes_ != null;
+      }
+      /**
+       * <code>.cloudserver.model.Nodes nodes = 2;</code>
+       */
+      public cloudserver.model.SmartCity.Nodes getNodes() {
+        if (nodesBuilder_ == null) {
+          return nodes_ == null ? cloudserver.model.SmartCity.Nodes.getDefaultInstance() : nodes_;
+        } else {
+          return nodesBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.cloudserver.model.Nodes nodes = 2;</code>
+       */
+      public Builder setNodes(cloudserver.model.SmartCity.Nodes value) {
+        if (nodesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          nodes_ = value;
+          onChanged();
+        } else {
+          nodesBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cloudserver.model.Nodes nodes = 2;</code>
+       */
+      public Builder setNodes(
+          cloudserver.model.SmartCity.Nodes.Builder builderForValue) {
+        if (nodesBuilder_ == null) {
+          nodes_ = builderForValue.build();
+          onChanged();
+        } else {
+          nodesBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cloudserver.model.Nodes nodes = 2;</code>
+       */
+      public Builder mergeNodes(cloudserver.model.SmartCity.Nodes value) {
+        if (nodesBuilder_ == null) {
+          if (nodes_ != null) {
+            nodes_ =
+              cloudserver.model.SmartCity.Nodes.newBuilder(nodes_).mergeFrom(value).buildPartial();
+          } else {
+            nodes_ = value;
+          }
+          onChanged();
+        } else {
+          nodesBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cloudserver.model.Nodes nodes = 2;</code>
+       */
+      public Builder clearNodes() {
+        if (nodesBuilder_ == null) {
+          nodes_ = null;
+          onChanged();
+        } else {
+          nodes_ = null;
+          nodesBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cloudserver.model.Nodes nodes = 2;</code>
+       */
+      public cloudserver.model.SmartCity.Nodes.Builder getNodesBuilder() {
+        
+        onChanged();
+        return getNodesFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.cloudserver.model.Nodes nodes = 2;</code>
+       */
+      public cloudserver.model.SmartCity.NodesOrBuilder getNodesOrBuilder() {
+        if (nodesBuilder_ != null) {
+          return nodesBuilder_.getMessageOrBuilder();
+        } else {
+          return nodes_ == null ?
+              cloudserver.model.SmartCity.Nodes.getDefaultInstance() : nodes_;
+        }
+      }
+      /**
+       * <code>.cloudserver.model.Nodes nodes = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cloudserver.model.SmartCity.Nodes, cloudserver.model.SmartCity.Nodes.Builder, cloudserver.model.SmartCity.NodesOrBuilder> 
+          getNodesFieldBuilder() {
+        if (nodesBuilder_ == null) {
+          nodesBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              cloudserver.model.SmartCity.Nodes, cloudserver.model.SmartCity.Nodes.Builder, cloudserver.model.SmartCity.NodesOrBuilder>(
+                  getNodes(),
+                  getParentForChildren(),
+                  isClean());
+          nodes_ = null;
+        }
+        return nodesBuilder_;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:cloudserver.model.InitializationMassage)
+    }
+
+    // @@protoc_insertion_point(class_scope:cloudserver.model.InitializationMassage)
+    private static final cloudserver.model.SmartCity.InitializationMassage DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new cloudserver.model.SmartCity.InitializationMassage();
+    }
+
+    public static cloudserver.model.SmartCity.InitializationMassage getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<InitializationMassage>
+        PARSER = new com.google.protobuf.AbstractParser<InitializationMassage>() {
+      public InitializationMassage parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new InitializationMassage(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<InitializationMassage> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<InitializationMassage> getParserForType() {
+      return PARSER;
+    }
+
+    public cloudserver.model.SmartCity.InitializationMassage getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface HelloMessageOrBuilder extends
       // @@protoc_insertion_point(interface_extends:cloudserver.model.HelloMessage)
       com.google.protobuf.MessageOrBuilder {
@@ -4185,6 +4963,11 @@ public final class SmartCity {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_cloudserver_model_AggregatedStatistic_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_cloudserver_model_InitializationMassage_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_cloudserver_model_InitializationMassage_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_cloudserver_model_HelloMessage_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -4207,11 +4990,16 @@ public final class SmartCity {
       "e\030\002 \001(\002\"J\n\020NodeMeasurements\0226\n\nstatistic" +
       "s\030\001 \003(\0132\".cloudserver.model.NodeMeasurem" +
       "ent\"3\n\023AggregatedStatistic\022\016\n\006devstd\030\001 \001" +
-      "(\001\022\014\n\004mean\030\002 \001(\002\"j\n\014HelloMessage\0223\n\013type",
-      "message\030\001 \001(\0162\036.cloudserver.model.Messag" +
-      "eType\022%\n\004node\030\002 \001(\0132\027.cloudserver.model." +
-      "Node*%\n\013MessageType\022\t\n\005HELLO\020\000\022\013\n\007WELCOM" +
-      "E\020\001b\006proto3"
+      "(\001\022\014\n\004mean\030\002 \001(\002\"q\n\025InitializationMassag",
+      "e\022/\n\terrortype\030\001 \001(\0162\034.cloudserver.model" +
+      ".ErrorType\022\'\n\005nodes\030\002 \001(\0132\030.cloudserver." +
+      "model.Nodes\"j\n\014HelloMessage\0223\n\013typemessa" +
+      "ge\030\001 \001(\0162\036.cloudserver.model.MessageType" +
+      "\022%\n\004node\030\002 \001(\0132\027.cloudserver.model.Node*" +
+      "%\n\013MessageType\022\t\n\005HELLO\020\000\022\013\n\007WELCOME\020\001*K" +
+      "\n\tErrorType\022\025\n\021COORD_NOT_ALLOWED\020\000\022\021\n\rDU" +
+      "PLICATED_ID\020\001\022\024\n\020UNEXPECTED_ERROR\020\002b\006pro" +
+      "to3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -4255,8 +5043,14 @@ public final class SmartCity {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cloudserver_model_AggregatedStatistic_descriptor,
         new java.lang.String[] { "Devstd", "Mean", });
-    internal_static_cloudserver_model_HelloMessage_descriptor =
+    internal_static_cloudserver_model_InitializationMassage_descriptor =
       getDescriptor().getMessageTypes().get(5);
+    internal_static_cloudserver_model_InitializationMassage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_cloudserver_model_InitializationMassage_descriptor,
+        new java.lang.String[] { "Errortype", "Nodes", });
+    internal_static_cloudserver_model_HelloMessage_descriptor =
+      getDescriptor().getMessageTypes().get(6);
     internal_static_cloudserver_model_HelloMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cloudserver_model_HelloMessage_descriptor,

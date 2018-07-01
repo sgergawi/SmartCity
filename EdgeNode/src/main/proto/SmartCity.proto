@@ -31,7 +31,15 @@ message AggregatedStatistic{
 enum MessageType{
     HELLO = 0;
     WELCOME = 1;
-
+}
+enum ErrorType{
+    COORD_NOT_ALLOWED=0;
+    DUPLICATED_ID=1;
+    UNEXPECTED_ERROR=2;
+}
+message InitializationMassage{
+    ErrorType errortype=1;
+    Nodes nodes=2;
 }
 message HelloMessage{
     MessageType typemessage =1;
