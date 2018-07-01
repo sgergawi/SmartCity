@@ -148,6 +148,7 @@ public class NodeMain {
         }
         if(retry>=10){
             System.out.println("Non è stato possibile connettersi con il cloud server");
+            //TODO dovrei aggiungere delle eccezioni specifiche
             throw new IOException();
         }
         SmartCity.Nodes nodes = SmartCity.InitializationMassage.parseFrom(response.getEntity(byte[].class)).getNodes();

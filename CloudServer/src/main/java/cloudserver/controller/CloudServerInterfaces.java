@@ -79,16 +79,16 @@ public class CloudServerInterfaces {
     @DELETE
     @Path("/{nodeid}")
     public Response deleteNode(@PathParam("nodeid")int nodeId){
-//        try{
+        try{
             CityMap map = CityMap.getInstance();
             if(!map.getNodes().getNodesList().stream().anyMatch(node -> node.getId()==nodeId)){
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
             map.removeNode(nodeId);
             return Response.ok().build();
-        /*} catch(Exception e){
+        } catch(Exception e){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
-        }*/
+        }
 
     }
 
