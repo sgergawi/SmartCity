@@ -27,3 +27,13 @@ message AggregatedStatistic{
     double devstd = 1;
     float mean = 2;
 }
+
+enum MessageType{
+    HELLO = 0;
+    WELCOME = 1;
+
+}
+message HelloMessage{
+    MessageType typemessage =1;
+    Node node=2;
+}
