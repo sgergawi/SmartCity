@@ -45,24 +45,34 @@ public class CloudServerInterfaces {
     public Response addNode(byte[] input){
         CityMap map = CityMap.getInstance();
         List<SmartCity.Node> copy = new Vector<>();
+        SmartCity.InitializationMassage response = SmartCity.InitializationMassage.newBuilder().build();
         try{
             SmartCity.Node node = SmartCity.Node.parseFrom(input);
             System.out.println(node);
             List<SmartCity.Node> nodes = map.getNodes().getNodesList();
             copy.addAll(nodes);
-            List<SmartCity.Node> nodesAroundOrEqual = nodes.stream().filter(nd -> nd.getId()==node.getId() || CloudServerUtility.getNodesDistance(nd,node.getXPos(),node.getYPos())<20).collect(Collectors.toList());
-            if(nodesAroundOrEqual!=null && !nodesAroundOrEqual.isEmpty()){
-                return Response.status(Response.Status.BAD_REQUEST).build();
+            List<SmartCity.Node> nodesEqual = nodes.stream().filter(nd -> nd.getId()==node.getId()).collect(Collectors.toList());
+            List<SmartCity.Node> nodesAround = nodes.stream().filter(nd -> CloudServerUtility.getNodesDistance(nd,node.getXPos(),node.getYPos())<20).collect(Collectors.toList());
+            if(nodesEqual!=null && !nodesEqual.isEmpty()){
+                response = response.toBuilder().setErrortype(SmartCity.ErrorType.DUPLICATED_ID).build();
+                return Response.status(Response.Status.BAD_REQUEST).entity(response.toByteArray()).build();
+            }
+            if(nodesAround!=null && !nodesAround.isEmpty()){
+                response = response.toBuilder().setErrortype(SmartCity.ErrorType.COORD_NOT_ALLOWED).build();
+                return Response.status(Response.Status.BAD_REQUEST).entity(response.toByteArray()).build();
             }
             map.addNode(node,SmartCity.NodeMeasurements.newBuilder().addAllStatistics(new Vector<>()).build());
         } catch(Exception e){
             System.out.println("Errore durante l'aggiunta del nodo");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            response = response.toBuilder().setErrortype(SmartCity.ErrorType.UNEXPECTED_ERROR).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response.toByteArray()).build();
         }
+        System.out.println("copy: "+copy);
         if(copy.isEmpty()){
             return Response.ok().build();
         } else{
-            return Response.ok().entity(SmartCity.Nodes.newBuilder().addAllNodes(copy).build().toByteArray()).build();
+            response=response.toBuilder().setNodes(SmartCity.Nodes.newBuilder().addAllNodes(copy).build()).build();
+            return Response.ok().entity(response.toByteArray()).build();
         }
 
     }
