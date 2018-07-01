@@ -4,6 +4,7 @@ package cloudserver.controller;
 import cloudserver.model.*;
 import cloudserver.utility.CloudServerUtility;
 
+import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -43,11 +44,12 @@ public class CloudServerInterfaces {
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response addNode(byte[] input){
         CityMap map = CityMap.getInstance();
-
+        List<SmartCity.Node> copy = new Vector<>();
         try{
             SmartCity.Node node = SmartCity.Node.parseFrom(input);
             System.out.println(node);
             List<SmartCity.Node> nodes = map.getNodes().getNodesList();
+            copy.addAll(nodes);
             List<SmartCity.Node> nodesAroundOrEqual = nodes.stream().filter(nd -> nd.getId()==node.getId() || CloudServerUtility.getNodesDistance(nd,node.getXPos(),node.getYPos())<20).collect(Collectors.toList());
             if(nodesAroundOrEqual!=null && !nodesAroundOrEqual.isEmpty()){
                 return Response.status(Response.Status.BAD_REQUEST).build();
@@ -57,14 +59,22 @@ public class CloudServerInterfaces {
             System.out.println("Errore durante l'aggiunta del nodo");
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
+        if(copy.isEmpty()){
+            return Response.ok().build();
+        } else{
+            return Response.ok().entity(SmartCity.Nodes.newBuilder().addAllNodes(copy).build().toByteArray()).build();
+        }
 
-        return Response.ok().entity(map.getNodes().toByteArray()).build();
     }
 
     @DELETE
     @Path("/{nodeid}")
     public Response deleteNode(@PathParam("nodeid")int nodeId){
-        System.out.println(nodeId);
+        CityMap map = CityMap.getInstance();
+        if(!map.getNodes().getNodesList().stream().anyMatch(node -> node.getId()==nodeId)){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        map.removeNode(nodeId);
         return Response.ok().build();
     }
 

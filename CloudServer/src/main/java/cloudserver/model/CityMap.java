@@ -31,6 +31,10 @@ public class CityMap {
     public synchronized void addNode(SmartCity.Node node, SmartCity.NodeMeasurements measurements){
         this.cityNodes.add(new CityNode(node, measurements));
     }
+
+    public synchronized void removeNode(int nodeId){
+        this.getNodes().getNodesList().removeIf(nd -> nd.getId()==nodeId);
+    }
     public List<CityNode> getCityNodes(){
         return this.cityNodes;
     }
