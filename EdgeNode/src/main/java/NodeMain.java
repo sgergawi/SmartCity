@@ -2,10 +2,11 @@ import cloudserver.model.SmartCity;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
+import edgenodes.controller.InitializationThread;
+import edgenodes.model.Coordinator;
+import edgenodes.model.MajorNodes;
 
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -43,7 +44,6 @@ public class NodeMain {
             startToWork(node);
         } catch(Exception e){
             System.out.println("Errore inizializzazione dati nodo edge");
-
             System.exit(0);
         }
 
@@ -58,13 +58,15 @@ public class NodeMain {
                 byte[] message = new byte[inputStream.readInt()];
                 inputStream.read(message,0,message.length);
                 DataOutputStream outputStream = new DataOutputStream(connectionSocket.getOutputStream());
-                SmartCity.HelloMessage request = SmartCity.HelloMessage.parseFrom(message);
+                SmartCity.HelloRequest request = SmartCity.HelloRequest.parseFrom(message);
                 if(request.getNode().getId()>node.getId()){
-                    majorThanMe=majorThanMe.toBuilder().addNodes(node).build();
+                    MajorNodes.getInstance().addMajorThanMe(node);
                 }
-                SmartCity.HelloMessage response = SmartCity.HelloMessage.newBuilder().setTypemessage(SmartCity.MessageType.WELCOME).build();
-                if(NodeMain.coordinator.getId()==node.getId()){
-                    response = response.toBuilder().setNode(NodeMain.coordinator).build();
+                SmartCity.HelloResponse response = SmartCity.HelloResponse.newBuilder().setTypemessage(SmartCity.MessageType.WELCOME).build();
+                if(Coordinator.getInstance().getCoordinator().getId()==node.getId()){
+                    response = response.toBuilder().setIscoordinator(true).build();
+                } else{
+                    response = response.toBuilder().setIscoordinator(false).build();
                 }
                 byte[] output = response.toByteArray();
                 outputStream.writeInt(output.length);
@@ -72,7 +74,7 @@ public class NodeMain {
                 connectionSocket.close();
             }
         } catch(Exception e){
-            System.out.println("Il nodo edge: "+node.getId()+" non è riuscito a connettersi");
+            System.out.println("Il nodo edge: "+node.getId()+" non è riuscito a gestire qualche messaggio");
             deleteNodeServerSide(node);
         }
     }
@@ -86,27 +88,14 @@ public class NodeMain {
          come da traccia del progetto.
          */
         if(nodes.getNodesList().isEmpty()){
-            NodeMain.coordinator=node;
+            Coordinator.getInstance().setCoordinator(node);
             return;
         }
         for(SmartCity.Node nd: nodes.getNodesList()){
             try{
                 Socket ndSocket = new Socket(nd.getSelfIp(),nd.getOtherNodesPort());
-                DataOutputStream outToNodes = new DataOutputStream(ndSocket.getOutputStream());
-                DataInputStream inFromOtherNodes = new DataInputStream(ndSocket.getInputStream());
-                SmartCity.HelloMessage req = SmartCity.HelloMessage.newBuilder().setNode(node).setTypemessage(SmartCity.MessageType.HELLO).build();
-                outToNodes.writeInt(req.toByteArray().length);
-                outToNodes.write(req.toByteArray());
-                byte[] fromOtherNode = new byte[inFromOtherNodes.readInt()];
-                inFromOtherNodes.read(fromOtherNode);
-                SmartCity.HelloMessage resp = SmartCity.HelloMessage.parseFrom(fromOtherNode);
-                if(resp.getNode()!=null){
-                    NodeMain.coordinator=resp.getNode();
-                }
-                if(nd.getId()>node.getId()){
-                    majorThanMe=majorThanMe.toBuilder().addNodes(nd).build();
-                }
-                ndSocket.close();
+                InitializationThread thread = new InitializationThread(ndSocket,nd, node);
+                thread.start();
             } catch(Exception e){
                 System.out.println("Errore creazione connessione con nodo: "+nd.getId());
             }

@@ -41,7 +41,13 @@ message InitializationMassage{
     ErrorType errortype=1;
     Nodes nodes=2;
 }
-message HelloMessage{
-    MessageType typemessage =1;
+
+message HelloRequest{
+    MessageType typemessage=1;
     Node node=2;
+}
+
+message HelloResponse{
+    MessageType typemessage =1;
+    bool iscoordinator=2;
 }

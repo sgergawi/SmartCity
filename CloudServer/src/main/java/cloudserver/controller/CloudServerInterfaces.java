@@ -54,22 +54,26 @@ public class CloudServerInterfaces {
             List<SmartCity.Node> nodesEqual = nodes.stream().filter(nd -> nd.getId()==node.getId()).collect(Collectors.toList());
             List<SmartCity.Node> nodesAround = nodes.stream().filter(nd -> CloudServerUtility.getNodesDistance(nd,node.getXPos(),node.getYPos())<20).collect(Collectors.toList());
             if(nodesEqual!=null && !nodesEqual.isEmpty()){
+                System.out.println("Il nodo "+node.getId()+" è gia presente");
                 response = response.toBuilder().setErrortype(SmartCity.ErrorType.DUPLICATED_ID).build();
                 return Response.status(Response.Status.BAD_REQUEST).entity(response.toByteArray()).build();
             }
             if(nodesAround!=null && !nodesAround.isEmpty()){
+                System.out.println("Il nodo "+node.getId()+" è vicino ad altri nodi");
                 response = response.toBuilder().setErrortype(SmartCity.ErrorType.COORD_NOT_ALLOWED).build();
+                System.out.println(response);
                 return Response.status(Response.Status.BAD_REQUEST).entity(response.toByteArray()).build();
             }
             map.addNode(node,SmartCity.NodeMeasurements.newBuilder().addAllStatistics(new Vector<>()).build());
         } catch(Exception e){
-            System.out.println("Errore durante l'aggiunta del nodo");
+            System.out.println("Errore durante l'aggiunta del nodo "+e);
             response = response.toBuilder().setErrortype(SmartCity.ErrorType.UNEXPECTED_ERROR).build();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response.toByteArray()).build();
         }
         if(copy.isEmpty()){
             return Response.ok().build();
         } else{
+
             response=response.toBuilder().setNodes(SmartCity.Nodes.newBuilder().addAllNodes(copy).build()).build();
             return Response.ok().entity(response.toByteArray()).build();
         }

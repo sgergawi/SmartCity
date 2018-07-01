@@ -4266,8 +4266,8 @@ public final class SmartCity {
 
   }
 
-  public interface HelloMessageOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:cloudserver.model.HelloMessage)
+  public interface HelloRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:cloudserver.model.HelloRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -4293,18 +4293,18 @@ public final class SmartCity {
     cloudserver.model.SmartCity.NodeOrBuilder getNodeOrBuilder();
   }
   /**
-   * Protobuf type {@code cloudserver.model.HelloMessage}
+   * Protobuf type {@code cloudserver.model.HelloRequest}
    */
-  public  static final class HelloMessage extends
+  public  static final class HelloRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:cloudserver.model.HelloMessage)
-      HelloMessageOrBuilder {
+      // @@protoc_insertion_point(message_implements:cloudserver.model.HelloRequest)
+      HelloRequestOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use HelloMessage.newBuilder() to construct.
-    private HelloMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use HelloRequest.newBuilder() to construct.
+    private HelloRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private HelloMessage() {
+    private HelloRequest() {
       typemessage_ = 0;
     }
 
@@ -4313,7 +4313,7 @@ public final class SmartCity {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private HelloMessage(
+    private HelloRequest(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -4369,14 +4369,14 @@ public final class SmartCity {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return cloudserver.model.SmartCity.internal_static_cloudserver_model_HelloMessage_descriptor;
+      return cloudserver.model.SmartCity.internal_static_cloudserver_model_HelloRequest_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return cloudserver.model.SmartCity.internal_static_cloudserver_model_HelloMessage_fieldAccessorTable
+      return cloudserver.model.SmartCity.internal_static_cloudserver_model_HelloRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              cloudserver.model.SmartCity.HelloMessage.class, cloudserver.model.SmartCity.HelloMessage.Builder.class);
+              cloudserver.model.SmartCity.HelloRequest.class, cloudserver.model.SmartCity.HelloRequest.Builder.class);
     }
 
     public static final int TYPEMESSAGE_FIELD_NUMBER = 1;
@@ -4460,10 +4460,10 @@ public final class SmartCity {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof cloudserver.model.SmartCity.HelloMessage)) {
+      if (!(obj instanceof cloudserver.model.SmartCity.HelloRequest)) {
         return super.equals(obj);
       }
-      cloudserver.model.SmartCity.HelloMessage other = (cloudserver.model.SmartCity.HelloMessage) obj;
+      cloudserver.model.SmartCity.HelloRequest other = (cloudserver.model.SmartCity.HelloRequest) obj;
 
       boolean result = true;
       result = result && typemessage_ == other.typemessage_;
@@ -4494,69 +4494,69 @@ public final class SmartCity {
       return hash;
     }
 
-    public static cloudserver.model.SmartCity.HelloMessage parseFrom(
+    public static cloudserver.model.SmartCity.HelloRequest parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static cloudserver.model.SmartCity.HelloMessage parseFrom(
+    public static cloudserver.model.SmartCity.HelloRequest parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static cloudserver.model.SmartCity.HelloMessage parseFrom(
+    public static cloudserver.model.SmartCity.HelloRequest parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static cloudserver.model.SmartCity.HelloMessage parseFrom(
+    public static cloudserver.model.SmartCity.HelloRequest parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static cloudserver.model.SmartCity.HelloMessage parseFrom(byte[] data)
+    public static cloudserver.model.SmartCity.HelloRequest parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static cloudserver.model.SmartCity.HelloMessage parseFrom(
+    public static cloudserver.model.SmartCity.HelloRequest parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static cloudserver.model.SmartCity.HelloMessage parseFrom(java.io.InputStream input)
+    public static cloudserver.model.SmartCity.HelloRequest parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static cloudserver.model.SmartCity.HelloMessage parseFrom(
+    public static cloudserver.model.SmartCity.HelloRequest parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static cloudserver.model.SmartCity.HelloMessage parseDelimitedFrom(java.io.InputStream input)
+    public static cloudserver.model.SmartCity.HelloRequest parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static cloudserver.model.SmartCity.HelloMessage parseDelimitedFrom(
+    public static cloudserver.model.SmartCity.HelloRequest parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static cloudserver.model.SmartCity.HelloMessage parseFrom(
+    public static cloudserver.model.SmartCity.HelloRequest parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static cloudserver.model.SmartCity.HelloMessage parseFrom(
+    public static cloudserver.model.SmartCity.HelloRequest parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -4568,7 +4568,7 @@ public final class SmartCity {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(cloudserver.model.SmartCity.HelloMessage prototype) {
+    public static Builder newBuilder(cloudserver.model.SmartCity.HelloRequest prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() {
@@ -4583,25 +4583,25 @@ public final class SmartCity {
       return builder;
     }
     /**
-     * Protobuf type {@code cloudserver.model.HelloMessage}
+     * Protobuf type {@code cloudserver.model.HelloRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:cloudserver.model.HelloMessage)
-        cloudserver.model.SmartCity.HelloMessageOrBuilder {
+        // @@protoc_insertion_point(builder_implements:cloudserver.model.HelloRequest)
+        cloudserver.model.SmartCity.HelloRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return cloudserver.model.SmartCity.internal_static_cloudserver_model_HelloMessage_descriptor;
+        return cloudserver.model.SmartCity.internal_static_cloudserver_model_HelloRequest_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return cloudserver.model.SmartCity.internal_static_cloudserver_model_HelloMessage_fieldAccessorTable
+        return cloudserver.model.SmartCity.internal_static_cloudserver_model_HelloRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                cloudserver.model.SmartCity.HelloMessage.class, cloudserver.model.SmartCity.HelloMessage.Builder.class);
+                cloudserver.model.SmartCity.HelloRequest.class, cloudserver.model.SmartCity.HelloRequest.Builder.class);
       }
 
-      // Construct using cloudserver.model.SmartCity.HelloMessage.newBuilder()
+      // Construct using cloudserver.model.SmartCity.HelloRequest.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -4631,23 +4631,23 @@ public final class SmartCity {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return cloudserver.model.SmartCity.internal_static_cloudserver_model_HelloMessage_descriptor;
+        return cloudserver.model.SmartCity.internal_static_cloudserver_model_HelloRequest_descriptor;
       }
 
-      public cloudserver.model.SmartCity.HelloMessage getDefaultInstanceForType() {
-        return cloudserver.model.SmartCity.HelloMessage.getDefaultInstance();
+      public cloudserver.model.SmartCity.HelloRequest getDefaultInstanceForType() {
+        return cloudserver.model.SmartCity.HelloRequest.getDefaultInstance();
       }
 
-      public cloudserver.model.SmartCity.HelloMessage build() {
-        cloudserver.model.SmartCity.HelloMessage result = buildPartial();
+      public cloudserver.model.SmartCity.HelloRequest build() {
+        cloudserver.model.SmartCity.HelloRequest result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public cloudserver.model.SmartCity.HelloMessage buildPartial() {
-        cloudserver.model.SmartCity.HelloMessage result = new cloudserver.model.SmartCity.HelloMessage(this);
+      public cloudserver.model.SmartCity.HelloRequest buildPartial() {
+        cloudserver.model.SmartCity.HelloRequest result = new cloudserver.model.SmartCity.HelloRequest(this);
         result.typemessage_ = typemessage_;
         if (nodeBuilder_ == null) {
           result.node_ = node_;
@@ -4685,16 +4685,16 @@ public final class SmartCity {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof cloudserver.model.SmartCity.HelloMessage) {
-          return mergeFrom((cloudserver.model.SmartCity.HelloMessage)other);
+        if (other instanceof cloudserver.model.SmartCity.HelloRequest) {
+          return mergeFrom((cloudserver.model.SmartCity.HelloRequest)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(cloudserver.model.SmartCity.HelloMessage other) {
-        if (other == cloudserver.model.SmartCity.HelloMessage.getDefaultInstance()) return this;
+      public Builder mergeFrom(cloudserver.model.SmartCity.HelloRequest other) {
+        if (other == cloudserver.model.SmartCity.HelloRequest.getDefaultInstance()) return this;
         if (other.typemessage_ != 0) {
           setTypemessageValue(other.getTypemessageValue());
         }
@@ -4714,11 +4714,11 @@ public final class SmartCity {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        cloudserver.model.SmartCity.HelloMessage parsedMessage = null;
+        cloudserver.model.SmartCity.HelloRequest parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (cloudserver.model.SmartCity.HelloMessage) e.getUnfinishedMessage();
+          parsedMessage = (cloudserver.model.SmartCity.HelloRequest) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -4899,39 +4899,580 @@ public final class SmartCity {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:cloudserver.model.HelloMessage)
+      // @@protoc_insertion_point(builder_scope:cloudserver.model.HelloRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:cloudserver.model.HelloMessage)
-    private static final cloudserver.model.SmartCity.HelloMessage DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:cloudserver.model.HelloRequest)
+    private static final cloudserver.model.SmartCity.HelloRequest DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new cloudserver.model.SmartCity.HelloMessage();
+      DEFAULT_INSTANCE = new cloudserver.model.SmartCity.HelloRequest();
     }
 
-    public static cloudserver.model.SmartCity.HelloMessage getDefaultInstance() {
+    public static cloudserver.model.SmartCity.HelloRequest getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<HelloMessage>
-        PARSER = new com.google.protobuf.AbstractParser<HelloMessage>() {
-      public HelloMessage parsePartialFrom(
+    private static final com.google.protobuf.Parser<HelloRequest>
+        PARSER = new com.google.protobuf.AbstractParser<HelloRequest>() {
+      public HelloRequest parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new HelloMessage(input, extensionRegistry);
+          return new HelloRequest(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<HelloMessage> parser() {
+    public static com.google.protobuf.Parser<HelloRequest> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<HelloMessage> getParserForType() {
+    public com.google.protobuf.Parser<HelloRequest> getParserForType() {
       return PARSER;
     }
 
-    public cloudserver.model.SmartCity.HelloMessage getDefaultInstanceForType() {
+    public cloudserver.model.SmartCity.HelloRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface HelloResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:cloudserver.model.HelloResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>.cloudserver.model.MessageType typemessage = 1;</code>
+     */
+    int getTypemessageValue();
+    /**
+     * <code>.cloudserver.model.MessageType typemessage = 1;</code>
+     */
+    cloudserver.model.SmartCity.MessageType getTypemessage();
+
+    /**
+     * <code>bool iscoordinator = 2;</code>
+     */
+    boolean getIscoordinator();
+  }
+  /**
+   * Protobuf type {@code cloudserver.model.HelloResponse}
+   */
+  public  static final class HelloResponse extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:cloudserver.model.HelloResponse)
+      HelloResponseOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use HelloResponse.newBuilder() to construct.
+    private HelloResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private HelloResponse() {
+      typemessage_ = 0;
+      iscoordinator_ = false;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private HelloResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              int rawValue = input.readEnum();
+
+              typemessage_ = rawValue;
+              break;
+            }
+            case 16: {
+
+              iscoordinator_ = input.readBool();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cloudserver.model.SmartCity.internal_static_cloudserver_model_HelloResponse_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cloudserver.model.SmartCity.internal_static_cloudserver_model_HelloResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cloudserver.model.SmartCity.HelloResponse.class, cloudserver.model.SmartCity.HelloResponse.Builder.class);
+    }
+
+    public static final int TYPEMESSAGE_FIELD_NUMBER = 1;
+    private int typemessage_;
+    /**
+     * <code>.cloudserver.model.MessageType typemessage = 1;</code>
+     */
+    public int getTypemessageValue() {
+      return typemessage_;
+    }
+    /**
+     * <code>.cloudserver.model.MessageType typemessage = 1;</code>
+     */
+    public cloudserver.model.SmartCity.MessageType getTypemessage() {
+      cloudserver.model.SmartCity.MessageType result = cloudserver.model.SmartCity.MessageType.valueOf(typemessage_);
+      return result == null ? cloudserver.model.SmartCity.MessageType.UNRECOGNIZED : result;
+    }
+
+    public static final int ISCOORDINATOR_FIELD_NUMBER = 2;
+    private boolean iscoordinator_;
+    /**
+     * <code>bool iscoordinator = 2;</code>
+     */
+    public boolean getIscoordinator() {
+      return iscoordinator_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (typemessage_ != cloudserver.model.SmartCity.MessageType.HELLO.getNumber()) {
+        output.writeEnum(1, typemessage_);
+      }
+      if (iscoordinator_ != false) {
+        output.writeBool(2, iscoordinator_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (typemessage_ != cloudserver.model.SmartCity.MessageType.HELLO.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, typemessage_);
+      }
+      if (iscoordinator_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(2, iscoordinator_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof cloudserver.model.SmartCity.HelloResponse)) {
+        return super.equals(obj);
+      }
+      cloudserver.model.SmartCity.HelloResponse other = (cloudserver.model.SmartCity.HelloResponse) obj;
+
+      boolean result = true;
+      result = result && typemessage_ == other.typemessage_;
+      result = result && (getIscoordinator()
+          == other.getIscoordinator());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + TYPEMESSAGE_FIELD_NUMBER;
+      hash = (53 * hash) + typemessage_;
+      hash = (37 * hash) + ISCOORDINATOR_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIscoordinator());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static cloudserver.model.SmartCity.HelloResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cloudserver.model.SmartCity.HelloResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cloudserver.model.SmartCity.HelloResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cloudserver.model.SmartCity.HelloResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cloudserver.model.SmartCity.HelloResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cloudserver.model.SmartCity.HelloResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cloudserver.model.SmartCity.HelloResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cloudserver.model.SmartCity.HelloResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cloudserver.model.SmartCity.HelloResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static cloudserver.model.SmartCity.HelloResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cloudserver.model.SmartCity.HelloResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cloudserver.model.SmartCity.HelloResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(cloudserver.model.SmartCity.HelloResponse prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code cloudserver.model.HelloResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:cloudserver.model.HelloResponse)
+        cloudserver.model.SmartCity.HelloResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cloudserver.model.SmartCity.internal_static_cloudserver_model_HelloResponse_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cloudserver.model.SmartCity.internal_static_cloudserver_model_HelloResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cloudserver.model.SmartCity.HelloResponse.class, cloudserver.model.SmartCity.HelloResponse.Builder.class);
+      }
+
+      // Construct using cloudserver.model.SmartCity.HelloResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        typemessage_ = 0;
+
+        iscoordinator_ = false;
+
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cloudserver.model.SmartCity.internal_static_cloudserver_model_HelloResponse_descriptor;
+      }
+
+      public cloudserver.model.SmartCity.HelloResponse getDefaultInstanceForType() {
+        return cloudserver.model.SmartCity.HelloResponse.getDefaultInstance();
+      }
+
+      public cloudserver.model.SmartCity.HelloResponse build() {
+        cloudserver.model.SmartCity.HelloResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public cloudserver.model.SmartCity.HelloResponse buildPartial() {
+        cloudserver.model.SmartCity.HelloResponse result = new cloudserver.model.SmartCity.HelloResponse(this);
+        result.typemessage_ = typemessage_;
+        result.iscoordinator_ = iscoordinator_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cloudserver.model.SmartCity.HelloResponse) {
+          return mergeFrom((cloudserver.model.SmartCity.HelloResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cloudserver.model.SmartCity.HelloResponse other) {
+        if (other == cloudserver.model.SmartCity.HelloResponse.getDefaultInstance()) return this;
+        if (other.typemessage_ != 0) {
+          setTypemessageValue(other.getTypemessageValue());
+        }
+        if (other.getIscoordinator() != false) {
+          setIscoordinator(other.getIscoordinator());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cloudserver.model.SmartCity.HelloResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cloudserver.model.SmartCity.HelloResponse) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private int typemessage_ = 0;
+      /**
+       * <code>.cloudserver.model.MessageType typemessage = 1;</code>
+       */
+      public int getTypemessageValue() {
+        return typemessage_;
+      }
+      /**
+       * <code>.cloudserver.model.MessageType typemessage = 1;</code>
+       */
+      public Builder setTypemessageValue(int value) {
+        typemessage_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.cloudserver.model.MessageType typemessage = 1;</code>
+       */
+      public cloudserver.model.SmartCity.MessageType getTypemessage() {
+        cloudserver.model.SmartCity.MessageType result = cloudserver.model.SmartCity.MessageType.valueOf(typemessage_);
+        return result == null ? cloudserver.model.SmartCity.MessageType.UNRECOGNIZED : result;
+      }
+      /**
+       * <code>.cloudserver.model.MessageType typemessage = 1;</code>
+       */
+      public Builder setTypemessage(cloudserver.model.SmartCity.MessageType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        typemessage_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.cloudserver.model.MessageType typemessage = 1;</code>
+       */
+      public Builder clearTypemessage() {
+        
+        typemessage_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean iscoordinator_ ;
+      /**
+       * <code>bool iscoordinator = 2;</code>
+       */
+      public boolean getIscoordinator() {
+        return iscoordinator_;
+      }
+      /**
+       * <code>bool iscoordinator = 2;</code>
+       */
+      public Builder setIscoordinator(boolean value) {
+        
+        iscoordinator_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool iscoordinator = 2;</code>
+       */
+      public Builder clearIscoordinator() {
+        
+        iscoordinator_ = false;
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:cloudserver.model.HelloResponse)
+    }
+
+    // @@protoc_insertion_point(class_scope:cloudserver.model.HelloResponse)
+    private static final cloudserver.model.SmartCity.HelloResponse DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new cloudserver.model.SmartCity.HelloResponse();
+    }
+
+    public static cloudserver.model.SmartCity.HelloResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<HelloResponse>
+        PARSER = new com.google.protobuf.AbstractParser<HelloResponse>() {
+      public HelloResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new HelloResponse(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<HelloResponse> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<HelloResponse> getParserForType() {
+      return PARSER;
+    }
+
+    public cloudserver.model.SmartCity.HelloResponse getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -4968,10 +5509,15 @@ public final class SmartCity {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_cloudserver_model_InitializationMassage_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_cloudserver_model_HelloMessage_descriptor;
+    internal_static_cloudserver_model_HelloRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_cloudserver_model_HelloMessage_fieldAccessorTable;
+      internal_static_cloudserver_model_HelloRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_cloudserver_model_HelloResponse_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_cloudserver_model_HelloResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -4993,13 +5539,15 @@ public final class SmartCity {
       "(\001\022\014\n\004mean\030\002 \001(\002\"q\n\025InitializationMassag",
       "e\022/\n\terrortype\030\001 \001(\0162\034.cloudserver.model" +
       ".ErrorType\022\'\n\005nodes\030\002 \001(\0132\030.cloudserver." +
-      "model.Nodes\"j\n\014HelloMessage\0223\n\013typemessa" +
+      "model.Nodes\"j\n\014HelloRequest\0223\n\013typemessa" +
       "ge\030\001 \001(\0162\036.cloudserver.model.MessageType" +
-      "\022%\n\004node\030\002 \001(\0132\027.cloudserver.model.Node*" +
-      "%\n\013MessageType\022\t\n\005HELLO\020\000\022\013\n\007WELCOME\020\001*K" +
-      "\n\tErrorType\022\025\n\021COORD_NOT_ALLOWED\020\000\022\021\n\rDU" +
-      "PLICATED_ID\020\001\022\024\n\020UNEXPECTED_ERROR\020\002b\006pro" +
-      "to3"
+      "\022%\n\004node\030\002 \001(\0132\027.cloudserver.model.Node\"" +
+      "[\n\rHelloResponse\0223\n\013typemessage\030\001 \001(\0162\036." +
+      "cloudserver.model.MessageType\022\025\n\riscoord" +
+      "inator\030\002 \001(\010*%\n\013MessageType\022\t\n\005HELLO\020\000\022\013" +
+      "\n\007WELCOME\020\001*K\n\tErrorType\022\025\n\021COORD_NOT_AL" +
+      "LOWED\020\000\022\021\n\rDUPLICATED_ID\020\001\022\024\n\020UNEXPECTED",
+      "_ERROR\020\002b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -5049,12 +5597,18 @@ public final class SmartCity {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cloudserver_model_InitializationMassage_descriptor,
         new java.lang.String[] { "Errortype", "Nodes", });
-    internal_static_cloudserver_model_HelloMessage_descriptor =
+    internal_static_cloudserver_model_HelloRequest_descriptor =
       getDescriptor().getMessageTypes().get(6);
-    internal_static_cloudserver_model_HelloMessage_fieldAccessorTable = new
+    internal_static_cloudserver_model_HelloRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_cloudserver_model_HelloMessage_descriptor,
+        internal_static_cloudserver_model_HelloRequest_descriptor,
         new java.lang.String[] { "Typemessage", "Node", });
+    internal_static_cloudserver_model_HelloResponse_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_cloudserver_model_HelloResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_cloudserver_model_HelloResponse_descriptor,
+        new java.lang.String[] { "Typemessage", "Iscoordinator", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
