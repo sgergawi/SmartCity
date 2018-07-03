@@ -15,8 +15,8 @@ message Nodes{
 }
 
 message NodeMeasurement{
-    int32 timestamp = 1;
-    float value = 2;
+    double value=1;
+    int64 timestamp=2;
 }
 
 message NodeMeasurements{
