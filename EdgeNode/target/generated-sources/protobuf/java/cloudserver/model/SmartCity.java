@@ -1815,14 +1815,14 @@ public final class SmartCity {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>int32 timestamp = 1;</code>
+     * <code>double value = 1;</code>
      */
-    int getTimestamp();
+    double getValue();
 
     /**
-     * <code>float value = 2;</code>
+     * <code>int64 timestamp = 2;</code>
      */
-    float getValue();
+    long getTimestamp();
   }
   /**
    * Protobuf type {@code cloudserver.model.NodeMeasurement}
@@ -1837,8 +1837,8 @@ public final class SmartCity {
       super(builder);
     }
     private NodeMeasurement() {
-      timestamp_ = 0;
-      value_ = 0F;
+      value_ = 0D;
+      timestamp_ = 0L;
     }
 
     @java.lang.Override
@@ -1869,14 +1869,14 @@ public final class SmartCity {
               }
               break;
             }
-            case 8: {
+            case 9: {
 
-              timestamp_ = input.readInt32();
+              value_ = input.readDouble();
               break;
             }
-            case 21: {
+            case 16: {
 
-              value_ = input.readFloat();
+              timestamp_ = input.readInt64();
               break;
             }
           }
@@ -1903,22 +1903,22 @@ public final class SmartCity {
               cloudserver.model.SmartCity.NodeMeasurement.class, cloudserver.model.SmartCity.NodeMeasurement.Builder.class);
     }
 
-    public static final int TIMESTAMP_FIELD_NUMBER = 1;
-    private int timestamp_;
+    public static final int VALUE_FIELD_NUMBER = 1;
+    private double value_;
     /**
-     * <code>int32 timestamp = 1;</code>
+     * <code>double value = 1;</code>
      */
-    public int getTimestamp() {
-      return timestamp_;
+    public double getValue() {
+      return value_;
     }
 
-    public static final int VALUE_FIELD_NUMBER = 2;
-    private float value_;
+    public static final int TIMESTAMP_FIELD_NUMBER = 2;
+    private long timestamp_;
     /**
-     * <code>float value = 2;</code>
+     * <code>int64 timestamp = 2;</code>
      */
-    public float getValue() {
-      return value_;
+    public long getTimestamp() {
+      return timestamp_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -1933,11 +1933,11 @@ public final class SmartCity {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (timestamp_ != 0) {
-        output.writeInt32(1, timestamp_);
+      if (value_ != 0D) {
+        output.writeDouble(1, value_);
       }
-      if (value_ != 0F) {
-        output.writeFloat(2, value_);
+      if (timestamp_ != 0L) {
+        output.writeInt64(2, timestamp_);
       }
       unknownFields.writeTo(output);
     }
@@ -1947,13 +1947,13 @@ public final class SmartCity {
       if (size != -1) return size;
 
       size = 0;
-      if (timestamp_ != 0) {
+      if (value_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, timestamp_);
+          .computeDoubleSize(1, value_);
       }
-      if (value_ != 0F) {
+      if (timestamp_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeFloatSize(2, value_);
+          .computeInt64Size(2, timestamp_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1971,12 +1971,12 @@ public final class SmartCity {
       cloudserver.model.SmartCity.NodeMeasurement other = (cloudserver.model.SmartCity.NodeMeasurement) obj;
 
       boolean result = true;
+      result = result && (
+          java.lang.Double.doubleToLongBits(getValue())
+          == java.lang.Double.doubleToLongBits(
+              other.getValue()));
       result = result && (getTimestamp()
           == other.getTimestamp());
-      result = result && (
-          java.lang.Float.floatToIntBits(getValue())
-          == java.lang.Float.floatToIntBits(
-              other.getValue()));
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -1988,11 +1988,12 @@ public final class SmartCity {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
-      hash = (53 * hash) + getTimestamp();
       hash = (37 * hash) + VALUE_FIELD_NUMBER;
-      hash = (53 * hash) + java.lang.Float.floatToIntBits(
-          getValue());
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          java.lang.Double.doubleToLongBits(getValue()));
+      hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getTimestamp());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -2122,9 +2123,9 @@ public final class SmartCity {
       }
       public Builder clear() {
         super.clear();
-        timestamp_ = 0;
+        value_ = 0D;
 
-        value_ = 0F;
+        timestamp_ = 0L;
 
         return this;
       }
@@ -2148,8 +2149,8 @@ public final class SmartCity {
 
       public cloudserver.model.SmartCity.NodeMeasurement buildPartial() {
         cloudserver.model.SmartCity.NodeMeasurement result = new cloudserver.model.SmartCity.NodeMeasurement(this);
-        result.timestamp_ = timestamp_;
         result.value_ = value_;
+        result.timestamp_ = timestamp_;
         onBuilt();
         return result;
       }
@@ -2191,11 +2192,11 @@ public final class SmartCity {
 
       public Builder mergeFrom(cloudserver.model.SmartCity.NodeMeasurement other) {
         if (other == cloudserver.model.SmartCity.NodeMeasurement.getDefaultInstance()) return this;
-        if (other.getTimestamp() != 0) {
-          setTimestamp(other.getTimestamp());
-        }
-        if (other.getValue() != 0F) {
+        if (other.getValue() != 0D) {
           setValue(other.getValue());
+        }
+        if (other.getTimestamp() != 0L) {
+          setTimestamp(other.getTimestamp());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -2224,54 +2225,54 @@ public final class SmartCity {
         return this;
       }
 
-      private int timestamp_ ;
+      private double value_ ;
       /**
-       * <code>int32 timestamp = 1;</code>
+       * <code>double value = 1;</code>
        */
-      public int getTimestamp() {
-        return timestamp_;
-      }
-      /**
-       * <code>int32 timestamp = 1;</code>
-       */
-      public Builder setTimestamp(int value) {
-        
-        timestamp_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>int32 timestamp = 1;</code>
-       */
-      public Builder clearTimestamp() {
-        
-        timestamp_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private float value_ ;
-      /**
-       * <code>float value = 2;</code>
-       */
-      public float getValue() {
+      public double getValue() {
         return value_;
       }
       /**
-       * <code>float value = 2;</code>
+       * <code>double value = 1;</code>
        */
-      public Builder setValue(float value) {
+      public Builder setValue(double value) {
         
         value_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>float value = 2;</code>
+       * <code>double value = 1;</code>
        */
       public Builder clearValue() {
         
-        value_ = 0F;
+        value_ = 0D;
+        onChanged();
+        return this;
+      }
+
+      private long timestamp_ ;
+      /**
+       * <code>int64 timestamp = 2;</code>
+       */
+      public long getTimestamp() {
+        return timestamp_;
+      }
+      /**
+       * <code>int64 timestamp = 2;</code>
+       */
+      public Builder setTimestamp(long value) {
+        
+        timestamp_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int64 timestamp = 2;</code>
+       */
+      public Builder clearTimestamp() {
+        
+        timestamp_ = 0L;
         onChanged();
         return this;
       }
@@ -5532,8 +5533,8 @@ public final class SmartCity {
       "\016otherNodesPort\030\003 \001(\005\022\014\n\004xPos\030\004 \001(\005\022\014\n\004y" +
       "Pos\030\005 \001(\005\022\016\n\006selfIp\030\006 \001(\t\"/\n\005Nodes\022&\n\005no" +
       "des\030\001 \003(\0132\027.cloudserver.model.Node\"3\n\017No" +
-      "deMeasurement\022\021\n\ttimestamp\030\001 \001(\005\022\r\n\005valu" +
-      "e\030\002 \001(\002\"J\n\020NodeMeasurements\0226\n\nstatistic" +
+      "deMeasurement\022\r\n\005value\030\001 \001(\001\022\021\n\ttimestam" +
+      "p\030\002 \001(\003\"J\n\020NodeMeasurements\0226\n\nstatistic" +
       "s\030\001 \003(\0132\".cloudserver.model.NodeMeasurem" +
       "ent\"3\n\023AggregatedStatistic\022\016\n\006devstd\030\001 \001" +
       "(\001\022\014\n\004mean\030\002 \001(\002\"q\n\025InitializationMassag",
@@ -5578,7 +5579,7 @@ public final class SmartCity {
     internal_static_cloudserver_model_NodeMeasurement_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cloudserver_model_NodeMeasurement_descriptor,
-        new java.lang.String[] { "Timestamp", "Value", });
+        new java.lang.String[] { "Value", "Timestamp", });
     internal_static_cloudserver_model_NodeMeasurements_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_cloudserver_model_NodeMeasurements_fieldAccessorTable = new

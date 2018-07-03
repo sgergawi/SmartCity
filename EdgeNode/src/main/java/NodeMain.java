@@ -2,9 +2,8 @@ import cloudserver.model.SmartCity;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-import edgenodes.controller.InitializationThread;
+import edgenodes.controller.*;
 import edgenodes.model.Coordinator;
-import edgenodes.model.MajorNodes;
 
 import javax.ws.rs.core.MediaType;
 import java.io.*;
@@ -18,10 +17,7 @@ public class NodeMain {
     private final static int CLOUDPORT=8480;
     private final static String ROOT="/cloud-server/nodes";
     private final static String SELFIP="localhost";
-    //TODO questo avrà problemi di concorrenza
-    private static SmartCity.Node coordinator=null;
-    //TODO questo avrà problemi di concorrenza
-    private static SmartCity.Nodes majorThanMe=SmartCity.Nodes.newBuilder().build();
+
     public static void main(String[] args){
         Random rand = new Random();
         int nodeId, nodesPort, sensorsPort, xPos, yPos;
@@ -52,27 +48,12 @@ public class NodeMain {
     public static void startToWork(SmartCity.Node node) throws IOException {
         try{
             ServerSocket selfSocket = new ServerSocket(node.getOtherNodesPort());
-            while(true){
-                Socket connectionSocket = selfSocket.accept();
-                DataInputStream inputStream = new DataInputStream(connectionSocket.getInputStream());
-                byte[] message = new byte[inputStream.readInt()];
-                inputStream.read(message,0,message.length);
-                DataOutputStream outputStream = new DataOutputStream(connectionSocket.getOutputStream());
-                SmartCity.HelloRequest request = SmartCity.HelloRequest.parseFrom(message);
-                if(request.getNode().getId()>node.getId()){
-                    MajorNodes.getInstance().addMajorThanMe(node);
-                }
-                SmartCity.HelloResponse response = SmartCity.HelloResponse.newBuilder().setTypemessage(SmartCity.MessageType.WELCOME).build();
-                if(Coordinator.getInstance().getCoordinator().getId()==node.getId()){
-                    response = response.toBuilder().setIscoordinator(true).build();
-                } else{
-                    response = response.toBuilder().setIscoordinator(false).build();
-                }
-                byte[] output = response.toByteArray();
-                outputStream.writeInt(output.length);
-                outputStream.write(output);
-                connectionSocket.close();
-            }
+            NodesDispatcher nodeDispatcher = new NodesDispatcher(node, selfSocket);
+            nodeDispatcher.start();
+            System.out.println("Sto per aprire la socket per i sensori");
+            ServerSocket selfSensorsSocket = new ServerSocket(node.getSensorsPort());
+            SensorsDispatcher sensorsDispatcher = new SensorsDispatcher(node, selfSensorsSocket);
+            sensorsDispatcher.start();
         } catch(Exception e){
             System.out.println("Il nodo edge: "+node.getId()+" non è riuscito a gestire qualche messaggio");
             deleteNodeServerSide(node);
@@ -137,16 +118,19 @@ public class NodeMain {
         }
         if(retry>=10){
             System.out.println("Non è stato possibile connettersi con il cloud server");
+            response.close();
             //TODO dovrei aggiungere delle eccezioni specifiche
             throw new IOException();
         }
         SmartCity.Nodes nodes = SmartCity.InitializationMassage.parseFrom(response.getEntity(byte[].class)).getNodes();
+        response.close();
         return nodes;
     }
 
     public static void deleteNodeServerSide(SmartCity.Node node){
         Client client = Client.create();
         WebResource resource = client.resource(CLOUDHOST+":"+CLOUDPORT+ROOT+"/"+node.getId());
-        resource.accept(MediaType.APPLICATION_OCTET_STREAM).delete(ClientResponse.class);
+        ClientResponse response = resource.accept(MediaType.APPLICATION_OCTET_STREAM).delete(ClientResponse.class);
+        response.close();
     }
 }
