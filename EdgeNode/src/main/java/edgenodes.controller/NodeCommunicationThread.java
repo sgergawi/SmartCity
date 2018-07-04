@@ -23,8 +23,31 @@ public class NodeCommunicationThread extends Thread {
             DataInputStream inputStream = new DataInputStream(this.connection.getInputStream());
             byte[] message = new byte[inputStream.readInt()];
             inputStream.read(message,0,message.length);
+
+            SmartCity.MessageRequest request = SmartCity.MessageRequest.parseFrom(message);
+            SmartCity.MessageType type = request.getTypemessage();
+            switch(type){
+                case HELLO:
+                    manageHelloRequest(request);
+                    break;
+                case LOCALSTATISTIC:
+                    manageStatisticUpdate(request);
+                    break;
+                default:
+                    System.out.println("Errore :- message type non riconosciuto");
+                    break;
+            }
+
+            this.connection.close();
+        } catch(Exception e){
+            System.out.println("Errore nel parsing del messaggio");
+        }
+
+    }
+
+    public void manageHelloRequest(SmartCity.MessageRequest request){
+        try{
             DataOutputStream outputStream = new DataOutputStream(this.connection.getOutputStream());
-            SmartCity.HelloRequest request = SmartCity.HelloRequest.parseFrom(message);
             if(request.getNode().getId()>this.node.getId()){
                 MajorNodes.getInstance().addMajorThanMe(this.node);
             }
@@ -37,10 +60,21 @@ public class NodeCommunicationThread extends Thread {
             byte[] output = response.toByteArray();
             outputStream.writeInt(output.length);
             outputStream.write(output);
-            this.connection.close();
         } catch(Exception e){
-            System.out.println("Errore nel parsing del messaggio");
+            System.out.println("Errore durante la hello request");
         }
 
+    }
+
+    public void manageStatisticUpdate(SmartCity.MessageRequest request){
+        SmartCity.NodeStatistic statistic = request.getStatistic();
+        try{
+            DataOutputStream outputStream = new DataOutputStream(this.connection.getOutputStream());
+            byte[] output = SmartCity.NodeStatistic.newBuilder().setMean(30.).setTimestamp(30).build().toByteArray();
+            outputStream.writeInt(output.length);
+            outputStream.write(output);
+        } catch(Exception e){
+            System.out.println("Non è stato possibile rispondere all'aggiornamento di statistiche");
+        }
     }
 }

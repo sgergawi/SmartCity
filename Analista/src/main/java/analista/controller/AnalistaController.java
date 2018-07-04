@@ -19,11 +19,9 @@ public class AnalistaController {
             Client client = Client.create();
             WebResource webResource = client.resource(CLOUDHOST+":"+CLOUDPORT+ROOT);
             ClientResponse response = webResource.accept(MediaType.APPLICATION_OCTET_STREAM).get(ClientResponse.class);
-            System.out.println(response);
             if(response.getStatus()==200){
                 byte[] output=response.getEntity(byte[].class);
                 SmartCity.Nodes nodes = SmartCity.Nodes.parseFrom(output);
-                System.out.println("Stato attuale città: "+nodes);
             } else if(response.getStatus()==404){
                 System.out.println("Dati non trovati");
             } else{
@@ -52,6 +50,7 @@ public class AnalistaController {
                 SmartCity.NodeMeasurements ms = SmartCity.NodeMeasurements.parseFrom(output);
                 System.out.println("Statistiche del nodo "+edgeId+": "+ms);
             }
+            response.close();
         } catch(Exception io){
             System.out.println("Errore nella ricezione dei dati in input");
         }
@@ -70,6 +69,7 @@ public class AnalistaController {
                 //TODO non so ancora che tipo potrò restituire
                 System.out.println("Statistiche globali e locali: "+output);
             }
+            response.close();
         } catch(Exception e){
             System.out.println("Errore nella ricezione dei dati in input");
         }
@@ -89,6 +89,7 @@ public class AnalistaController {
                 SmartCity.AggregatedStatistic aggregate = SmartCity.AggregatedStatistic.parseFrom(output);
                 System.out.println("Deviazione std e media delle N statistiche del nodo "+nodeId+": "+aggregate);
             }
+            response.close();
         } catch( Exception io){
             System.out.println("Errore nella ricezione dei dati in input");
         }
@@ -105,6 +106,7 @@ public class AnalistaController {
                 SmartCity.AggregatedStatistic aggregate = SmartCity.AggregatedStatistic.parseFrom(output);
                 System.out.println("Deviazione std e media delle N statistiche: "+aggregate);
             }
+            response.close();
         } catch( Exception io){
             System.out.println("Errore nella ricezione dei dati in input");
         }

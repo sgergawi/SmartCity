@@ -30,7 +30,7 @@ public class InitializationThread extends Thread {
 
     public void run(){
         try{
-            SmartCity.HelloRequest req = SmartCity.HelloRequest.newBuilder().setNode(this.caller).setTypemessage(SmartCity.MessageType.HELLO).build();
+            SmartCity.MessageRequest req = SmartCity.MessageRequest.newBuilder().setNode(this.caller).setTypemessage(SmartCity.MessageType.HELLO).build();
             outputStream.writeInt(req.toByteArray().length);
             outputStream.write(req.toByteArray());
             byte[] fromOtherNode = new byte[inputStream.readInt()];

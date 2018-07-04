@@ -18,7 +18,10 @@ message NodeMeasurement{
     double value=1;
     int64 timestamp=2;
 }
-
+message NodeStatistic{
+    double mean=1;
+    int64 timestamp=2;
+}
 message NodeMeasurements{
     repeated NodeMeasurement statistics = 1;
 }
@@ -31,6 +34,7 @@ message AggregatedStatistic{
 enum MessageType{
     HELLO = 0;
     WELCOME = 1;
+    LOCALSTATISTIC =2;
 }
 enum ErrorType{
     COORD_NOT_ALLOWED=0;
@@ -38,16 +42,21 @@ enum ErrorType{
     UNEXPECTED_ERROR=2;
 }
 message InitializationMassage{
-    ErrorType errortype=1;
-    Nodes nodes=2;
-}
-
-message HelloRequest{
-    MessageType typemessage=1;
-    Node node=2;
+    oneof errorOrResult{
+        ErrorType errortype=1;
+        Nodes nodes=2;
+    }
 }
 
 message HelloResponse{
     MessageType typemessage =1;
     bool iscoordinator=2;
+}
+
+message MessageRequest{
+    MessageType typemessage=1;
+    oneof helloOrNodeStats{
+        Node node=2;
+        NodeStatistic statistic=3;
+    }
 }
