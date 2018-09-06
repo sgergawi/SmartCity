@@ -19,7 +19,6 @@ public class NodesDispatcher extends Thread{
     public void run(){
         while(true){
             try{
-                System.out.println("Connessione con i nodi in accensione");
                 Socket connectionSocket = nodesServerSocket.accept();
                 NodeCommunicationThread thread = new NodeCommunicationThread(connectionSocket, node);
                 thread.start();

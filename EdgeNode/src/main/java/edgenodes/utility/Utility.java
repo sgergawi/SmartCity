@@ -2,6 +2,7 @@ package edgenodes.utility;
 
 import cloudserver.model.SmartCity;
 
+import java.util.Calendar;
 import java.util.Comparator;
 
 public class Utility {
@@ -15,5 +16,10 @@ public class Utility {
                 return firstTimestamp.compareTo(secondTimestamp);
             }
         };
+    }
+
+    public static Long generateTimestamp() {
+        Calendar c = Calendar.getInstance();
+        return c.getTimeInMillis();
     }
 }

@@ -22,6 +22,7 @@ public class AnalistaController {
             if(response.getStatus()==200){
                 byte[] output=response.getEntity(byte[].class);
                 SmartCity.Nodes nodes = SmartCity.Nodes.parseFrom(output);
+                System.out.println("Stato attuale: \n"+nodes);
             } else if(response.getStatus()==404){
                 System.out.println("Dati non trovati");
             } else{
@@ -47,8 +48,12 @@ public class AnalistaController {
             ClientResponse response = resource.accept(MediaType.APPLICATION_OCTET_STREAM).get(ClientResponse.class);
             if(AnalistaUtility.ifOKResponse(response)){
                 byte[] output = response.getEntity(byte[].class);
-                SmartCity.NodeMeasurements ms = SmartCity.NodeMeasurements.parseFrom(output);
+                SmartCity.NodeStatistics ms = SmartCity.NodeStatistics.parseFrom(output);
                 System.out.println("Statistiche del nodo "+edgeId+": "+ms);
+            } else if(response.getStatus()==404){
+                System.out.println("Dati non trovati");
+            } else{
+                System.out.println("Si è verificato un errore");
             }
             response.close();
         } catch(Exception io){
@@ -66,8 +71,12 @@ public class AnalistaController {
             ClientResponse response = resource.accept(MediaType.APPLICATION_OCTET_STREAM).get(ClientResponse.class);
             if(AnalistaUtility.ifOKResponse(response)){
                 byte[] output = response.getEntity(byte[].class);
-                //TODO non so ancora che tipo potrò restituire
-                System.out.println("Statistiche globali e locali: "+output);
+                SmartCity.LastLocalsGlobals localsglobals = SmartCity.LastLocalsGlobals.parseFrom(output);
+                System.out.println("Statistiche globali e locali: \n"+localsglobals);
+            } else if(response.getStatus()==404){
+                System.out.println("Dati non trovati");
+            } else{
+                System.out.println("Si è verificato un errore");
             }
             response.close();
         } catch(Exception e){

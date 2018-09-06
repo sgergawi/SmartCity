@@ -9,7 +9,6 @@ public class ServerStarter {
             HttpServer server = HttpServerFactory.create("http://"+HOST+":"+PORT+"/");
             server.start();
             System.out.println("Server running!");
-
             System.out.println("Hit return to stop...");
             System.in.read();
             System.out.println("Stopping server");

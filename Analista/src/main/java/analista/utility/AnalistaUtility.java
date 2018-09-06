@@ -16,9 +16,9 @@ public class AnalistaUtility {
     }
 
     public static boolean ifOKResponse(ClientResponse response) {
-        if(response.getStatus()==200){
-            return false;
-        } else if(response.getStatus()==404){
+        if(response.getStatus()== ClientResponse.Status.OK.getStatusCode()){
+            return true;
+        } else if(response.getStatus()==ClientResponse.Status.NOT_FOUND.getStatusCode()){
             System.out.println("Dati non trovati");
         } else{
             System.out.println("Si è verificato un errore.");

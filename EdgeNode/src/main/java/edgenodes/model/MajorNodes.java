@@ -27,5 +27,9 @@ public class MajorNodes {
         return this.majorThanMe!=null?this.majorThanMe.toString():null;
     }
 
+    public List<SmartCity.Node> getMajorThanMe(){
+        return this.majorThanMe;
+    }
+
 
 }

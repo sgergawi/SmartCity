@@ -19,7 +19,6 @@ public class SensorsDispatcher extends Thread {
     public void run(){
         while(true){
             try{
-                System.out.println("Connessione sensori in accensione...");
                 Socket connectionSocket = sensorsServerConnection.accept();
                 SensorCommunicationThread thread = new SensorCommunicationThread(node, connectionSocket);
                 thread.start();

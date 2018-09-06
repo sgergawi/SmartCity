@@ -22,12 +22,10 @@ public class SensorCommunicationThread extends Thread {
             byte[] measurements = new byte[inputStream.readInt()];
             inputStream.read(measurements);
             SmartCity.NodeMeasurement measurement = SmartCity.NodeMeasurement.parseFrom(measurements);
-            System.out.println("Misurazione ricevuta: "+measurement);
-            MeasurementsBuffer.getInstance().addMeasurement(measurement);
+            MeasurementsBuffer.getInstance().addMeasurement(node, measurement);
             this.connection.close();
         } catch(Exception e){
-            System.out.println(e);
-            System.out.println("Errore ricezione dato da sensore");
+            System.out.println("Errore ricezione dato da sensore"+ e);
         }
 
     }

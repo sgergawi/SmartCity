@@ -3,8 +3,8 @@ package cloudserver.controller;
 
 import cloudserver.model.*;
 import cloudserver.utility.CloudServerUtility;
+import com.google.protobuf.InvalidProtocolBufferException;
 
-import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -14,12 +14,19 @@ import java.util.stream.Collectors;
 
 @Path("/cloud-server/nodes")
 public class CloudServerInterfaces {
+
+    /**
+     * Restituisce la situazione complessiva della mappa della città ovvero l'elenco dei nodi e le loro posizioni ma se
+     * vengono forniti anche xPos e yPos vuol dire che è stato chiamato da un sensore e quindi si deve restituire solo
+     * il nodo più vicino rispetto a quelle coordinate.
+     * @param xPos
+     * @param yPos
+     * @return
+     */
     @GET
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getNodesState(@QueryParam("xcoord")Integer xPos, @QueryParam("ycoord")Integer yPos){
         CityMap map = CityMap.getInstance();
-        SmartCity.Node nd = SmartCity.Node.newBuilder().setId(1234).setOtherNodesPort(234).setSensorsPort(234).setXPos(50).setXPos(70).setSelfIp("ciao").build();
-        map.addNode(nd,null);
         if(xPos != null && yPos!=null) {
             //se vengono specificati vuol dire che mi sta chiamando un sensore quindi
             //vuole conoscere quali sono i nodi più vicini a lui
@@ -39,6 +46,12 @@ public class CloudServerInterfaces {
         }
     }
 
+    /**
+     * Inserisce il nodo nella mappa se non vi sono nodi già presenti in quel raggio o se vi sono già altri nodi presenti
+     * distanti massimo 20 da quella posizione.
+     * @param input
+     * @return
+     */
     @POST
     @Consumes(MediaType.APPLICATION_OCTET_STREAM)
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
@@ -64,7 +77,7 @@ public class CloudServerInterfaces {
                 System.out.println(response);
                 return Response.status(Response.Status.BAD_REQUEST).entity(response.toByteArray()).build();
             }
-            map.addNode(node,SmartCity.NodeMeasurements.newBuilder().addAllStatistics(new Vector<>()).build());
+            map.addNode(node, SmartCity.NodeStatistics.newBuilder().addAllStatistics(new Vector<>()).build());
         } catch(Exception e){
             System.out.println("Errore durante l'aggiunta del nodo "+e);
             response = response.toBuilder().setErrortype(SmartCity.ErrorType.UNEXPECTED_ERROR).build();
@@ -80,8 +93,14 @@ public class CloudServerInterfaces {
 
     }
 
+    /**
+     *
+     * @param nodeId
+     * @return
+     */
     @DELETE
     @Path("/{nodeid}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response deleteNode(@PathParam("nodeid")int nodeId){
         try{
             CityMap map = CityMap.getInstance();
@@ -96,64 +115,125 @@ public class CloudServerInterfaces {
 
     }
 
+    /**
+     * Restituisce le ultime N statistiche globali e locali della città con timestamp
+     * @param n
+     * @return
+     */
     @GET
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     @Path("/measurements")
     public Response getMeasurements(@DefaultValue("10")@QueryParam("n")int n){
-        //ultime N statistiche GLOBALI E LOCALI DELLA CITTà
-        return Response.ok().entity(null).build();
+        List<SmartCity.NodeStatistic> globals = CityMap.getInstance().getGlobals().stream().sorted(CloudServerUtility.getStatsComparator()).collect(Collectors.toList());
+        List<SmartCity.NodeStatistic> firstnglobals = globals.size()>n?globals.subList(0,n):globals;
+        List<SmartCity.NodeStatistic> firstnlocals = new Vector<>();
+        CityMap.getInstance().getCityNodes().stream().map(node-> node.getNodeStatistics().getStatisticsList()).forEach(firstnlocals::addAll);
+        System.out.println("first globals: "+firstnglobals+", locals: "+firstnlocals);
+        firstnlocals=firstnlocals.stream().sorted(CloudServerUtility.getStatsComparator()).collect(Collectors.toList());
+        firstnlocals=firstnlocals.size()>n?firstnlocals.subList(0,n):firstnlocals;
+        SmartCity.NodeStatistics globalStats = SmartCity.NodeStatistics.newBuilder().addAllStatistics(firstnglobals).build();
+        SmartCity.NodeStatistics localsStats = SmartCity.NodeStatistics.newBuilder().addAllStatistics(firstnlocals).build();
+        System.out.println("globals da mandare: "+globalStats+", localStats:"+localsStats);
+        return Response.ok().entity(SmartCity.LastLocalsGlobals.newBuilder().setGlobals(globalStats).setLocals(localsStats).build().toByteArray()).build();
     }
 
+    /**
+     * Riceve le statistiche locali raccolte dal coordinatore e una nuova statistica
+     * globale.
+     * @return
+     */
     @Path("/measurements")
     @POST
     @Consumes(MediaType.APPLICATION_OCTET_STREAM)
-    public Response refreshMeasurements(){
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response refreshMeasurements(byte[] statistics){
+        try{
+            SmartCity.LocalsGlobalsMessage msg = SmartCity.LocalsGlobalsMessage.parseFrom(statistics);
+            CityMap.getInstance().addGlobal(msg.getGlobal());
+            for(CityNode node: CityMap.getInstance().getCityNodes()){
+                SmartCity.NodeLocalStatistics localStats = msg.getNodesLocalsList().stream().filter(nd -> nd.getNode().getId()==node.getNode().getId()).findFirst().orElse(null);
+                if(localStats!=null && localStats.getLocalsList()!=null){
+                    node.addAllStatistics(localStats.getLocalsList());
+                }
+            }
+        } catch(InvalidProtocolBufferException e){
+            System.out.println("Errore nella ricezione del messaggio");
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        System.out.println("Mappa aggiornata: "+CityMap.getInstance());
         return Response.ok().build();
     }
 
+    /**
+     * Restituisce le ultime N statistiche generate da uno specifico nodo.
+     * @param n
+     * @param nodeId
+     * @return
+     */
     @GET
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     @Path("/{nodeid}/measurements")
     public Response getNodeMeasurements(@DefaultValue("10")@QueryParam("n")int n, @PathParam("nodeid")int nodeId){
-        //ultime N statistiche con timestamp prodotte da uno specifico nodo
         CityMap map = CityMap.getInstance();
         List<CityNode> nodes = map.getCityNodes();
         CityNode myNode = nodes!=null?nodes.stream().filter(nd -> nd.getNode().getId()==nodeId).findFirst().orElseGet(null):null;
-        if(myNode==null || myNode.getNodeMeasurements()==null || myNode.getNodeMeasurements().getStatisticsList()==null){
+        if(myNode==null || myNode.getNodeStatistics()==null){
+            System.out.println("Non ci sono statistiche per quel nodo");
             return Response.status(404).build();
         }
-        List<SmartCity.NodeMeasurement> nodeMeasurements=myNode.getNodeMeasurements().getStatisticsList();
-        List<SmartCity.NodeMeasurement> filtered = nodeMeasurements.size()>=n?nodeMeasurements.subList(0,n):nodeMeasurements;
-        byte[] toSend = SmartCity.NodeMeasurements.newBuilder().addAllStatistics(filtered).build().toByteArray();
+        List<SmartCity.NodeStatistic> nodeMeasurements=myNode.getNodeStatistics().getStatisticsList().stream().sorted(CloudServerUtility.getStatsComparator()).collect(Collectors.toList());
+        List<SmartCity.NodeStatistic> filtered = nodeMeasurements.size()>=n?nodeMeasurements.subList(0,n):nodeMeasurements;
+        System.out.println("Statistiche per quel nodo: "+filtered);
+        byte[] toSend = SmartCity.NodeStatistics.newBuilder().addAllStatistics(filtered).build().toByteArray();
         return Response.ok().entity(toSend).build();
     }
 
+    /**
+     * Restituisce deviazione std e media delle ultime N statistiche con timestamp di un
+     * determinato nodo edge.
+     * @param n
+     * @param nodeId
+     * @return
+     */
     @GET
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     @Path("/{nodeid}/statistics")
     public Response getNodeStats(@DefaultValue("10")@QueryParam("n")int n, @PathParam("nodeid")int nodeId){
-        //deviazione std e media delle ultime N statistiche di UN NODO EDGE
         CityMap map = CityMap.getInstance();
-        CityNode node = map.getCityNodes().stream().filter(citynode -> citynode.getNode().getId()==nodeId).findFirst().orElseGet(null);
-        if(node.getNodeMeasurements()==null || node.getNodeMeasurements().getStatisticsList()==null || node.getNodeMeasurements().getStatisticsList().isEmpty()){
-            return Response.status(404).build();
+        CityNode node = map.getCityNodes().stream().filter(nd -> nd.getNode().getId()==nodeId).findFirst().orElse(null);
+        if(node==null){
+            System.out.println("Nessun nodo trovato");
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
-        List<SmartCity.NodeMeasurement> ms = node.getNodeMeasurements().getStatisticsList().size()>=n?node.getNodeMeasurements().getStatisticsList().subList(0,n):node.getNodeMeasurements().getStatisticsList();
-        List<Float> values = ms.stream().map(measure -> measure.getValue()).collect(Collectors.toList());
-        float mean = values.stream().reduce((a,b)->a+b).get()/ms.size();
-        double devstd = CloudServerUtility.getDevStd(values, mean);
-        SmartCity.AggregatedStatistic stats = SmartCity.AggregatedStatistic.newBuilder().setDevstd(devstd).setMean(mean).build();
-        return Response.ok().entity(stats).build();
+        List<SmartCity.NodeStatistic> stats = node.getNodeStatistics().getStatisticsList().stream().sorted(CloudServerUtility.getStatsComparator()).collect(Collectors.toList());
+        stats = stats.size()>n?stats.subList(0,n):stats;
+        Double mean = CloudServerUtility.getMean(stats);
+        Double devstd = CloudServerUtility.getDevstd(stats,mean);
+        System.out.println("Media: "+mean+", devstd: "+devstd);
+        return Response.ok().entity(SmartCity.AggregatedStatistic.newBuilder().setDevstd(devstd).setMean(mean).build().toByteArray()).build();
     }
 
+    /**
+     * Restituisce deviazione standard e media delle ultime n statistiche globali della città.
+     * @param n
+     * @return
+     */
     @GET
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     @Path("/statistics")
     public Response getCityStats(@DefaultValue("10")@QueryParam("n")int n){
-        //deviazione std e media delle ultime n statistiche GLOBALI della città
         CityMap map = CityMap.getInstance();
-
-        return Response.ok().entity(null).build();
+        List<SmartCity.NodeStatistic> globals = map.getGlobals().stream().sorted(CloudServerUtility.getStatsComparator()).collect(Collectors.toList());
+        globals = globals.size()>n?globals.subList(0,n):globals;
+        if(globals.isEmpty()){
+            System.out.println("Non ci sono globals");
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        double mean = CloudServerUtility.getMean(globals);
+        double devstd = CloudServerUtility.getDevstd(globals,mean);
+        System.out.println("Media: "+mean);
+        System.out.println("Devstd: "+devstd);
+        return Response.ok().entity(SmartCity.AggregatedStatistic.newBuilder().setDevstd(devstd).setMean(mean).build().toByteArray()).build();
     }
 
 }

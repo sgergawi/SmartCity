@@ -15,15 +15,66 @@ message Nodes{
 }
 
 message NodeMeasurement{
-    int32 timestamp = 1;
-    float value = 2;
+    double value=1;
+    int64 timestamp=2;
 }
-
+message NodeStatistic{
+    double mean=2;
+    int64 timestamp=3;
+}
+message NodeStatisticMessage{
+    Node node=1;
+    NodeStatistic statistic=2;
+}
+message NodeLocalStatistics{
+    Node node=1;
+    repeated NodeStatistic locals=2;
+}
+message LocalsGlobalsMessage{
+    NodeStatistic global=1;
+    repeated NodeLocalStatistics nodesLocals=2;
+}
+message LastLocalsGlobals{
+    NodeStatistics globals=1;
+    NodeStatistics locals=2;
+}
 message NodeMeasurements{
-    repeated NodeMeasurement statistics = 1;
+    repeated NodeMeasurement measurements = 1;
 }
-
+message NodeStatistics{
+    repeated NodeStatistic statistics = 1;
+}
 message AggregatedStatistic{
     double devstd = 1;
-    float mean = 2;
+    double mean = 2;
+}
+
+enum MessageType{
+    HELLO = 0;
+    WELCOME = 1;
+    LOCALSTATISTIC =2;
+}
+enum ErrorType{
+    COORD_NOT_ALLOWED=0;
+    DUPLICATED_ID=1;
+    UNEXPECTED_ERROR=2;
+}
+message InitializationMassage{
+    oneof errorOrResult{
+        ErrorType errortype=1;
+        Nodes nodes=2;
+    }
+}
+
+message HelloResponse{
+    MessageType typemessage =1;
+    bool iscoordinator=2;
+}
+
+message MessageRequest{
+    MessageType typemessage=1;
+    oneof helloOrNodeStats{
+        Node node=2;
+        NodeStatisticMessage statisticMsg=3;
+    }
 }

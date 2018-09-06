@@ -26,4 +26,22 @@ public class CloudServerUtility {
     public static int getNodesDistance(SmartCity.Node node, int xPos, int yPos){
         return Math.abs(node.getXPos() - xPos) + Math.abs(node.getYPos() - yPos);
     }
+
+    public static double getMean(List<SmartCity.NodeStatistic> stats){
+       return stats.stream().map(stat -> stat.getMean()).reduce((a,b)->a+b).orElse(0.)/stats.size();
+    }
+    public static double getDevstd(List<SmartCity.NodeStatistic> stats, double mean){
+        return Math.sqrt(stats.stream().map(stat -> Math.pow(stat.getMean() - mean,2.)).reduce((a,b)->a+b).orElse(0.)/stats.size());
+    }
+
+    public static Comparator<SmartCity.NodeStatistic> getStatsComparator(){
+        return new Comparator<SmartCity.NodeStatistic>() {
+            @Override
+            public int compare(SmartCity.NodeStatistic o1, SmartCity.NodeStatistic o2) {
+                Long timestamp1=o1.getTimestamp();
+                Long timestamp2=o2.getTimestamp();
+                return timestamp2.compareTo(timestamp1);
+            }
+        };
+    }
 }
