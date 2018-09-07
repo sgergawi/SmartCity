@@ -1,3 +1,4 @@
+import cloudserver.model.CityMap;
 import com.sun.jersey.api.container.httpserver.HttpServerFactory;
 import com.sun.net.httpserver.HttpServer;
 
@@ -7,6 +8,10 @@ public class ServerStarter {
     public static void main(String[] args){
         try{
             HttpServer server = HttpServerFactory.create("http://"+HOST+":"+PORT+"/");
+            /**
+             * Per ora non ce n'è bisogno ma se volessi customizzarlo devo modificare questo pezzo
+             */
+            CityMap.setMaxChildsNum(3);
             server.start();
             System.out.println("Server running!");
             System.out.println("Hit return to stop...");

@@ -53,16 +53,19 @@ enum MessageType{
     HELLO = 0;
     WELCOME = 1;
     LOCALSTATISTIC =2;
+    ELECTIONTIME=3;
+    ELECTIONRECEIVED=4;
+    ELECTIONRESULT=5;
 }
 enum ErrorType{
     COORD_NOT_ALLOWED=0;
     DUPLICATED_ID=1;
     UNEXPECTED_ERROR=2;
 }
-message InitializationMassage{
+message InitializationMessage{
     oneof errorOrResult{
         ErrorType errortype=1;
-        Nodes nodes=2;
+        NodeInsertedResponse response=2;
     }
 }
 
@@ -77,4 +80,9 @@ message MessageRequest{
         Node node=2;
         NodeStatisticMessage statisticMsg=3;
     }
+}
+
+message NodeInsertedResponse{
+    Node father=1;
+    Nodes allNodes=2;
 }

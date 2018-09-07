@@ -33,7 +33,7 @@ public class NodeMain {
     public static void main(String[] args){
         Random rand = new Random();
         int nodeId, nodesPort, sensorsPort, xPos, yPos;
-        SmartCity.Node node;
+        SmartCity.Node node, father;
         try{
 
             System.out.println("Inserire id del nodo");
@@ -167,7 +167,7 @@ public class NodeMain {
             if(response.getStatus()!=ClientResponse.Status.OK.getStatusCode()){
                 //Controllo che in realtà sia stato rifiutato per la posizione e non per ID già esistente
                 byte[] responseMsgByteArr = response.getEntity(byte[].class);
-                SmartCity.InitializationMassage responseMsg = SmartCity.InitializationMassage.parseFrom(responseMsgByteArr);
+                SmartCity.InitializationMessage responseMsg = SmartCity.InitializationMessage.parseFrom(responseMsgByteArr);
                 if(responseMsg.getErrortype()!=SmartCity.ErrorType.COORD_NOT_ALLOWED){
                     retry=10;
                 } else{
@@ -188,7 +188,10 @@ public class NodeMain {
             //TODO dovrei aggiungere delle eccezioni specifiche
             throw new IOException();
         }
-        SmartCity.Nodes nodes = SmartCity.InitializationMassage.parseFrom(response.getEntity(byte[].class)).getNodes();
+        SmartCity.InitializationMessage msgFromCloud = SmartCity.InitializationMessage.parseFrom(response.getEntity(byte[].class));
+        SmartCity.Nodes nodes = msgFromCloud.getResponse().getAllNodes();
+        SmartCity.Node father = msgFromCloud.getResponse().getFather();
+        System.out.println("Mio padre sarà: "+father.getId());
         response.close();
         return nodes;
     }

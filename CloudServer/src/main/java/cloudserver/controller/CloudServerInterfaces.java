@@ -29,8 +29,9 @@ public class CloudServerInterfaces {
         CityMap map = CityMap.getInstance();
         if(xPos != null && yPos!=null) {
             //se vengono specificati vuol dire che mi sta chiamando un sensore quindi
-            //vuole conoscere quali sono i nodi più vicini a lui
-            List<SmartCity.Node> nodes = map.getNodes().getNodesList().stream().filter(node -> CloudServerUtility.getNodesDistance(node,xPos,yPos)<20).sorted(CloudServerUtility.getNodesDistanceComparator(xPos, yPos)).collect(Collectors.toList());
+            //vuole conoscere quali sono i nodi più vicini a lui in base all'alberatura dei nodi -> cerco solo le foglie!!!
+            List<SmartCity.Node> nodes = map.getLeafNodes(map.getTreeRoot()).stream().filter(node -> CloudServerUtility.getNodesDistance(node,xPos,yPos)<20).sorted(CloudServerUtility.getNodesDistanceComparator(xPos, yPos)).collect(Collectors.toList());
+            System.out.println("Foglie: "+map.getLeafNodes(map.getTreeRoot()));
             if (nodes != null && !nodes.isEmpty()) {
                 byte[] toSend = nodes.get(0).toByteArray();
                 return Response.ok().entity(toSend).header(HttpHeaders.CONTENT_LENGTH, toSend.length).build();
@@ -58,7 +59,8 @@ public class CloudServerInterfaces {
     public Response addNode(byte[] input){
         CityMap map = CityMap.getInstance();
         List<SmartCity.Node> copy = new Vector<>();
-        SmartCity.InitializationMassage response = SmartCity.InitializationMassage.newBuilder().build();
+        SmartCity.InitializationMessage response = SmartCity.InitializationMessage.newBuilder().build();
+        SmartCity.Node father;
         try{
             SmartCity.Node node = SmartCity.Node.parseFrom(input);
             System.out.println(node);
@@ -78,16 +80,19 @@ public class CloudServerInterfaces {
                 return Response.status(Response.Status.BAD_REQUEST).entity(response.toByteArray()).build();
             }
             map.addNode(node, SmartCity.NodeStatistics.newBuilder().addAllStatistics(new Vector<>()).build());
+            father = map.addChildNode(map.getTreeRoot(),node);
         } catch(Exception e){
-            System.out.println("Errore durante l'aggiunta del nodo "+e);
+            System.out.println("Errore durante l'aggiunta del nodo ");
+            e.printStackTrace();
             response = response.toBuilder().setErrortype(SmartCity.ErrorType.UNEXPECTED_ERROR).build();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response.toByteArray()).build();
         }
         if(copy.isEmpty()){
-            return Response.ok().build();
+            response = response.toBuilder().setResponse(SmartCity.NodeInsertedResponse.newBuilder().setFather(father).build()).build();
+            return Response.ok().entity(response.toByteArray()).build();
         } else{
-
-            response=response.toBuilder().setNodes(SmartCity.Nodes.newBuilder().addAllNodes(copy).build()).build();
+            SmartCity.Nodes allnodes = SmartCity.Nodes.newBuilder().addAllNodes(copy).build();
+            response=response.toBuilder().setResponse(SmartCity.NodeInsertedResponse.newBuilder().setFather(father).setAllNodes(allnodes).build()).build();
             return Response.ok().entity(response.toByteArray()).build();
         }
 
