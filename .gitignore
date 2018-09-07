@@ -12,4 +12,12 @@ Analista/target/maven-dependencies/*
 CloudServer/target/maven-dependencies/*
 EdgeNode/target/maven-dependencies/*
 Sensor/target/maven-dependencies/*
+Analista/target/maven-status/*
+Analista/target/maven-archiver/*
+CloudServer/target/maven-status/*
+CloudServer/target/maven-archiver/*
+EdgeNode/target/maven-archiver/*
+EdgeNode/target/maven-status/*
+Sensor/target/maven-archiver/*
+Sensor/target/maven-status/*
 
