@@ -31,6 +31,18 @@ public final class SmartCity {
      * <code>LOCALSTATISTIC = 2;</code>
      */
     LOCALSTATISTIC(2),
+    /**
+     * <code>ELECTIONTIME = 3;</code>
+     */
+    ELECTIONTIME(3),
+    /**
+     * <code>ELECTIONRECEIVED = 4;</code>
+     */
+    ELECTIONRECEIVED(4),
+    /**
+     * <code>ELECTIONRESULT = 5;</code>
+     */
+    ELECTIONRESULT(5),
     UNRECOGNIZED(-1),
     ;
 
@@ -46,6 +58,18 @@ public final class SmartCity {
      * <code>LOCALSTATISTIC = 2;</code>
      */
     public static final int LOCALSTATISTIC_VALUE = 2;
+    /**
+     * <code>ELECTIONTIME = 3;</code>
+     */
+    public static final int ELECTIONTIME_VALUE = 3;
+    /**
+     * <code>ELECTIONRECEIVED = 4;</code>
+     */
+    public static final int ELECTIONRECEIVED_VALUE = 4;
+    /**
+     * <code>ELECTIONRESULT = 5;</code>
+     */
+    public static final int ELECTIONRESULT_VALUE = 5;
 
 
     public final int getNumber() {
@@ -69,6 +93,9 @@ public final class SmartCity {
         case 0: return HELLO;
         case 1: return WELCOME;
         case 2: return LOCALSTATISTIC;
+        case 3: return ELECTIONTIME;
+        case 4: return ELECTIONRECEIVED;
+        case 5: return ELECTIONRESULT;
         default: return null;
       }
     }
@@ -1824,12 +1851,12 @@ public final class SmartCity {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>double value = 1;</code>
+     * <code>double value = 2;</code>
      */
     double getValue();
 
     /**
-     * <code>int64 timestamp = 2;</code>
+     * <code>int64 timestamp = 3;</code>
      */
     long getTimestamp();
   }
@@ -1878,12 +1905,12 @@ public final class SmartCity {
               }
               break;
             }
-            case 9: {
+            case 17: {
 
               value_ = input.readDouble();
               break;
             }
-            case 16: {
+            case 24: {
 
               timestamp_ = input.readInt64();
               break;
@@ -1912,19 +1939,19 @@ public final class SmartCity {
               cloudserver.model.SmartCity.NodeMeasurement.class, cloudserver.model.SmartCity.NodeMeasurement.Builder.class);
     }
 
-    public static final int VALUE_FIELD_NUMBER = 1;
+    public static final int VALUE_FIELD_NUMBER = 2;
     private double value_;
     /**
-     * <code>double value = 1;</code>
+     * <code>double value = 2;</code>
      */
     public double getValue() {
       return value_;
     }
 
-    public static final int TIMESTAMP_FIELD_NUMBER = 2;
+    public static final int TIMESTAMP_FIELD_NUMBER = 3;
     private long timestamp_;
     /**
-     * <code>int64 timestamp = 2;</code>
+     * <code>int64 timestamp = 3;</code>
      */
     public long getTimestamp() {
       return timestamp_;
@@ -1943,10 +1970,10 @@ public final class SmartCity {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (value_ != 0D) {
-        output.writeDouble(1, value_);
+        output.writeDouble(2, value_);
       }
       if (timestamp_ != 0L) {
-        output.writeInt64(2, timestamp_);
+        output.writeInt64(3, timestamp_);
       }
       unknownFields.writeTo(output);
     }
@@ -1958,11 +1985,11 @@ public final class SmartCity {
       size = 0;
       if (value_ != 0D) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(1, value_);
+          .computeDoubleSize(2, value_);
       }
       if (timestamp_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(2, timestamp_);
+          .computeInt64Size(3, timestamp_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2236,13 +2263,13 @@ public final class SmartCity {
 
       private double value_ ;
       /**
-       * <code>double value = 1;</code>
+       * <code>double value = 2;</code>
        */
       public double getValue() {
         return value_;
       }
       /**
-       * <code>double value = 1;</code>
+       * <code>double value = 2;</code>
        */
       public Builder setValue(double value) {
         
@@ -2251,7 +2278,7 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>double value = 1;</code>
+       * <code>double value = 2;</code>
        */
       public Builder clearValue() {
         
@@ -2262,13 +2289,13 @@ public final class SmartCity {
 
       private long timestamp_ ;
       /**
-       * <code>int64 timestamp = 2;</code>
+       * <code>int64 timestamp = 3;</code>
        */
       public long getTimestamp() {
         return timestamp_;
       }
       /**
-       * <code>int64 timestamp = 2;</code>
+       * <code>int64 timestamp = 3;</code>
        */
       public Builder setTimestamp(long value) {
         
@@ -2277,7 +2304,7 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>int64 timestamp = 2;</code>
+       * <code>int64 timestamp = 3;</code>
        */
       public Builder clearTimestamp() {
         
@@ -2334,523 +2361,8 @@ public final class SmartCity {
 
   }
 
-  public interface NodeStatisticOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:cloudserver.model.NodeStatistic)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>double mean = 2;</code>
-     */
-    double getMean();
-
-    /**
-     * <code>int64 timestamp = 3;</code>
-     */
-    long getTimestamp();
-  }
-  /**
-   * Protobuf type {@code cloudserver.model.NodeStatistic}
-   */
-  public  static final class NodeStatistic extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:cloudserver.model.NodeStatistic)
-      NodeStatisticOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use NodeStatistic.newBuilder() to construct.
-    private NodeStatistic(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private NodeStatistic() {
-      mean_ = 0D;
-      timestamp_ = 0L;
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private NodeStatistic(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownFieldProto3(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 17: {
-
-              mean_ = input.readDouble();
-              break;
-            }
-            case 24: {
-
-              timestamp_ = input.readInt64();
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeStatistic_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeStatistic_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              cloudserver.model.SmartCity.NodeStatistic.class, cloudserver.model.SmartCity.NodeStatistic.Builder.class);
-    }
-
-    public static final int MEAN_FIELD_NUMBER = 2;
-    private double mean_;
-    /**
-     * <code>double mean = 2;</code>
-     */
-    public double getMean() {
-      return mean_;
-    }
-
-    public static final int TIMESTAMP_FIELD_NUMBER = 3;
-    private long timestamp_;
-    /**
-     * <code>int64 timestamp = 3;</code>
-     */
-    public long getTimestamp() {
-      return timestamp_;
-    }
-
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (mean_ != 0D) {
-        output.writeDouble(2, mean_);
-      }
-      if (timestamp_ != 0L) {
-        output.writeInt64(3, timestamp_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (mean_ != 0D) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(2, mean_);
-      }
-      if (timestamp_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(3, timestamp_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof cloudserver.model.SmartCity.NodeStatistic)) {
-        return super.equals(obj);
-      }
-      cloudserver.model.SmartCity.NodeStatistic other = (cloudserver.model.SmartCity.NodeStatistic) obj;
-
-      boolean result = true;
-      result = result && (
-          java.lang.Double.doubleToLongBits(getMean())
-          == java.lang.Double.doubleToLongBits(
-              other.getMean()));
-      result = result && (getTimestamp()
-          == other.getTimestamp());
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + MEAN_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          java.lang.Double.doubleToLongBits(getMean()));
-      hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getTimestamp());
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static cloudserver.model.SmartCity.NodeStatistic parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static cloudserver.model.SmartCity.NodeStatistic parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static cloudserver.model.SmartCity.NodeStatistic parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static cloudserver.model.SmartCity.NodeStatistic parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static cloudserver.model.SmartCity.NodeStatistic parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static cloudserver.model.SmartCity.NodeStatistic parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static cloudserver.model.SmartCity.NodeStatistic parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static cloudserver.model.SmartCity.NodeStatistic parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static cloudserver.model.SmartCity.NodeStatistic parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static cloudserver.model.SmartCity.NodeStatistic parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static cloudserver.model.SmartCity.NodeStatistic parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static cloudserver.model.SmartCity.NodeStatistic parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(cloudserver.model.SmartCity.NodeStatistic prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code cloudserver.model.NodeStatistic}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:cloudserver.model.NodeStatistic)
-        cloudserver.model.SmartCity.NodeStatisticOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeStatistic_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeStatistic_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                cloudserver.model.SmartCity.NodeStatistic.class, cloudserver.model.SmartCity.NodeStatistic.Builder.class);
-      }
-
-      // Construct using cloudserver.model.SmartCity.NodeStatistic.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        mean_ = 0D;
-
-        timestamp_ = 0L;
-
-        return this;
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeStatistic_descriptor;
-      }
-
-      public cloudserver.model.SmartCity.NodeStatistic getDefaultInstanceForType() {
-        return cloudserver.model.SmartCity.NodeStatistic.getDefaultInstance();
-      }
-
-      public cloudserver.model.SmartCity.NodeStatistic build() {
-        cloudserver.model.SmartCity.NodeStatistic result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public cloudserver.model.SmartCity.NodeStatistic buildPartial() {
-        cloudserver.model.SmartCity.NodeStatistic result = new cloudserver.model.SmartCity.NodeStatistic(this);
-        result.mean_ = mean_;
-        result.timestamp_ = timestamp_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder clone() {
-        return (Builder) super.clone();
-      }
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return (Builder) super.setField(field, value);
-      }
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
-      }
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
-      }
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
-      }
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return (Builder) super.addRepeatedField(field, value);
-      }
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof cloudserver.model.SmartCity.NodeStatistic) {
-          return mergeFrom((cloudserver.model.SmartCity.NodeStatistic)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(cloudserver.model.SmartCity.NodeStatistic other) {
-        if (other == cloudserver.model.SmartCity.NodeStatistic.getDefaultInstance()) return this;
-        if (other.getMean() != 0D) {
-          setMean(other.getMean());
-        }
-        if (other.getTimestamp() != 0L) {
-          setTimestamp(other.getTimestamp());
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        cloudserver.model.SmartCity.NodeStatistic parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (cloudserver.model.SmartCity.NodeStatistic) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      private double mean_ ;
-      /**
-       * <code>double mean = 2;</code>
-       */
-      public double getMean() {
-        return mean_;
-      }
-      /**
-       * <code>double mean = 2;</code>
-       */
-      public Builder setMean(double value) {
-        
-        mean_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>double mean = 2;</code>
-       */
-      public Builder clearMean() {
-        
-        mean_ = 0D;
-        onChanged();
-        return this;
-      }
-
-      private long timestamp_ ;
-      /**
-       * <code>int64 timestamp = 3;</code>
-       */
-      public long getTimestamp() {
-        return timestamp_;
-      }
-      /**
-       * <code>int64 timestamp = 3;</code>
-       */
-      public Builder setTimestamp(long value) {
-        
-        timestamp_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>int64 timestamp = 3;</code>
-       */
-      public Builder clearTimestamp() {
-        
-        timestamp_ = 0L;
-        onChanged();
-        return this;
-      }
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFieldsProto3(unknownFields);
-      }
-
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:cloudserver.model.NodeStatistic)
-    }
-
-    // @@protoc_insertion_point(class_scope:cloudserver.model.NodeStatistic)
-    private static final cloudserver.model.SmartCity.NodeStatistic DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new cloudserver.model.SmartCity.NodeStatistic();
-    }
-
-    public static cloudserver.model.SmartCity.NodeStatistic getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<NodeStatistic>
-        PARSER = new com.google.protobuf.AbstractParser<NodeStatistic>() {
-      public NodeStatistic parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-          return new NodeStatistic(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<NodeStatistic> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<NodeStatistic> getParserForType() {
-      return PARSER;
-    }
-
-    public cloudserver.model.SmartCity.NodeStatistic getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
-  public interface NodeStatisticMessageOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:cloudserver.model.NodeStatisticMessage)
+  public interface NodeMeasurementMessageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:cloudserver.model.NodeMeasurementMessage)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -2867,31 +2379,31 @@ public final class SmartCity {
     cloudserver.model.SmartCity.NodeOrBuilder getNodeOrBuilder();
 
     /**
-     * <code>.cloudserver.model.NodeStatistic statistic = 2;</code>
+     * <code>.cloudserver.model.NodeMeasurement statistic = 2;</code>
      */
     boolean hasStatistic();
     /**
-     * <code>.cloudserver.model.NodeStatistic statistic = 2;</code>
+     * <code>.cloudserver.model.NodeMeasurement statistic = 2;</code>
      */
-    cloudserver.model.SmartCity.NodeStatistic getStatistic();
+    cloudserver.model.SmartCity.NodeMeasurement getStatistic();
     /**
-     * <code>.cloudserver.model.NodeStatistic statistic = 2;</code>
+     * <code>.cloudserver.model.NodeMeasurement statistic = 2;</code>
      */
-    cloudserver.model.SmartCity.NodeStatisticOrBuilder getStatisticOrBuilder();
+    cloudserver.model.SmartCity.NodeMeasurementOrBuilder getStatisticOrBuilder();
   }
   /**
-   * Protobuf type {@code cloudserver.model.NodeStatisticMessage}
+   * Protobuf type {@code cloudserver.model.NodeMeasurementMessage}
    */
-  public  static final class NodeStatisticMessage extends
+  public  static final class NodeMeasurementMessage extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:cloudserver.model.NodeStatisticMessage)
-      NodeStatisticMessageOrBuilder {
+      // @@protoc_insertion_point(message_implements:cloudserver.model.NodeMeasurementMessage)
+      NodeMeasurementMessageOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use NodeStatisticMessage.newBuilder() to construct.
-    private NodeStatisticMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use NodeMeasurementMessage.newBuilder() to construct.
+    private NodeMeasurementMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private NodeStatisticMessage() {
+    private NodeMeasurementMessage() {
     }
 
     @java.lang.Override
@@ -2899,7 +2411,7 @@ public final class SmartCity {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private NodeStatisticMessage(
+    private NodeMeasurementMessage(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -2936,11 +2448,11 @@ public final class SmartCity {
               break;
             }
             case 18: {
-              cloudserver.model.SmartCity.NodeStatistic.Builder subBuilder = null;
+              cloudserver.model.SmartCity.NodeMeasurement.Builder subBuilder = null;
               if (statistic_ != null) {
                 subBuilder = statistic_.toBuilder();
               }
-              statistic_ = input.readMessage(cloudserver.model.SmartCity.NodeStatistic.parser(), extensionRegistry);
+              statistic_ = input.readMessage(cloudserver.model.SmartCity.NodeMeasurement.parser(), extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(statistic_);
                 statistic_ = subBuilder.buildPartial();
@@ -2962,14 +2474,14 @@ public final class SmartCity {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeStatisticMessage_descriptor;
+      return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeMeasurementMessage_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeStatisticMessage_fieldAccessorTable
+      return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeMeasurementMessage_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              cloudserver.model.SmartCity.NodeStatisticMessage.class, cloudserver.model.SmartCity.NodeStatisticMessage.Builder.class);
+              cloudserver.model.SmartCity.NodeMeasurementMessage.class, cloudserver.model.SmartCity.NodeMeasurementMessage.Builder.class);
     }
 
     public static final int NODE_FIELD_NUMBER = 1;
@@ -2994,23 +2506,23 @@ public final class SmartCity {
     }
 
     public static final int STATISTIC_FIELD_NUMBER = 2;
-    private cloudserver.model.SmartCity.NodeStatistic statistic_;
+    private cloudserver.model.SmartCity.NodeMeasurement statistic_;
     /**
-     * <code>.cloudserver.model.NodeStatistic statistic = 2;</code>
+     * <code>.cloudserver.model.NodeMeasurement statistic = 2;</code>
      */
     public boolean hasStatistic() {
       return statistic_ != null;
     }
     /**
-     * <code>.cloudserver.model.NodeStatistic statistic = 2;</code>
+     * <code>.cloudserver.model.NodeMeasurement statistic = 2;</code>
      */
-    public cloudserver.model.SmartCity.NodeStatistic getStatistic() {
-      return statistic_ == null ? cloudserver.model.SmartCity.NodeStatistic.getDefaultInstance() : statistic_;
+    public cloudserver.model.SmartCity.NodeMeasurement getStatistic() {
+      return statistic_ == null ? cloudserver.model.SmartCity.NodeMeasurement.getDefaultInstance() : statistic_;
     }
     /**
-     * <code>.cloudserver.model.NodeStatistic statistic = 2;</code>
+     * <code>.cloudserver.model.NodeMeasurement statistic = 2;</code>
      */
-    public cloudserver.model.SmartCity.NodeStatisticOrBuilder getStatisticOrBuilder() {
+    public cloudserver.model.SmartCity.NodeMeasurementOrBuilder getStatisticOrBuilder() {
       return getStatistic();
     }
 
@@ -3058,10 +2570,10 @@ public final class SmartCity {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof cloudserver.model.SmartCity.NodeStatisticMessage)) {
+      if (!(obj instanceof cloudserver.model.SmartCity.NodeMeasurementMessage)) {
         return super.equals(obj);
       }
-      cloudserver.model.SmartCity.NodeStatisticMessage other = (cloudserver.model.SmartCity.NodeStatisticMessage) obj;
+      cloudserver.model.SmartCity.NodeMeasurementMessage other = (cloudserver.model.SmartCity.NodeMeasurementMessage) obj;
 
       boolean result = true;
       result = result && (hasNode() == other.hasNode());
@@ -3098,69 +2610,69 @@ public final class SmartCity {
       return hash;
     }
 
-    public static cloudserver.model.SmartCity.NodeStatisticMessage parseFrom(
+    public static cloudserver.model.SmartCity.NodeMeasurementMessage parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static cloudserver.model.SmartCity.NodeStatisticMessage parseFrom(
+    public static cloudserver.model.SmartCity.NodeMeasurementMessage parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static cloudserver.model.SmartCity.NodeStatisticMessage parseFrom(
+    public static cloudserver.model.SmartCity.NodeMeasurementMessage parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static cloudserver.model.SmartCity.NodeStatisticMessage parseFrom(
+    public static cloudserver.model.SmartCity.NodeMeasurementMessage parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static cloudserver.model.SmartCity.NodeStatisticMessage parseFrom(byte[] data)
+    public static cloudserver.model.SmartCity.NodeMeasurementMessage parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static cloudserver.model.SmartCity.NodeStatisticMessage parseFrom(
+    public static cloudserver.model.SmartCity.NodeMeasurementMessage parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static cloudserver.model.SmartCity.NodeStatisticMessage parseFrom(java.io.InputStream input)
+    public static cloudserver.model.SmartCity.NodeMeasurementMessage parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static cloudserver.model.SmartCity.NodeStatisticMessage parseFrom(
+    public static cloudserver.model.SmartCity.NodeMeasurementMessage parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static cloudserver.model.SmartCity.NodeStatisticMessage parseDelimitedFrom(java.io.InputStream input)
+    public static cloudserver.model.SmartCity.NodeMeasurementMessage parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static cloudserver.model.SmartCity.NodeStatisticMessage parseDelimitedFrom(
+    public static cloudserver.model.SmartCity.NodeMeasurementMessage parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static cloudserver.model.SmartCity.NodeStatisticMessage parseFrom(
+    public static cloudserver.model.SmartCity.NodeMeasurementMessage parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static cloudserver.model.SmartCity.NodeStatisticMessage parseFrom(
+    public static cloudserver.model.SmartCity.NodeMeasurementMessage parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -3172,7 +2684,7 @@ public final class SmartCity {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(cloudserver.model.SmartCity.NodeStatisticMessage prototype) {
+    public static Builder newBuilder(cloudserver.model.SmartCity.NodeMeasurementMessage prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() {
@@ -3187,25 +2699,25 @@ public final class SmartCity {
       return builder;
     }
     /**
-     * Protobuf type {@code cloudserver.model.NodeStatisticMessage}
+     * Protobuf type {@code cloudserver.model.NodeMeasurementMessage}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:cloudserver.model.NodeStatisticMessage)
-        cloudserver.model.SmartCity.NodeStatisticMessageOrBuilder {
+        // @@protoc_insertion_point(builder_implements:cloudserver.model.NodeMeasurementMessage)
+        cloudserver.model.SmartCity.NodeMeasurementMessageOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeStatisticMessage_descriptor;
+        return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeMeasurementMessage_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeStatisticMessage_fieldAccessorTable
+        return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeMeasurementMessage_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                cloudserver.model.SmartCity.NodeStatisticMessage.class, cloudserver.model.SmartCity.NodeStatisticMessage.Builder.class);
+                cloudserver.model.SmartCity.NodeMeasurementMessage.class, cloudserver.model.SmartCity.NodeMeasurementMessage.Builder.class);
       }
 
-      // Construct using cloudserver.model.SmartCity.NodeStatisticMessage.newBuilder()
+      // Construct using cloudserver.model.SmartCity.NodeMeasurementMessage.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -3239,23 +2751,23 @@ public final class SmartCity {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeStatisticMessage_descriptor;
+        return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeMeasurementMessage_descriptor;
       }
 
-      public cloudserver.model.SmartCity.NodeStatisticMessage getDefaultInstanceForType() {
-        return cloudserver.model.SmartCity.NodeStatisticMessage.getDefaultInstance();
+      public cloudserver.model.SmartCity.NodeMeasurementMessage getDefaultInstanceForType() {
+        return cloudserver.model.SmartCity.NodeMeasurementMessage.getDefaultInstance();
       }
 
-      public cloudserver.model.SmartCity.NodeStatisticMessage build() {
-        cloudserver.model.SmartCity.NodeStatisticMessage result = buildPartial();
+      public cloudserver.model.SmartCity.NodeMeasurementMessage build() {
+        cloudserver.model.SmartCity.NodeMeasurementMessage result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public cloudserver.model.SmartCity.NodeStatisticMessage buildPartial() {
-        cloudserver.model.SmartCity.NodeStatisticMessage result = new cloudserver.model.SmartCity.NodeStatisticMessage(this);
+      public cloudserver.model.SmartCity.NodeMeasurementMessage buildPartial() {
+        cloudserver.model.SmartCity.NodeMeasurementMessage result = new cloudserver.model.SmartCity.NodeMeasurementMessage(this);
         if (nodeBuilder_ == null) {
           result.node_ = node_;
         } else {
@@ -3297,16 +2809,16 @@ public final class SmartCity {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof cloudserver.model.SmartCity.NodeStatisticMessage) {
-          return mergeFrom((cloudserver.model.SmartCity.NodeStatisticMessage)other);
+        if (other instanceof cloudserver.model.SmartCity.NodeMeasurementMessage) {
+          return mergeFrom((cloudserver.model.SmartCity.NodeMeasurementMessage)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(cloudserver.model.SmartCity.NodeStatisticMessage other) {
-        if (other == cloudserver.model.SmartCity.NodeStatisticMessage.getDefaultInstance()) return this;
+      public Builder mergeFrom(cloudserver.model.SmartCity.NodeMeasurementMessage other) {
+        if (other == cloudserver.model.SmartCity.NodeMeasurementMessage.getDefaultInstance()) return this;
         if (other.hasNode()) {
           mergeNode(other.getNode());
         }
@@ -3326,11 +2838,11 @@ public final class SmartCity {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        cloudserver.model.SmartCity.NodeStatisticMessage parsedMessage = null;
+        cloudserver.model.SmartCity.NodeMeasurementMessage parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (cloudserver.model.SmartCity.NodeStatisticMessage) e.getUnfinishedMessage();
+          parsedMessage = (cloudserver.model.SmartCity.NodeMeasurementMessage) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -3457,29 +2969,29 @@ public final class SmartCity {
         return nodeBuilder_;
       }
 
-      private cloudserver.model.SmartCity.NodeStatistic statistic_ = null;
+      private cloudserver.model.SmartCity.NodeMeasurement statistic_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
-          cloudserver.model.SmartCity.NodeStatistic, cloudserver.model.SmartCity.NodeStatistic.Builder, cloudserver.model.SmartCity.NodeStatisticOrBuilder> statisticBuilder_;
+          cloudserver.model.SmartCity.NodeMeasurement, cloudserver.model.SmartCity.NodeMeasurement.Builder, cloudserver.model.SmartCity.NodeMeasurementOrBuilder> statisticBuilder_;
       /**
-       * <code>.cloudserver.model.NodeStatistic statistic = 2;</code>
+       * <code>.cloudserver.model.NodeMeasurement statistic = 2;</code>
        */
       public boolean hasStatistic() {
         return statisticBuilder_ != null || statistic_ != null;
       }
       /**
-       * <code>.cloudserver.model.NodeStatistic statistic = 2;</code>
+       * <code>.cloudserver.model.NodeMeasurement statistic = 2;</code>
        */
-      public cloudserver.model.SmartCity.NodeStatistic getStatistic() {
+      public cloudserver.model.SmartCity.NodeMeasurement getStatistic() {
         if (statisticBuilder_ == null) {
-          return statistic_ == null ? cloudserver.model.SmartCity.NodeStatistic.getDefaultInstance() : statistic_;
+          return statistic_ == null ? cloudserver.model.SmartCity.NodeMeasurement.getDefaultInstance() : statistic_;
         } else {
           return statisticBuilder_.getMessage();
         }
       }
       /**
-       * <code>.cloudserver.model.NodeStatistic statistic = 2;</code>
+       * <code>.cloudserver.model.NodeMeasurement statistic = 2;</code>
        */
-      public Builder setStatistic(cloudserver.model.SmartCity.NodeStatistic value) {
+      public Builder setStatistic(cloudserver.model.SmartCity.NodeMeasurement value) {
         if (statisticBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -3493,10 +3005,10 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>.cloudserver.model.NodeStatistic statistic = 2;</code>
+       * <code>.cloudserver.model.NodeMeasurement statistic = 2;</code>
        */
       public Builder setStatistic(
-          cloudserver.model.SmartCity.NodeStatistic.Builder builderForValue) {
+          cloudserver.model.SmartCity.NodeMeasurement.Builder builderForValue) {
         if (statisticBuilder_ == null) {
           statistic_ = builderForValue.build();
           onChanged();
@@ -3507,13 +3019,13 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>.cloudserver.model.NodeStatistic statistic = 2;</code>
+       * <code>.cloudserver.model.NodeMeasurement statistic = 2;</code>
        */
-      public Builder mergeStatistic(cloudserver.model.SmartCity.NodeStatistic value) {
+      public Builder mergeStatistic(cloudserver.model.SmartCity.NodeMeasurement value) {
         if (statisticBuilder_ == null) {
           if (statistic_ != null) {
             statistic_ =
-              cloudserver.model.SmartCity.NodeStatistic.newBuilder(statistic_).mergeFrom(value).buildPartial();
+              cloudserver.model.SmartCity.NodeMeasurement.newBuilder(statistic_).mergeFrom(value).buildPartial();
           } else {
             statistic_ = value;
           }
@@ -3525,7 +3037,7 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>.cloudserver.model.NodeStatistic statistic = 2;</code>
+       * <code>.cloudserver.model.NodeMeasurement statistic = 2;</code>
        */
       public Builder clearStatistic() {
         if (statisticBuilder_ == null) {
@@ -3539,33 +3051,33 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>.cloudserver.model.NodeStatistic statistic = 2;</code>
+       * <code>.cloudserver.model.NodeMeasurement statistic = 2;</code>
        */
-      public cloudserver.model.SmartCity.NodeStatistic.Builder getStatisticBuilder() {
+      public cloudserver.model.SmartCity.NodeMeasurement.Builder getStatisticBuilder() {
         
         onChanged();
         return getStatisticFieldBuilder().getBuilder();
       }
       /**
-       * <code>.cloudserver.model.NodeStatistic statistic = 2;</code>
+       * <code>.cloudserver.model.NodeMeasurement statistic = 2;</code>
        */
-      public cloudserver.model.SmartCity.NodeStatisticOrBuilder getStatisticOrBuilder() {
+      public cloudserver.model.SmartCity.NodeMeasurementOrBuilder getStatisticOrBuilder() {
         if (statisticBuilder_ != null) {
           return statisticBuilder_.getMessageOrBuilder();
         } else {
           return statistic_ == null ?
-              cloudserver.model.SmartCity.NodeStatistic.getDefaultInstance() : statistic_;
+              cloudserver.model.SmartCity.NodeMeasurement.getDefaultInstance() : statistic_;
         }
       }
       /**
-       * <code>.cloudserver.model.NodeStatistic statistic = 2;</code>
+       * <code>.cloudserver.model.NodeMeasurement statistic = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          cloudserver.model.SmartCity.NodeStatistic, cloudserver.model.SmartCity.NodeStatistic.Builder, cloudserver.model.SmartCity.NodeStatisticOrBuilder> 
+          cloudserver.model.SmartCity.NodeMeasurement, cloudserver.model.SmartCity.NodeMeasurement.Builder, cloudserver.model.SmartCity.NodeMeasurementOrBuilder> 
           getStatisticFieldBuilder() {
         if (statisticBuilder_ == null) {
           statisticBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              cloudserver.model.SmartCity.NodeStatistic, cloudserver.model.SmartCity.NodeStatistic.Builder, cloudserver.model.SmartCity.NodeStatisticOrBuilder>(
+              cloudserver.model.SmartCity.NodeMeasurement, cloudserver.model.SmartCity.NodeMeasurement.Builder, cloudserver.model.SmartCity.NodeMeasurementOrBuilder>(
                   getStatistic(),
                   getParentForChildren(),
                   isClean());
@@ -3584,39 +3096,39 @@ public final class SmartCity {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:cloudserver.model.NodeStatisticMessage)
+      // @@protoc_insertion_point(builder_scope:cloudserver.model.NodeMeasurementMessage)
     }
 
-    // @@protoc_insertion_point(class_scope:cloudserver.model.NodeStatisticMessage)
-    private static final cloudserver.model.SmartCity.NodeStatisticMessage DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:cloudserver.model.NodeMeasurementMessage)
+    private static final cloudserver.model.SmartCity.NodeMeasurementMessage DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new cloudserver.model.SmartCity.NodeStatisticMessage();
+      DEFAULT_INSTANCE = new cloudserver.model.SmartCity.NodeMeasurementMessage();
     }
 
-    public static cloudserver.model.SmartCity.NodeStatisticMessage getDefaultInstance() {
+    public static cloudserver.model.SmartCity.NodeMeasurementMessage getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<NodeStatisticMessage>
-        PARSER = new com.google.protobuf.AbstractParser<NodeStatisticMessage>() {
-      public NodeStatisticMessage parsePartialFrom(
+    private static final com.google.protobuf.Parser<NodeMeasurementMessage>
+        PARSER = new com.google.protobuf.AbstractParser<NodeMeasurementMessage>() {
+      public NodeMeasurementMessage parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new NodeStatisticMessage(input, extensionRegistry);
+          return new NodeMeasurementMessage(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<NodeStatisticMessage> parser() {
+    public static com.google.protobuf.Parser<NodeMeasurementMessage> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<NodeStatisticMessage> getParserForType() {
+    public com.google.protobuf.Parser<NodeMeasurementMessage> getParserForType() {
       return PARSER;
     }
 
-    public cloudserver.model.SmartCity.NodeStatisticMessage getDefaultInstanceForType() {
+    public cloudserver.model.SmartCity.NodeMeasurementMessage getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -3640,27 +3152,27 @@ public final class SmartCity {
     cloudserver.model.SmartCity.NodeOrBuilder getNodeOrBuilder();
 
     /**
-     * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+     * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
      */
-    java.util.List<cloudserver.model.SmartCity.NodeStatistic> 
+    java.util.List<cloudserver.model.SmartCity.NodeMeasurement> 
         getLocalsList();
     /**
-     * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+     * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
      */
-    cloudserver.model.SmartCity.NodeStatistic getLocals(int index);
+    cloudserver.model.SmartCity.NodeMeasurement getLocals(int index);
     /**
-     * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+     * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
      */
     int getLocalsCount();
     /**
-     * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+     * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
      */
-    java.util.List<? extends cloudserver.model.SmartCity.NodeStatisticOrBuilder> 
+    java.util.List<? extends cloudserver.model.SmartCity.NodeMeasurementOrBuilder> 
         getLocalsOrBuilderList();
     /**
-     * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+     * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
      */
-    cloudserver.model.SmartCity.NodeStatisticOrBuilder getLocalsOrBuilder(
+    cloudserver.model.SmartCity.NodeMeasurementOrBuilder getLocalsOrBuilder(
         int index);
   }
   /**
@@ -3722,11 +3234,11 @@ public final class SmartCity {
             }
             case 18: {
               if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                locals_ = new java.util.ArrayList<cloudserver.model.SmartCity.NodeStatistic>();
+                locals_ = new java.util.ArrayList<cloudserver.model.SmartCity.NodeMeasurement>();
                 mutable_bitField0_ |= 0x00000002;
               }
               locals_.add(
-                  input.readMessage(cloudserver.model.SmartCity.NodeStatistic.parser(), extensionRegistry));
+                  input.readMessage(cloudserver.model.SmartCity.NodeMeasurement.parser(), extensionRegistry));
               break;
             }
           }
@@ -3779,36 +3291,36 @@ public final class SmartCity {
     }
 
     public static final int LOCALS_FIELD_NUMBER = 2;
-    private java.util.List<cloudserver.model.SmartCity.NodeStatistic> locals_;
+    private java.util.List<cloudserver.model.SmartCity.NodeMeasurement> locals_;
     /**
-     * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+     * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
      */
-    public java.util.List<cloudserver.model.SmartCity.NodeStatistic> getLocalsList() {
+    public java.util.List<cloudserver.model.SmartCity.NodeMeasurement> getLocalsList() {
       return locals_;
     }
     /**
-     * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+     * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
      */
-    public java.util.List<? extends cloudserver.model.SmartCity.NodeStatisticOrBuilder> 
+    public java.util.List<? extends cloudserver.model.SmartCity.NodeMeasurementOrBuilder> 
         getLocalsOrBuilderList() {
       return locals_;
     }
     /**
-     * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+     * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
      */
     public int getLocalsCount() {
       return locals_.size();
     }
     /**
-     * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+     * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
      */
-    public cloudserver.model.SmartCity.NodeStatistic getLocals(int index) {
+    public cloudserver.model.SmartCity.NodeMeasurement getLocals(int index) {
       return locals_.get(index);
     }
     /**
-     * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+     * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
      */
-    public cloudserver.model.SmartCity.NodeStatisticOrBuilder getLocalsOrBuilder(
+    public cloudserver.model.SmartCity.NodeMeasurementOrBuilder getLocalsOrBuilder(
         int index) {
       return locals_.get(index);
     }
@@ -4285,22 +3797,22 @@ public final class SmartCity {
         return nodeBuilder_;
       }
 
-      private java.util.List<cloudserver.model.SmartCity.NodeStatistic> locals_ =
+      private java.util.List<cloudserver.model.SmartCity.NodeMeasurement> locals_ =
         java.util.Collections.emptyList();
       private void ensureLocalsIsMutable() {
         if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          locals_ = new java.util.ArrayList<cloudserver.model.SmartCity.NodeStatistic>(locals_);
+          locals_ = new java.util.ArrayList<cloudserver.model.SmartCity.NodeMeasurement>(locals_);
           bitField0_ |= 0x00000002;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          cloudserver.model.SmartCity.NodeStatistic, cloudserver.model.SmartCity.NodeStatistic.Builder, cloudserver.model.SmartCity.NodeStatisticOrBuilder> localsBuilder_;
+          cloudserver.model.SmartCity.NodeMeasurement, cloudserver.model.SmartCity.NodeMeasurement.Builder, cloudserver.model.SmartCity.NodeMeasurementOrBuilder> localsBuilder_;
 
       /**
-       * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
        */
-      public java.util.List<cloudserver.model.SmartCity.NodeStatistic> getLocalsList() {
+      public java.util.List<cloudserver.model.SmartCity.NodeMeasurement> getLocalsList() {
         if (localsBuilder_ == null) {
           return java.util.Collections.unmodifiableList(locals_);
         } else {
@@ -4308,7 +3820,7 @@ public final class SmartCity {
         }
       }
       /**
-       * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
        */
       public int getLocalsCount() {
         if (localsBuilder_ == null) {
@@ -4318,9 +3830,9 @@ public final class SmartCity {
         }
       }
       /**
-       * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
        */
-      public cloudserver.model.SmartCity.NodeStatistic getLocals(int index) {
+      public cloudserver.model.SmartCity.NodeMeasurement getLocals(int index) {
         if (localsBuilder_ == null) {
           return locals_.get(index);
         } else {
@@ -4328,10 +3840,10 @@ public final class SmartCity {
         }
       }
       /**
-       * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
        */
       public Builder setLocals(
-          int index, cloudserver.model.SmartCity.NodeStatistic value) {
+          int index, cloudserver.model.SmartCity.NodeMeasurement value) {
         if (localsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -4345,10 +3857,10 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
        */
       public Builder setLocals(
-          int index, cloudserver.model.SmartCity.NodeStatistic.Builder builderForValue) {
+          int index, cloudserver.model.SmartCity.NodeMeasurement.Builder builderForValue) {
         if (localsBuilder_ == null) {
           ensureLocalsIsMutable();
           locals_.set(index, builderForValue.build());
@@ -4359,9 +3871,9 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
        */
-      public Builder addLocals(cloudserver.model.SmartCity.NodeStatistic value) {
+      public Builder addLocals(cloudserver.model.SmartCity.NodeMeasurement value) {
         if (localsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -4375,10 +3887,10 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
        */
       public Builder addLocals(
-          int index, cloudserver.model.SmartCity.NodeStatistic value) {
+          int index, cloudserver.model.SmartCity.NodeMeasurement value) {
         if (localsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -4392,10 +3904,10 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
        */
       public Builder addLocals(
-          cloudserver.model.SmartCity.NodeStatistic.Builder builderForValue) {
+          cloudserver.model.SmartCity.NodeMeasurement.Builder builderForValue) {
         if (localsBuilder_ == null) {
           ensureLocalsIsMutable();
           locals_.add(builderForValue.build());
@@ -4406,10 +3918,10 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
        */
       public Builder addLocals(
-          int index, cloudserver.model.SmartCity.NodeStatistic.Builder builderForValue) {
+          int index, cloudserver.model.SmartCity.NodeMeasurement.Builder builderForValue) {
         if (localsBuilder_ == null) {
           ensureLocalsIsMutable();
           locals_.add(index, builderForValue.build());
@@ -4420,10 +3932,10 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
        */
       public Builder addAllLocals(
-          java.lang.Iterable<? extends cloudserver.model.SmartCity.NodeStatistic> values) {
+          java.lang.Iterable<? extends cloudserver.model.SmartCity.NodeMeasurement> values) {
         if (localsBuilder_ == null) {
           ensureLocalsIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -4435,7 +3947,7 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
        */
       public Builder clearLocals() {
         if (localsBuilder_ == null) {
@@ -4448,7 +3960,7 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
        */
       public Builder removeLocals(int index) {
         if (localsBuilder_ == null) {
@@ -4461,16 +3973,16 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
        */
-      public cloudserver.model.SmartCity.NodeStatistic.Builder getLocalsBuilder(
+      public cloudserver.model.SmartCity.NodeMeasurement.Builder getLocalsBuilder(
           int index) {
         return getLocalsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
        */
-      public cloudserver.model.SmartCity.NodeStatisticOrBuilder getLocalsOrBuilder(
+      public cloudserver.model.SmartCity.NodeMeasurementOrBuilder getLocalsOrBuilder(
           int index) {
         if (localsBuilder_ == null) {
           return locals_.get(index);  } else {
@@ -4478,9 +3990,9 @@ public final class SmartCity {
         }
       }
       /**
-       * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
        */
-      public java.util.List<? extends cloudserver.model.SmartCity.NodeStatisticOrBuilder> 
+      public java.util.List<? extends cloudserver.model.SmartCity.NodeMeasurementOrBuilder> 
            getLocalsOrBuilderList() {
         if (localsBuilder_ != null) {
           return localsBuilder_.getMessageOrBuilderList();
@@ -4489,33 +4001,33 @@ public final class SmartCity {
         }
       }
       /**
-       * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
        */
-      public cloudserver.model.SmartCity.NodeStatistic.Builder addLocalsBuilder() {
+      public cloudserver.model.SmartCity.NodeMeasurement.Builder addLocalsBuilder() {
         return getLocalsFieldBuilder().addBuilder(
-            cloudserver.model.SmartCity.NodeStatistic.getDefaultInstance());
+            cloudserver.model.SmartCity.NodeMeasurement.getDefaultInstance());
       }
       /**
-       * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
        */
-      public cloudserver.model.SmartCity.NodeStatistic.Builder addLocalsBuilder(
+      public cloudserver.model.SmartCity.NodeMeasurement.Builder addLocalsBuilder(
           int index) {
         return getLocalsFieldBuilder().addBuilder(
-            index, cloudserver.model.SmartCity.NodeStatistic.getDefaultInstance());
+            index, cloudserver.model.SmartCity.NodeMeasurement.getDefaultInstance());
       }
       /**
-       * <code>repeated .cloudserver.model.NodeStatistic locals = 2;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement locals = 2;</code>
        */
-      public java.util.List<cloudserver.model.SmartCity.NodeStatistic.Builder> 
+      public java.util.List<cloudserver.model.SmartCity.NodeMeasurement.Builder> 
            getLocalsBuilderList() {
         return getLocalsFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          cloudserver.model.SmartCity.NodeStatistic, cloudserver.model.SmartCity.NodeStatistic.Builder, cloudserver.model.SmartCity.NodeStatisticOrBuilder> 
+          cloudserver.model.SmartCity.NodeMeasurement, cloudserver.model.SmartCity.NodeMeasurement.Builder, cloudserver.model.SmartCity.NodeMeasurementOrBuilder> 
           getLocalsFieldBuilder() {
         if (localsBuilder_ == null) {
           localsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              cloudserver.model.SmartCity.NodeStatistic, cloudserver.model.SmartCity.NodeStatistic.Builder, cloudserver.model.SmartCity.NodeStatisticOrBuilder>(
+              cloudserver.model.SmartCity.NodeMeasurement, cloudserver.model.SmartCity.NodeMeasurement.Builder, cloudserver.model.SmartCity.NodeMeasurementOrBuilder>(
                   locals_,
                   ((bitField0_ & 0x00000002) == 0x00000002),
                   getParentForChildren(),
@@ -4578,17 +4090,17 @@ public final class SmartCity {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.cloudserver.model.NodeStatistic global = 1;</code>
+     * <code>.cloudserver.model.NodeMeasurement global = 1;</code>
      */
     boolean hasGlobal();
     /**
-     * <code>.cloudserver.model.NodeStatistic global = 1;</code>
+     * <code>.cloudserver.model.NodeMeasurement global = 1;</code>
      */
-    cloudserver.model.SmartCity.NodeStatistic getGlobal();
+    cloudserver.model.SmartCity.NodeMeasurement getGlobal();
     /**
-     * <code>.cloudserver.model.NodeStatistic global = 1;</code>
+     * <code>.cloudserver.model.NodeMeasurement global = 1;</code>
      */
-    cloudserver.model.SmartCity.NodeStatisticOrBuilder getGlobalOrBuilder();
+    cloudserver.model.SmartCity.NodeMeasurementOrBuilder getGlobalOrBuilder();
 
     /**
      * <code>repeated .cloudserver.model.NodeLocalStatistics nodesLocals = 2;</code>
@@ -4659,11 +4171,11 @@ public final class SmartCity {
               break;
             }
             case 10: {
-              cloudserver.model.SmartCity.NodeStatistic.Builder subBuilder = null;
+              cloudserver.model.SmartCity.NodeMeasurement.Builder subBuilder = null;
               if (global_ != null) {
                 subBuilder = global_.toBuilder();
               }
-              global_ = input.readMessage(cloudserver.model.SmartCity.NodeStatistic.parser(), extensionRegistry);
+              global_ = input.readMessage(cloudserver.model.SmartCity.NodeMeasurement.parser(), extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(global_);
                 global_ = subBuilder.buildPartial();
@@ -4709,23 +4221,23 @@ public final class SmartCity {
 
     private int bitField0_;
     public static final int GLOBAL_FIELD_NUMBER = 1;
-    private cloudserver.model.SmartCity.NodeStatistic global_;
+    private cloudserver.model.SmartCity.NodeMeasurement global_;
     /**
-     * <code>.cloudserver.model.NodeStatistic global = 1;</code>
+     * <code>.cloudserver.model.NodeMeasurement global = 1;</code>
      */
     public boolean hasGlobal() {
       return global_ != null;
     }
     /**
-     * <code>.cloudserver.model.NodeStatistic global = 1;</code>
+     * <code>.cloudserver.model.NodeMeasurement global = 1;</code>
      */
-    public cloudserver.model.SmartCity.NodeStatistic getGlobal() {
-      return global_ == null ? cloudserver.model.SmartCity.NodeStatistic.getDefaultInstance() : global_;
+    public cloudserver.model.SmartCity.NodeMeasurement getGlobal() {
+      return global_ == null ? cloudserver.model.SmartCity.NodeMeasurement.getDefaultInstance() : global_;
     }
     /**
-     * <code>.cloudserver.model.NodeStatistic global = 1;</code>
+     * <code>.cloudserver.model.NodeMeasurement global = 1;</code>
      */
-    public cloudserver.model.SmartCity.NodeStatisticOrBuilder getGlobalOrBuilder() {
+    public cloudserver.model.SmartCity.NodeMeasurementOrBuilder getGlobalOrBuilder() {
       return getGlobal();
     }
 
@@ -5119,29 +4631,29 @@ public final class SmartCity {
       }
       private int bitField0_;
 
-      private cloudserver.model.SmartCity.NodeStatistic global_ = null;
+      private cloudserver.model.SmartCity.NodeMeasurement global_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
-          cloudserver.model.SmartCity.NodeStatistic, cloudserver.model.SmartCity.NodeStatistic.Builder, cloudserver.model.SmartCity.NodeStatisticOrBuilder> globalBuilder_;
+          cloudserver.model.SmartCity.NodeMeasurement, cloudserver.model.SmartCity.NodeMeasurement.Builder, cloudserver.model.SmartCity.NodeMeasurementOrBuilder> globalBuilder_;
       /**
-       * <code>.cloudserver.model.NodeStatistic global = 1;</code>
+       * <code>.cloudserver.model.NodeMeasurement global = 1;</code>
        */
       public boolean hasGlobal() {
         return globalBuilder_ != null || global_ != null;
       }
       /**
-       * <code>.cloudserver.model.NodeStatistic global = 1;</code>
+       * <code>.cloudserver.model.NodeMeasurement global = 1;</code>
        */
-      public cloudserver.model.SmartCity.NodeStatistic getGlobal() {
+      public cloudserver.model.SmartCity.NodeMeasurement getGlobal() {
         if (globalBuilder_ == null) {
-          return global_ == null ? cloudserver.model.SmartCity.NodeStatistic.getDefaultInstance() : global_;
+          return global_ == null ? cloudserver.model.SmartCity.NodeMeasurement.getDefaultInstance() : global_;
         } else {
           return globalBuilder_.getMessage();
         }
       }
       /**
-       * <code>.cloudserver.model.NodeStatistic global = 1;</code>
+       * <code>.cloudserver.model.NodeMeasurement global = 1;</code>
        */
-      public Builder setGlobal(cloudserver.model.SmartCity.NodeStatistic value) {
+      public Builder setGlobal(cloudserver.model.SmartCity.NodeMeasurement value) {
         if (globalBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -5155,10 +4667,10 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>.cloudserver.model.NodeStatistic global = 1;</code>
+       * <code>.cloudserver.model.NodeMeasurement global = 1;</code>
        */
       public Builder setGlobal(
-          cloudserver.model.SmartCity.NodeStatistic.Builder builderForValue) {
+          cloudserver.model.SmartCity.NodeMeasurement.Builder builderForValue) {
         if (globalBuilder_ == null) {
           global_ = builderForValue.build();
           onChanged();
@@ -5169,13 +4681,13 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>.cloudserver.model.NodeStatistic global = 1;</code>
+       * <code>.cloudserver.model.NodeMeasurement global = 1;</code>
        */
-      public Builder mergeGlobal(cloudserver.model.SmartCity.NodeStatistic value) {
+      public Builder mergeGlobal(cloudserver.model.SmartCity.NodeMeasurement value) {
         if (globalBuilder_ == null) {
           if (global_ != null) {
             global_ =
-              cloudserver.model.SmartCity.NodeStatistic.newBuilder(global_).mergeFrom(value).buildPartial();
+              cloudserver.model.SmartCity.NodeMeasurement.newBuilder(global_).mergeFrom(value).buildPartial();
           } else {
             global_ = value;
           }
@@ -5187,7 +4699,7 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>.cloudserver.model.NodeStatistic global = 1;</code>
+       * <code>.cloudserver.model.NodeMeasurement global = 1;</code>
        */
       public Builder clearGlobal() {
         if (globalBuilder_ == null) {
@@ -5201,33 +4713,33 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>.cloudserver.model.NodeStatistic global = 1;</code>
+       * <code>.cloudserver.model.NodeMeasurement global = 1;</code>
        */
-      public cloudserver.model.SmartCity.NodeStatistic.Builder getGlobalBuilder() {
+      public cloudserver.model.SmartCity.NodeMeasurement.Builder getGlobalBuilder() {
         
         onChanged();
         return getGlobalFieldBuilder().getBuilder();
       }
       /**
-       * <code>.cloudserver.model.NodeStatistic global = 1;</code>
+       * <code>.cloudserver.model.NodeMeasurement global = 1;</code>
        */
-      public cloudserver.model.SmartCity.NodeStatisticOrBuilder getGlobalOrBuilder() {
+      public cloudserver.model.SmartCity.NodeMeasurementOrBuilder getGlobalOrBuilder() {
         if (globalBuilder_ != null) {
           return globalBuilder_.getMessageOrBuilder();
         } else {
           return global_ == null ?
-              cloudserver.model.SmartCity.NodeStatistic.getDefaultInstance() : global_;
+              cloudserver.model.SmartCity.NodeMeasurement.getDefaultInstance() : global_;
         }
       }
       /**
-       * <code>.cloudserver.model.NodeStatistic global = 1;</code>
+       * <code>.cloudserver.model.NodeMeasurement global = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          cloudserver.model.SmartCity.NodeStatistic, cloudserver.model.SmartCity.NodeStatistic.Builder, cloudserver.model.SmartCity.NodeStatisticOrBuilder> 
+          cloudserver.model.SmartCity.NodeMeasurement, cloudserver.model.SmartCity.NodeMeasurement.Builder, cloudserver.model.SmartCity.NodeMeasurementOrBuilder> 
           getGlobalFieldBuilder() {
         if (globalBuilder_ == null) {
           globalBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              cloudserver.model.SmartCity.NodeStatistic, cloudserver.model.SmartCity.NodeStatistic.Builder, cloudserver.model.SmartCity.NodeStatisticOrBuilder>(
+              cloudserver.model.SmartCity.NodeMeasurement, cloudserver.model.SmartCity.NodeMeasurement.Builder, cloudserver.model.SmartCity.NodeMeasurementOrBuilder>(
                   getGlobal(),
                   getParentForChildren(),
                   isClean());
@@ -5529,30 +5041,30 @@ public final class SmartCity {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.cloudserver.model.NodeStatistics globals = 1;</code>
+     * <code>.cloudserver.model.NodeMeasurements globals = 1;</code>
      */
     boolean hasGlobals();
     /**
-     * <code>.cloudserver.model.NodeStatistics globals = 1;</code>
+     * <code>.cloudserver.model.NodeMeasurements globals = 1;</code>
      */
-    cloudserver.model.SmartCity.NodeStatistics getGlobals();
+    cloudserver.model.SmartCity.NodeMeasurements getGlobals();
     /**
-     * <code>.cloudserver.model.NodeStatistics globals = 1;</code>
+     * <code>.cloudserver.model.NodeMeasurements globals = 1;</code>
      */
-    cloudserver.model.SmartCity.NodeStatisticsOrBuilder getGlobalsOrBuilder();
+    cloudserver.model.SmartCity.NodeMeasurementsOrBuilder getGlobalsOrBuilder();
 
     /**
-     * <code>.cloudserver.model.NodeStatistics locals = 2;</code>
+     * <code>.cloudserver.model.NodeMeasurements locals = 2;</code>
      */
     boolean hasLocals();
     /**
-     * <code>.cloudserver.model.NodeStatistics locals = 2;</code>
+     * <code>.cloudserver.model.NodeMeasurements locals = 2;</code>
      */
-    cloudserver.model.SmartCity.NodeStatistics getLocals();
+    cloudserver.model.SmartCity.NodeMeasurements getLocals();
     /**
-     * <code>.cloudserver.model.NodeStatistics locals = 2;</code>
+     * <code>.cloudserver.model.NodeMeasurements locals = 2;</code>
      */
-    cloudserver.model.SmartCity.NodeStatisticsOrBuilder getLocalsOrBuilder();
+    cloudserver.model.SmartCity.NodeMeasurementsOrBuilder getLocalsOrBuilder();
   }
   /**
    * Protobuf type {@code cloudserver.model.LastLocalsGlobals}
@@ -5598,11 +5110,11 @@ public final class SmartCity {
               break;
             }
             case 10: {
-              cloudserver.model.SmartCity.NodeStatistics.Builder subBuilder = null;
+              cloudserver.model.SmartCity.NodeMeasurements.Builder subBuilder = null;
               if (globals_ != null) {
                 subBuilder = globals_.toBuilder();
               }
-              globals_ = input.readMessage(cloudserver.model.SmartCity.NodeStatistics.parser(), extensionRegistry);
+              globals_ = input.readMessage(cloudserver.model.SmartCity.NodeMeasurements.parser(), extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(globals_);
                 globals_ = subBuilder.buildPartial();
@@ -5611,11 +5123,11 @@ public final class SmartCity {
               break;
             }
             case 18: {
-              cloudserver.model.SmartCity.NodeStatistics.Builder subBuilder = null;
+              cloudserver.model.SmartCity.NodeMeasurements.Builder subBuilder = null;
               if (locals_ != null) {
                 subBuilder = locals_.toBuilder();
               }
-              locals_ = input.readMessage(cloudserver.model.SmartCity.NodeStatistics.parser(), extensionRegistry);
+              locals_ = input.readMessage(cloudserver.model.SmartCity.NodeMeasurements.parser(), extensionRegistry);
               if (subBuilder != null) {
                 subBuilder.mergeFrom(locals_);
                 locals_ = subBuilder.buildPartial();
@@ -5648,44 +5160,44 @@ public final class SmartCity {
     }
 
     public static final int GLOBALS_FIELD_NUMBER = 1;
-    private cloudserver.model.SmartCity.NodeStatistics globals_;
+    private cloudserver.model.SmartCity.NodeMeasurements globals_;
     /**
-     * <code>.cloudserver.model.NodeStatistics globals = 1;</code>
+     * <code>.cloudserver.model.NodeMeasurements globals = 1;</code>
      */
     public boolean hasGlobals() {
       return globals_ != null;
     }
     /**
-     * <code>.cloudserver.model.NodeStatistics globals = 1;</code>
+     * <code>.cloudserver.model.NodeMeasurements globals = 1;</code>
      */
-    public cloudserver.model.SmartCity.NodeStatistics getGlobals() {
-      return globals_ == null ? cloudserver.model.SmartCity.NodeStatistics.getDefaultInstance() : globals_;
+    public cloudserver.model.SmartCity.NodeMeasurements getGlobals() {
+      return globals_ == null ? cloudserver.model.SmartCity.NodeMeasurements.getDefaultInstance() : globals_;
     }
     /**
-     * <code>.cloudserver.model.NodeStatistics globals = 1;</code>
+     * <code>.cloudserver.model.NodeMeasurements globals = 1;</code>
      */
-    public cloudserver.model.SmartCity.NodeStatisticsOrBuilder getGlobalsOrBuilder() {
+    public cloudserver.model.SmartCity.NodeMeasurementsOrBuilder getGlobalsOrBuilder() {
       return getGlobals();
     }
 
     public static final int LOCALS_FIELD_NUMBER = 2;
-    private cloudserver.model.SmartCity.NodeStatistics locals_;
+    private cloudserver.model.SmartCity.NodeMeasurements locals_;
     /**
-     * <code>.cloudserver.model.NodeStatistics locals = 2;</code>
+     * <code>.cloudserver.model.NodeMeasurements locals = 2;</code>
      */
     public boolean hasLocals() {
       return locals_ != null;
     }
     /**
-     * <code>.cloudserver.model.NodeStatistics locals = 2;</code>
+     * <code>.cloudserver.model.NodeMeasurements locals = 2;</code>
      */
-    public cloudserver.model.SmartCity.NodeStatistics getLocals() {
-      return locals_ == null ? cloudserver.model.SmartCity.NodeStatistics.getDefaultInstance() : locals_;
+    public cloudserver.model.SmartCity.NodeMeasurements getLocals() {
+      return locals_ == null ? cloudserver.model.SmartCity.NodeMeasurements.getDefaultInstance() : locals_;
     }
     /**
-     * <code>.cloudserver.model.NodeStatistics locals = 2;</code>
+     * <code>.cloudserver.model.NodeMeasurements locals = 2;</code>
      */
-    public cloudserver.model.SmartCity.NodeStatisticsOrBuilder getLocalsOrBuilder() {
+    public cloudserver.model.SmartCity.NodeMeasurementsOrBuilder getLocalsOrBuilder() {
       return getLocals();
     }
 
@@ -6015,29 +5527,29 @@ public final class SmartCity {
         return this;
       }
 
-      private cloudserver.model.SmartCity.NodeStatistics globals_ = null;
+      private cloudserver.model.SmartCity.NodeMeasurements globals_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
-          cloudserver.model.SmartCity.NodeStatistics, cloudserver.model.SmartCity.NodeStatistics.Builder, cloudserver.model.SmartCity.NodeStatisticsOrBuilder> globalsBuilder_;
+          cloudserver.model.SmartCity.NodeMeasurements, cloudserver.model.SmartCity.NodeMeasurements.Builder, cloudserver.model.SmartCity.NodeMeasurementsOrBuilder> globalsBuilder_;
       /**
-       * <code>.cloudserver.model.NodeStatistics globals = 1;</code>
+       * <code>.cloudserver.model.NodeMeasurements globals = 1;</code>
        */
       public boolean hasGlobals() {
         return globalsBuilder_ != null || globals_ != null;
       }
       /**
-       * <code>.cloudserver.model.NodeStatistics globals = 1;</code>
+       * <code>.cloudserver.model.NodeMeasurements globals = 1;</code>
        */
-      public cloudserver.model.SmartCity.NodeStatistics getGlobals() {
+      public cloudserver.model.SmartCity.NodeMeasurements getGlobals() {
         if (globalsBuilder_ == null) {
-          return globals_ == null ? cloudserver.model.SmartCity.NodeStatistics.getDefaultInstance() : globals_;
+          return globals_ == null ? cloudserver.model.SmartCity.NodeMeasurements.getDefaultInstance() : globals_;
         } else {
           return globalsBuilder_.getMessage();
         }
       }
       /**
-       * <code>.cloudserver.model.NodeStatistics globals = 1;</code>
+       * <code>.cloudserver.model.NodeMeasurements globals = 1;</code>
        */
-      public Builder setGlobals(cloudserver.model.SmartCity.NodeStatistics value) {
+      public Builder setGlobals(cloudserver.model.SmartCity.NodeMeasurements value) {
         if (globalsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -6051,10 +5563,10 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>.cloudserver.model.NodeStatistics globals = 1;</code>
+       * <code>.cloudserver.model.NodeMeasurements globals = 1;</code>
        */
       public Builder setGlobals(
-          cloudserver.model.SmartCity.NodeStatistics.Builder builderForValue) {
+          cloudserver.model.SmartCity.NodeMeasurements.Builder builderForValue) {
         if (globalsBuilder_ == null) {
           globals_ = builderForValue.build();
           onChanged();
@@ -6065,13 +5577,13 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>.cloudserver.model.NodeStatistics globals = 1;</code>
+       * <code>.cloudserver.model.NodeMeasurements globals = 1;</code>
        */
-      public Builder mergeGlobals(cloudserver.model.SmartCity.NodeStatistics value) {
+      public Builder mergeGlobals(cloudserver.model.SmartCity.NodeMeasurements value) {
         if (globalsBuilder_ == null) {
           if (globals_ != null) {
             globals_ =
-              cloudserver.model.SmartCity.NodeStatistics.newBuilder(globals_).mergeFrom(value).buildPartial();
+              cloudserver.model.SmartCity.NodeMeasurements.newBuilder(globals_).mergeFrom(value).buildPartial();
           } else {
             globals_ = value;
           }
@@ -6083,7 +5595,7 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>.cloudserver.model.NodeStatistics globals = 1;</code>
+       * <code>.cloudserver.model.NodeMeasurements globals = 1;</code>
        */
       public Builder clearGlobals() {
         if (globalsBuilder_ == null) {
@@ -6097,33 +5609,33 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>.cloudserver.model.NodeStatistics globals = 1;</code>
+       * <code>.cloudserver.model.NodeMeasurements globals = 1;</code>
        */
-      public cloudserver.model.SmartCity.NodeStatistics.Builder getGlobalsBuilder() {
+      public cloudserver.model.SmartCity.NodeMeasurements.Builder getGlobalsBuilder() {
         
         onChanged();
         return getGlobalsFieldBuilder().getBuilder();
       }
       /**
-       * <code>.cloudserver.model.NodeStatistics globals = 1;</code>
+       * <code>.cloudserver.model.NodeMeasurements globals = 1;</code>
        */
-      public cloudserver.model.SmartCity.NodeStatisticsOrBuilder getGlobalsOrBuilder() {
+      public cloudserver.model.SmartCity.NodeMeasurementsOrBuilder getGlobalsOrBuilder() {
         if (globalsBuilder_ != null) {
           return globalsBuilder_.getMessageOrBuilder();
         } else {
           return globals_ == null ?
-              cloudserver.model.SmartCity.NodeStatistics.getDefaultInstance() : globals_;
+              cloudserver.model.SmartCity.NodeMeasurements.getDefaultInstance() : globals_;
         }
       }
       /**
-       * <code>.cloudserver.model.NodeStatistics globals = 1;</code>
+       * <code>.cloudserver.model.NodeMeasurements globals = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          cloudserver.model.SmartCity.NodeStatistics, cloudserver.model.SmartCity.NodeStatistics.Builder, cloudserver.model.SmartCity.NodeStatisticsOrBuilder> 
+          cloudserver.model.SmartCity.NodeMeasurements, cloudserver.model.SmartCity.NodeMeasurements.Builder, cloudserver.model.SmartCity.NodeMeasurementsOrBuilder> 
           getGlobalsFieldBuilder() {
         if (globalsBuilder_ == null) {
           globalsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              cloudserver.model.SmartCity.NodeStatistics, cloudserver.model.SmartCity.NodeStatistics.Builder, cloudserver.model.SmartCity.NodeStatisticsOrBuilder>(
+              cloudserver.model.SmartCity.NodeMeasurements, cloudserver.model.SmartCity.NodeMeasurements.Builder, cloudserver.model.SmartCity.NodeMeasurementsOrBuilder>(
                   getGlobals(),
                   getParentForChildren(),
                   isClean());
@@ -6132,29 +5644,29 @@ public final class SmartCity {
         return globalsBuilder_;
       }
 
-      private cloudserver.model.SmartCity.NodeStatistics locals_ = null;
+      private cloudserver.model.SmartCity.NodeMeasurements locals_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
-          cloudserver.model.SmartCity.NodeStatistics, cloudserver.model.SmartCity.NodeStatistics.Builder, cloudserver.model.SmartCity.NodeStatisticsOrBuilder> localsBuilder_;
+          cloudserver.model.SmartCity.NodeMeasurements, cloudserver.model.SmartCity.NodeMeasurements.Builder, cloudserver.model.SmartCity.NodeMeasurementsOrBuilder> localsBuilder_;
       /**
-       * <code>.cloudserver.model.NodeStatistics locals = 2;</code>
+       * <code>.cloudserver.model.NodeMeasurements locals = 2;</code>
        */
       public boolean hasLocals() {
         return localsBuilder_ != null || locals_ != null;
       }
       /**
-       * <code>.cloudserver.model.NodeStatistics locals = 2;</code>
+       * <code>.cloudserver.model.NodeMeasurements locals = 2;</code>
        */
-      public cloudserver.model.SmartCity.NodeStatistics getLocals() {
+      public cloudserver.model.SmartCity.NodeMeasurements getLocals() {
         if (localsBuilder_ == null) {
-          return locals_ == null ? cloudserver.model.SmartCity.NodeStatistics.getDefaultInstance() : locals_;
+          return locals_ == null ? cloudserver.model.SmartCity.NodeMeasurements.getDefaultInstance() : locals_;
         } else {
           return localsBuilder_.getMessage();
         }
       }
       /**
-       * <code>.cloudserver.model.NodeStatistics locals = 2;</code>
+       * <code>.cloudserver.model.NodeMeasurements locals = 2;</code>
        */
-      public Builder setLocals(cloudserver.model.SmartCity.NodeStatistics value) {
+      public Builder setLocals(cloudserver.model.SmartCity.NodeMeasurements value) {
         if (localsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -6168,10 +5680,10 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>.cloudserver.model.NodeStatistics locals = 2;</code>
+       * <code>.cloudserver.model.NodeMeasurements locals = 2;</code>
        */
       public Builder setLocals(
-          cloudserver.model.SmartCity.NodeStatistics.Builder builderForValue) {
+          cloudserver.model.SmartCity.NodeMeasurements.Builder builderForValue) {
         if (localsBuilder_ == null) {
           locals_ = builderForValue.build();
           onChanged();
@@ -6182,13 +5694,13 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>.cloudserver.model.NodeStatistics locals = 2;</code>
+       * <code>.cloudserver.model.NodeMeasurements locals = 2;</code>
        */
-      public Builder mergeLocals(cloudserver.model.SmartCity.NodeStatistics value) {
+      public Builder mergeLocals(cloudserver.model.SmartCity.NodeMeasurements value) {
         if (localsBuilder_ == null) {
           if (locals_ != null) {
             locals_ =
-              cloudserver.model.SmartCity.NodeStatistics.newBuilder(locals_).mergeFrom(value).buildPartial();
+              cloudserver.model.SmartCity.NodeMeasurements.newBuilder(locals_).mergeFrom(value).buildPartial();
           } else {
             locals_ = value;
           }
@@ -6200,7 +5712,7 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>.cloudserver.model.NodeStatistics locals = 2;</code>
+       * <code>.cloudserver.model.NodeMeasurements locals = 2;</code>
        */
       public Builder clearLocals() {
         if (localsBuilder_ == null) {
@@ -6214,33 +5726,33 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>.cloudserver.model.NodeStatistics locals = 2;</code>
+       * <code>.cloudserver.model.NodeMeasurements locals = 2;</code>
        */
-      public cloudserver.model.SmartCity.NodeStatistics.Builder getLocalsBuilder() {
+      public cloudserver.model.SmartCity.NodeMeasurements.Builder getLocalsBuilder() {
         
         onChanged();
         return getLocalsFieldBuilder().getBuilder();
       }
       /**
-       * <code>.cloudserver.model.NodeStatistics locals = 2;</code>
+       * <code>.cloudserver.model.NodeMeasurements locals = 2;</code>
        */
-      public cloudserver.model.SmartCity.NodeStatisticsOrBuilder getLocalsOrBuilder() {
+      public cloudserver.model.SmartCity.NodeMeasurementsOrBuilder getLocalsOrBuilder() {
         if (localsBuilder_ != null) {
           return localsBuilder_.getMessageOrBuilder();
         } else {
           return locals_ == null ?
-              cloudserver.model.SmartCity.NodeStatistics.getDefaultInstance() : locals_;
+              cloudserver.model.SmartCity.NodeMeasurements.getDefaultInstance() : locals_;
         }
       }
       /**
-       * <code>.cloudserver.model.NodeStatistics locals = 2;</code>
+       * <code>.cloudserver.model.NodeMeasurements locals = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          cloudserver.model.SmartCity.NodeStatistics, cloudserver.model.SmartCity.NodeStatistics.Builder, cloudserver.model.SmartCity.NodeStatisticsOrBuilder> 
+          cloudserver.model.SmartCity.NodeMeasurements, cloudserver.model.SmartCity.NodeMeasurements.Builder, cloudserver.model.SmartCity.NodeMeasurementsOrBuilder> 
           getLocalsFieldBuilder() {
         if (localsBuilder_ == null) {
           localsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              cloudserver.model.SmartCity.NodeStatistics, cloudserver.model.SmartCity.NodeStatistics.Builder, cloudserver.model.SmartCity.NodeStatisticsOrBuilder>(
+              cloudserver.model.SmartCity.NodeMeasurements, cloudserver.model.SmartCity.NodeMeasurements.Builder, cloudserver.model.SmartCity.NodeMeasurementsOrBuilder>(
                   getLocals(),
                   getParentForChildren(),
                   isClean());
@@ -6302,27 +5814,27 @@ public final class SmartCity {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+     * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
      */
     java.util.List<cloudserver.model.SmartCity.NodeMeasurement> 
-        getMeasurementsList();
+        getStatisticsList();
     /**
-     * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+     * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
      */
-    cloudserver.model.SmartCity.NodeMeasurement getMeasurements(int index);
+    cloudserver.model.SmartCity.NodeMeasurement getStatistics(int index);
     /**
-     * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+     * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
      */
-    int getMeasurementsCount();
+    int getStatisticsCount();
     /**
-     * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+     * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
      */
     java.util.List<? extends cloudserver.model.SmartCity.NodeMeasurementOrBuilder> 
-        getMeasurementsOrBuilderList();
+        getStatisticsOrBuilderList();
     /**
-     * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+     * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
      */
-    cloudserver.model.SmartCity.NodeMeasurementOrBuilder getMeasurementsOrBuilder(
+    cloudserver.model.SmartCity.NodeMeasurementOrBuilder getStatisticsOrBuilder(
         int index);
   }
   /**
@@ -6338,7 +5850,7 @@ public final class SmartCity {
       super(builder);
     }
     private NodeMeasurements() {
-      measurements_ = java.util.Collections.emptyList();
+      statistics_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -6371,10 +5883,10 @@ public final class SmartCity {
             }
             case 10: {
               if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-                measurements_ = new java.util.ArrayList<cloudserver.model.SmartCity.NodeMeasurement>();
+                statistics_ = new java.util.ArrayList<cloudserver.model.SmartCity.NodeMeasurement>();
                 mutable_bitField0_ |= 0x00000001;
               }
-              measurements_.add(
+              statistics_.add(
                   input.readMessage(cloudserver.model.SmartCity.NodeMeasurement.parser(), extensionRegistry));
               break;
             }
@@ -6387,7 +5899,7 @@ public final class SmartCity {
             e).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-          measurements_ = java.util.Collections.unmodifiableList(measurements_);
+          statistics_ = java.util.Collections.unmodifiableList(statistics_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -6405,39 +5917,39 @@ public final class SmartCity {
               cloudserver.model.SmartCity.NodeMeasurements.class, cloudserver.model.SmartCity.NodeMeasurements.Builder.class);
     }
 
-    public static final int MEASUREMENTS_FIELD_NUMBER = 1;
-    private java.util.List<cloudserver.model.SmartCity.NodeMeasurement> measurements_;
+    public static final int STATISTICS_FIELD_NUMBER = 1;
+    private java.util.List<cloudserver.model.SmartCity.NodeMeasurement> statistics_;
     /**
-     * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+     * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
      */
-    public java.util.List<cloudserver.model.SmartCity.NodeMeasurement> getMeasurementsList() {
-      return measurements_;
+    public java.util.List<cloudserver.model.SmartCity.NodeMeasurement> getStatisticsList() {
+      return statistics_;
     }
     /**
-     * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+     * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
      */
     public java.util.List<? extends cloudserver.model.SmartCity.NodeMeasurementOrBuilder> 
-        getMeasurementsOrBuilderList() {
-      return measurements_;
+        getStatisticsOrBuilderList() {
+      return statistics_;
     }
     /**
-     * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+     * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
      */
-    public int getMeasurementsCount() {
-      return measurements_.size();
+    public int getStatisticsCount() {
+      return statistics_.size();
     }
     /**
-     * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+     * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
      */
-    public cloudserver.model.SmartCity.NodeMeasurement getMeasurements(int index) {
-      return measurements_.get(index);
+    public cloudserver.model.SmartCity.NodeMeasurement getStatistics(int index) {
+      return statistics_.get(index);
     }
     /**
-     * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+     * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
      */
-    public cloudserver.model.SmartCity.NodeMeasurementOrBuilder getMeasurementsOrBuilder(
+    public cloudserver.model.SmartCity.NodeMeasurementOrBuilder getStatisticsOrBuilder(
         int index) {
-      return measurements_.get(index);
+      return statistics_.get(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -6452,8 +5964,8 @@ public final class SmartCity {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      for (int i = 0; i < measurements_.size(); i++) {
-        output.writeMessage(1, measurements_.get(i));
+      for (int i = 0; i < statistics_.size(); i++) {
+        output.writeMessage(1, statistics_.get(i));
       }
       unknownFields.writeTo(output);
     }
@@ -6463,9 +5975,9 @@ public final class SmartCity {
       if (size != -1) return size;
 
       size = 0;
-      for (int i = 0; i < measurements_.size(); i++) {
+      for (int i = 0; i < statistics_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, measurements_.get(i));
+          .computeMessageSize(1, statistics_.get(i));
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -6483,8 +5995,8 @@ public final class SmartCity {
       cloudserver.model.SmartCity.NodeMeasurements other = (cloudserver.model.SmartCity.NodeMeasurements) obj;
 
       boolean result = true;
-      result = result && getMeasurementsList()
-          .equals(other.getMeasurementsList());
+      result = result && getStatisticsList()
+          .equals(other.getStatisticsList());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -6496,9 +6008,9 @@ public final class SmartCity {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (getMeasurementsCount() > 0) {
-        hash = (37 * hash) + MEASUREMENTS_FIELD_NUMBER;
-        hash = (53 * hash) + getMeasurementsList().hashCode();
+      if (getStatisticsCount() > 0) {
+        hash = (37 * hash) + STATISTICS_FIELD_NUMBER;
+        hash = (53 * hash) + getStatisticsList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -6625,16 +6137,16 @@ public final class SmartCity {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
-          getMeasurementsFieldBuilder();
+          getStatisticsFieldBuilder();
         }
       }
       public Builder clear() {
         super.clear();
-        if (measurementsBuilder_ == null) {
-          measurements_ = java.util.Collections.emptyList();
+        if (statisticsBuilder_ == null) {
+          statistics_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000001);
         } else {
-          measurementsBuilder_.clear();
+          statisticsBuilder_.clear();
         }
         return this;
       }
@@ -6659,14 +6171,14 @@ public final class SmartCity {
       public cloudserver.model.SmartCity.NodeMeasurements buildPartial() {
         cloudserver.model.SmartCity.NodeMeasurements result = new cloudserver.model.SmartCity.NodeMeasurements(this);
         int from_bitField0_ = bitField0_;
-        if (measurementsBuilder_ == null) {
+        if (statisticsBuilder_ == null) {
           if (((bitField0_ & 0x00000001) == 0x00000001)) {
-            measurements_ = java.util.Collections.unmodifiableList(measurements_);
+            statistics_ = java.util.Collections.unmodifiableList(statistics_);
             bitField0_ = (bitField0_ & ~0x00000001);
           }
-          result.measurements_ = measurements_;
+          result.statistics_ = statistics_;
         } else {
-          result.measurements_ = measurementsBuilder_.build();
+          result.statistics_ = statisticsBuilder_.build();
         }
         onBuilt();
         return result;
@@ -6709,29 +6221,29 @@ public final class SmartCity {
 
       public Builder mergeFrom(cloudserver.model.SmartCity.NodeMeasurements other) {
         if (other == cloudserver.model.SmartCity.NodeMeasurements.getDefaultInstance()) return this;
-        if (measurementsBuilder_ == null) {
-          if (!other.measurements_.isEmpty()) {
-            if (measurements_.isEmpty()) {
-              measurements_ = other.measurements_;
+        if (statisticsBuilder_ == null) {
+          if (!other.statistics_.isEmpty()) {
+            if (statistics_.isEmpty()) {
+              statistics_ = other.statistics_;
               bitField0_ = (bitField0_ & ~0x00000001);
             } else {
-              ensureMeasurementsIsMutable();
-              measurements_.addAll(other.measurements_);
+              ensureStatisticsIsMutable();
+              statistics_.addAll(other.statistics_);
             }
             onChanged();
           }
         } else {
-          if (!other.measurements_.isEmpty()) {
-            if (measurementsBuilder_.isEmpty()) {
-              measurementsBuilder_.dispose();
-              measurementsBuilder_ = null;
-              measurements_ = other.measurements_;
+          if (!other.statistics_.isEmpty()) {
+            if (statisticsBuilder_.isEmpty()) {
+              statisticsBuilder_.dispose();
+              statisticsBuilder_ = null;
+              statistics_ = other.statistics_;
               bitField0_ = (bitField0_ & ~0x00000001);
-              measurementsBuilder_ = 
+              statisticsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                   getMeasurementsFieldBuilder() : null;
+                   getStatisticsFieldBuilder() : null;
             } else {
-              measurementsBuilder_.addAllMessages(other.measurements_);
+              statisticsBuilder_.addAllMessages(other.statistics_);
             }
           }
         }
@@ -6763,244 +6275,244 @@ public final class SmartCity {
       }
       private int bitField0_;
 
-      private java.util.List<cloudserver.model.SmartCity.NodeMeasurement> measurements_ =
+      private java.util.List<cloudserver.model.SmartCity.NodeMeasurement> statistics_ =
         java.util.Collections.emptyList();
-      private void ensureMeasurementsIsMutable() {
+      private void ensureStatisticsIsMutable() {
         if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-          measurements_ = new java.util.ArrayList<cloudserver.model.SmartCity.NodeMeasurement>(measurements_);
+          statistics_ = new java.util.ArrayList<cloudserver.model.SmartCity.NodeMeasurement>(statistics_);
           bitField0_ |= 0x00000001;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          cloudserver.model.SmartCity.NodeMeasurement, cloudserver.model.SmartCity.NodeMeasurement.Builder, cloudserver.model.SmartCity.NodeMeasurementOrBuilder> measurementsBuilder_;
+          cloudserver.model.SmartCity.NodeMeasurement, cloudserver.model.SmartCity.NodeMeasurement.Builder, cloudserver.model.SmartCity.NodeMeasurementOrBuilder> statisticsBuilder_;
 
       /**
-       * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
        */
-      public java.util.List<cloudserver.model.SmartCity.NodeMeasurement> getMeasurementsList() {
-        if (measurementsBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(measurements_);
+      public java.util.List<cloudserver.model.SmartCity.NodeMeasurement> getStatisticsList() {
+        if (statisticsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(statistics_);
         } else {
-          return measurementsBuilder_.getMessageList();
+          return statisticsBuilder_.getMessageList();
         }
       }
       /**
-       * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
        */
-      public int getMeasurementsCount() {
-        if (measurementsBuilder_ == null) {
-          return measurements_.size();
+      public int getStatisticsCount() {
+        if (statisticsBuilder_ == null) {
+          return statistics_.size();
         } else {
-          return measurementsBuilder_.getCount();
+          return statisticsBuilder_.getCount();
         }
       }
       /**
-       * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
        */
-      public cloudserver.model.SmartCity.NodeMeasurement getMeasurements(int index) {
-        if (measurementsBuilder_ == null) {
-          return measurements_.get(index);
+      public cloudserver.model.SmartCity.NodeMeasurement getStatistics(int index) {
+        if (statisticsBuilder_ == null) {
+          return statistics_.get(index);
         } else {
-          return measurementsBuilder_.getMessage(index);
+          return statisticsBuilder_.getMessage(index);
         }
       }
       /**
-       * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
        */
-      public Builder setMeasurements(
+      public Builder setStatistics(
           int index, cloudserver.model.SmartCity.NodeMeasurement value) {
-        if (measurementsBuilder_ == null) {
+        if (statisticsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureMeasurementsIsMutable();
-          measurements_.set(index, value);
+          ensureStatisticsIsMutable();
+          statistics_.set(index, value);
           onChanged();
         } else {
-          measurementsBuilder_.setMessage(index, value);
+          statisticsBuilder_.setMessage(index, value);
         }
         return this;
       }
       /**
-       * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
        */
-      public Builder setMeasurements(
+      public Builder setStatistics(
           int index, cloudserver.model.SmartCity.NodeMeasurement.Builder builderForValue) {
-        if (measurementsBuilder_ == null) {
-          ensureMeasurementsIsMutable();
-          measurements_.set(index, builderForValue.build());
+        if (statisticsBuilder_ == null) {
+          ensureStatisticsIsMutable();
+          statistics_.set(index, builderForValue.build());
           onChanged();
         } else {
-          measurementsBuilder_.setMessage(index, builderForValue.build());
+          statisticsBuilder_.setMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
        */
-      public Builder addMeasurements(cloudserver.model.SmartCity.NodeMeasurement value) {
-        if (measurementsBuilder_ == null) {
+      public Builder addStatistics(cloudserver.model.SmartCity.NodeMeasurement value) {
+        if (statisticsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureMeasurementsIsMutable();
-          measurements_.add(value);
+          ensureStatisticsIsMutable();
+          statistics_.add(value);
           onChanged();
         } else {
-          measurementsBuilder_.addMessage(value);
+          statisticsBuilder_.addMessage(value);
         }
         return this;
       }
       /**
-       * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
        */
-      public Builder addMeasurements(
+      public Builder addStatistics(
           int index, cloudserver.model.SmartCity.NodeMeasurement value) {
-        if (measurementsBuilder_ == null) {
+        if (statisticsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureMeasurementsIsMutable();
-          measurements_.add(index, value);
+          ensureStatisticsIsMutable();
+          statistics_.add(index, value);
           onChanged();
         } else {
-          measurementsBuilder_.addMessage(index, value);
+          statisticsBuilder_.addMessage(index, value);
         }
         return this;
       }
       /**
-       * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
        */
-      public Builder addMeasurements(
+      public Builder addStatistics(
           cloudserver.model.SmartCity.NodeMeasurement.Builder builderForValue) {
-        if (measurementsBuilder_ == null) {
-          ensureMeasurementsIsMutable();
-          measurements_.add(builderForValue.build());
+        if (statisticsBuilder_ == null) {
+          ensureStatisticsIsMutable();
+          statistics_.add(builderForValue.build());
           onChanged();
         } else {
-          measurementsBuilder_.addMessage(builderForValue.build());
+          statisticsBuilder_.addMessage(builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
        */
-      public Builder addMeasurements(
+      public Builder addStatistics(
           int index, cloudserver.model.SmartCity.NodeMeasurement.Builder builderForValue) {
-        if (measurementsBuilder_ == null) {
-          ensureMeasurementsIsMutable();
-          measurements_.add(index, builderForValue.build());
+        if (statisticsBuilder_ == null) {
+          ensureStatisticsIsMutable();
+          statistics_.add(index, builderForValue.build());
           onChanged();
         } else {
-          measurementsBuilder_.addMessage(index, builderForValue.build());
+          statisticsBuilder_.addMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
        */
-      public Builder addAllMeasurements(
+      public Builder addAllStatistics(
           java.lang.Iterable<? extends cloudserver.model.SmartCity.NodeMeasurement> values) {
-        if (measurementsBuilder_ == null) {
-          ensureMeasurementsIsMutable();
+        if (statisticsBuilder_ == null) {
+          ensureStatisticsIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, measurements_);
+              values, statistics_);
           onChanged();
         } else {
-          measurementsBuilder_.addAllMessages(values);
+          statisticsBuilder_.addAllMessages(values);
         }
         return this;
       }
       /**
-       * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
        */
-      public Builder clearMeasurements() {
-        if (measurementsBuilder_ == null) {
-          measurements_ = java.util.Collections.emptyList();
+      public Builder clearStatistics() {
+        if (statisticsBuilder_ == null) {
+          statistics_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000001);
           onChanged();
         } else {
-          measurementsBuilder_.clear();
+          statisticsBuilder_.clear();
         }
         return this;
       }
       /**
-       * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
        */
-      public Builder removeMeasurements(int index) {
-        if (measurementsBuilder_ == null) {
-          ensureMeasurementsIsMutable();
-          measurements_.remove(index);
+      public Builder removeStatistics(int index) {
+        if (statisticsBuilder_ == null) {
+          ensureStatisticsIsMutable();
+          statistics_.remove(index);
           onChanged();
         } else {
-          measurementsBuilder_.remove(index);
+          statisticsBuilder_.remove(index);
         }
         return this;
       }
       /**
-       * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
        */
-      public cloudserver.model.SmartCity.NodeMeasurement.Builder getMeasurementsBuilder(
+      public cloudserver.model.SmartCity.NodeMeasurement.Builder getStatisticsBuilder(
           int index) {
-        return getMeasurementsFieldBuilder().getBuilder(index);
+        return getStatisticsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
        */
-      public cloudserver.model.SmartCity.NodeMeasurementOrBuilder getMeasurementsOrBuilder(
+      public cloudserver.model.SmartCity.NodeMeasurementOrBuilder getStatisticsOrBuilder(
           int index) {
-        if (measurementsBuilder_ == null) {
-          return measurements_.get(index);  } else {
-          return measurementsBuilder_.getMessageOrBuilder(index);
+        if (statisticsBuilder_ == null) {
+          return statistics_.get(index);  } else {
+          return statisticsBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
        */
       public java.util.List<? extends cloudserver.model.SmartCity.NodeMeasurementOrBuilder> 
-           getMeasurementsOrBuilderList() {
-        if (measurementsBuilder_ != null) {
-          return measurementsBuilder_.getMessageOrBuilderList();
+           getStatisticsOrBuilderList() {
+        if (statisticsBuilder_ != null) {
+          return statisticsBuilder_.getMessageOrBuilderList();
         } else {
-          return java.util.Collections.unmodifiableList(measurements_);
+          return java.util.Collections.unmodifiableList(statistics_);
         }
       }
       /**
-       * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
        */
-      public cloudserver.model.SmartCity.NodeMeasurement.Builder addMeasurementsBuilder() {
-        return getMeasurementsFieldBuilder().addBuilder(
+      public cloudserver.model.SmartCity.NodeMeasurement.Builder addStatisticsBuilder() {
+        return getStatisticsFieldBuilder().addBuilder(
             cloudserver.model.SmartCity.NodeMeasurement.getDefaultInstance());
       }
       /**
-       * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
        */
-      public cloudserver.model.SmartCity.NodeMeasurement.Builder addMeasurementsBuilder(
+      public cloudserver.model.SmartCity.NodeMeasurement.Builder addStatisticsBuilder(
           int index) {
-        return getMeasurementsFieldBuilder().addBuilder(
+        return getStatisticsFieldBuilder().addBuilder(
             index, cloudserver.model.SmartCity.NodeMeasurement.getDefaultInstance());
       }
       /**
-       * <code>repeated .cloudserver.model.NodeMeasurement measurements = 1;</code>
+       * <code>repeated .cloudserver.model.NodeMeasurement statistics = 1;</code>
        */
       public java.util.List<cloudserver.model.SmartCity.NodeMeasurement.Builder> 
-           getMeasurementsBuilderList() {
-        return getMeasurementsFieldBuilder().getBuilderList();
+           getStatisticsBuilderList() {
+        return getStatisticsFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
           cloudserver.model.SmartCity.NodeMeasurement, cloudserver.model.SmartCity.NodeMeasurement.Builder, cloudserver.model.SmartCity.NodeMeasurementOrBuilder> 
-          getMeasurementsFieldBuilder() {
-        if (measurementsBuilder_ == null) {
-          measurementsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+          getStatisticsFieldBuilder() {
+        if (statisticsBuilder_ == null) {
+          statisticsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               cloudserver.model.SmartCity.NodeMeasurement, cloudserver.model.SmartCity.NodeMeasurement.Builder, cloudserver.model.SmartCity.NodeMeasurementOrBuilder>(
-                  measurements_,
+                  statistics_,
                   ((bitField0_ & 0x00000001) == 0x00000001),
                   getParentForChildren(),
                   isClean());
-          measurements_ = null;
+          statistics_ = null;
         }
-        return measurementsBuilder_;
+        return statisticsBuilder_;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -7046,760 +6558,6 @@ public final class SmartCity {
     }
 
     public cloudserver.model.SmartCity.NodeMeasurements getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
-  public interface NodeStatisticsOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:cloudserver.model.NodeStatistics)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-     */
-    java.util.List<cloudserver.model.SmartCity.NodeStatistic> 
-        getStatisticsList();
-    /**
-     * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-     */
-    cloudserver.model.SmartCity.NodeStatistic getStatistics(int index);
-    /**
-     * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-     */
-    int getStatisticsCount();
-    /**
-     * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-     */
-    java.util.List<? extends cloudserver.model.SmartCity.NodeStatisticOrBuilder> 
-        getStatisticsOrBuilderList();
-    /**
-     * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-     */
-    cloudserver.model.SmartCity.NodeStatisticOrBuilder getStatisticsOrBuilder(
-        int index);
-  }
-  /**
-   * Protobuf type {@code cloudserver.model.NodeStatistics}
-   */
-  public  static final class NodeStatistics extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:cloudserver.model.NodeStatistics)
-      NodeStatisticsOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use NodeStatistics.newBuilder() to construct.
-    private NodeStatistics(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private NodeStatistics() {
-      statistics_ = java.util.Collections.emptyList();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private NodeStatistics(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownFieldProto3(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-                statistics_ = new java.util.ArrayList<cloudserver.model.SmartCity.NodeStatistic>();
-                mutable_bitField0_ |= 0x00000001;
-              }
-              statistics_.add(
-                  input.readMessage(cloudserver.model.SmartCity.NodeStatistic.parser(), extensionRegistry));
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-          statistics_ = java.util.Collections.unmodifiableList(statistics_);
-        }
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeStatistics_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeStatistics_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              cloudserver.model.SmartCity.NodeStatistics.class, cloudserver.model.SmartCity.NodeStatistics.Builder.class);
-    }
-
-    public static final int STATISTICS_FIELD_NUMBER = 1;
-    private java.util.List<cloudserver.model.SmartCity.NodeStatistic> statistics_;
-    /**
-     * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-     */
-    public java.util.List<cloudserver.model.SmartCity.NodeStatistic> getStatisticsList() {
-      return statistics_;
-    }
-    /**
-     * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-     */
-    public java.util.List<? extends cloudserver.model.SmartCity.NodeStatisticOrBuilder> 
-        getStatisticsOrBuilderList() {
-      return statistics_;
-    }
-    /**
-     * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-     */
-    public int getStatisticsCount() {
-      return statistics_.size();
-    }
-    /**
-     * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-     */
-    public cloudserver.model.SmartCity.NodeStatistic getStatistics(int index) {
-      return statistics_.get(index);
-    }
-    /**
-     * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-     */
-    public cloudserver.model.SmartCity.NodeStatisticOrBuilder getStatisticsOrBuilder(
-        int index) {
-      return statistics_.get(index);
-    }
-
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      for (int i = 0; i < statistics_.size(); i++) {
-        output.writeMessage(1, statistics_.get(i));
-      }
-      unknownFields.writeTo(output);
-    }
-
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      for (int i = 0; i < statistics_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, statistics_.get(i));
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof cloudserver.model.SmartCity.NodeStatistics)) {
-        return super.equals(obj);
-      }
-      cloudserver.model.SmartCity.NodeStatistics other = (cloudserver.model.SmartCity.NodeStatistics) obj;
-
-      boolean result = true;
-      result = result && getStatisticsList()
-          .equals(other.getStatisticsList());
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      if (getStatisticsCount() > 0) {
-        hash = (37 * hash) + STATISTICS_FIELD_NUMBER;
-        hash = (53 * hash) + getStatisticsList().hashCode();
-      }
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static cloudserver.model.SmartCity.NodeStatistics parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static cloudserver.model.SmartCity.NodeStatistics parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static cloudserver.model.SmartCity.NodeStatistics parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static cloudserver.model.SmartCity.NodeStatistics parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static cloudserver.model.SmartCity.NodeStatistics parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static cloudserver.model.SmartCity.NodeStatistics parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static cloudserver.model.SmartCity.NodeStatistics parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static cloudserver.model.SmartCity.NodeStatistics parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static cloudserver.model.SmartCity.NodeStatistics parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static cloudserver.model.SmartCity.NodeStatistics parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static cloudserver.model.SmartCity.NodeStatistics parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static cloudserver.model.SmartCity.NodeStatistics parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(cloudserver.model.SmartCity.NodeStatistics prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code cloudserver.model.NodeStatistics}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:cloudserver.model.NodeStatistics)
-        cloudserver.model.SmartCity.NodeStatisticsOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeStatistics_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeStatistics_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                cloudserver.model.SmartCity.NodeStatistics.class, cloudserver.model.SmartCity.NodeStatistics.Builder.class);
-      }
-
-      // Construct using cloudserver.model.SmartCity.NodeStatistics.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-          getStatisticsFieldBuilder();
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        if (statisticsBuilder_ == null) {
-          statistics_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
-        } else {
-          statisticsBuilder_.clear();
-        }
-        return this;
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeStatistics_descriptor;
-      }
-
-      public cloudserver.model.SmartCity.NodeStatistics getDefaultInstanceForType() {
-        return cloudserver.model.SmartCity.NodeStatistics.getDefaultInstance();
-      }
-
-      public cloudserver.model.SmartCity.NodeStatistics build() {
-        cloudserver.model.SmartCity.NodeStatistics result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public cloudserver.model.SmartCity.NodeStatistics buildPartial() {
-        cloudserver.model.SmartCity.NodeStatistics result = new cloudserver.model.SmartCity.NodeStatistics(this);
-        int from_bitField0_ = bitField0_;
-        if (statisticsBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) == 0x00000001)) {
-            statistics_ = java.util.Collections.unmodifiableList(statistics_);
-            bitField0_ = (bitField0_ & ~0x00000001);
-          }
-          result.statistics_ = statistics_;
-        } else {
-          result.statistics_ = statisticsBuilder_.build();
-        }
-        onBuilt();
-        return result;
-      }
-
-      public Builder clone() {
-        return (Builder) super.clone();
-      }
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return (Builder) super.setField(field, value);
-      }
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
-      }
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
-      }
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
-      }
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return (Builder) super.addRepeatedField(field, value);
-      }
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof cloudserver.model.SmartCity.NodeStatistics) {
-          return mergeFrom((cloudserver.model.SmartCity.NodeStatistics)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(cloudserver.model.SmartCity.NodeStatistics other) {
-        if (other == cloudserver.model.SmartCity.NodeStatistics.getDefaultInstance()) return this;
-        if (statisticsBuilder_ == null) {
-          if (!other.statistics_.isEmpty()) {
-            if (statistics_.isEmpty()) {
-              statistics_ = other.statistics_;
-              bitField0_ = (bitField0_ & ~0x00000001);
-            } else {
-              ensureStatisticsIsMutable();
-              statistics_.addAll(other.statistics_);
-            }
-            onChanged();
-          }
-        } else {
-          if (!other.statistics_.isEmpty()) {
-            if (statisticsBuilder_.isEmpty()) {
-              statisticsBuilder_.dispose();
-              statisticsBuilder_ = null;
-              statistics_ = other.statistics_;
-              bitField0_ = (bitField0_ & ~0x00000001);
-              statisticsBuilder_ = 
-                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                   getStatisticsFieldBuilder() : null;
-            } else {
-              statisticsBuilder_.addAllMessages(other.statistics_);
-            }
-          }
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        cloudserver.model.SmartCity.NodeStatistics parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (cloudserver.model.SmartCity.NodeStatistics) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private java.util.List<cloudserver.model.SmartCity.NodeStatistic> statistics_ =
-        java.util.Collections.emptyList();
-      private void ensureStatisticsIsMutable() {
-        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-          statistics_ = new java.util.ArrayList<cloudserver.model.SmartCity.NodeStatistic>(statistics_);
-          bitField0_ |= 0x00000001;
-         }
-      }
-
-      private com.google.protobuf.RepeatedFieldBuilderV3<
-          cloudserver.model.SmartCity.NodeStatistic, cloudserver.model.SmartCity.NodeStatistic.Builder, cloudserver.model.SmartCity.NodeStatisticOrBuilder> statisticsBuilder_;
-
-      /**
-       * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-       */
-      public java.util.List<cloudserver.model.SmartCity.NodeStatistic> getStatisticsList() {
-        if (statisticsBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(statistics_);
-        } else {
-          return statisticsBuilder_.getMessageList();
-        }
-      }
-      /**
-       * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-       */
-      public int getStatisticsCount() {
-        if (statisticsBuilder_ == null) {
-          return statistics_.size();
-        } else {
-          return statisticsBuilder_.getCount();
-        }
-      }
-      /**
-       * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-       */
-      public cloudserver.model.SmartCity.NodeStatistic getStatistics(int index) {
-        if (statisticsBuilder_ == null) {
-          return statistics_.get(index);
-        } else {
-          return statisticsBuilder_.getMessage(index);
-        }
-      }
-      /**
-       * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-       */
-      public Builder setStatistics(
-          int index, cloudserver.model.SmartCity.NodeStatistic value) {
-        if (statisticsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureStatisticsIsMutable();
-          statistics_.set(index, value);
-          onChanged();
-        } else {
-          statisticsBuilder_.setMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-       */
-      public Builder setStatistics(
-          int index, cloudserver.model.SmartCity.NodeStatistic.Builder builderForValue) {
-        if (statisticsBuilder_ == null) {
-          ensureStatisticsIsMutable();
-          statistics_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          statisticsBuilder_.setMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-       */
-      public Builder addStatistics(cloudserver.model.SmartCity.NodeStatistic value) {
-        if (statisticsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureStatisticsIsMutable();
-          statistics_.add(value);
-          onChanged();
-        } else {
-          statisticsBuilder_.addMessage(value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-       */
-      public Builder addStatistics(
-          int index, cloudserver.model.SmartCity.NodeStatistic value) {
-        if (statisticsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureStatisticsIsMutable();
-          statistics_.add(index, value);
-          onChanged();
-        } else {
-          statisticsBuilder_.addMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-       */
-      public Builder addStatistics(
-          cloudserver.model.SmartCity.NodeStatistic.Builder builderForValue) {
-        if (statisticsBuilder_ == null) {
-          ensureStatisticsIsMutable();
-          statistics_.add(builderForValue.build());
-          onChanged();
-        } else {
-          statisticsBuilder_.addMessage(builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-       */
-      public Builder addStatistics(
-          int index, cloudserver.model.SmartCity.NodeStatistic.Builder builderForValue) {
-        if (statisticsBuilder_ == null) {
-          ensureStatisticsIsMutable();
-          statistics_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          statisticsBuilder_.addMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-       */
-      public Builder addAllStatistics(
-          java.lang.Iterable<? extends cloudserver.model.SmartCity.NodeStatistic> values) {
-        if (statisticsBuilder_ == null) {
-          ensureStatisticsIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, statistics_);
-          onChanged();
-        } else {
-          statisticsBuilder_.addAllMessages(values);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-       */
-      public Builder clearStatistics() {
-        if (statisticsBuilder_ == null) {
-          statistics_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
-          onChanged();
-        } else {
-          statisticsBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-       */
-      public Builder removeStatistics(int index) {
-        if (statisticsBuilder_ == null) {
-          ensureStatisticsIsMutable();
-          statistics_.remove(index);
-          onChanged();
-        } else {
-          statisticsBuilder_.remove(index);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-       */
-      public cloudserver.model.SmartCity.NodeStatistic.Builder getStatisticsBuilder(
-          int index) {
-        return getStatisticsFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-       */
-      public cloudserver.model.SmartCity.NodeStatisticOrBuilder getStatisticsOrBuilder(
-          int index) {
-        if (statisticsBuilder_ == null) {
-          return statistics_.get(index);  } else {
-          return statisticsBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-       */
-      public java.util.List<? extends cloudserver.model.SmartCity.NodeStatisticOrBuilder> 
-           getStatisticsOrBuilderList() {
-        if (statisticsBuilder_ != null) {
-          return statisticsBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(statistics_);
-        }
-      }
-      /**
-       * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-       */
-      public cloudserver.model.SmartCity.NodeStatistic.Builder addStatisticsBuilder() {
-        return getStatisticsFieldBuilder().addBuilder(
-            cloudserver.model.SmartCity.NodeStatistic.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-       */
-      public cloudserver.model.SmartCity.NodeStatistic.Builder addStatisticsBuilder(
-          int index) {
-        return getStatisticsFieldBuilder().addBuilder(
-            index, cloudserver.model.SmartCity.NodeStatistic.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .cloudserver.model.NodeStatistic statistics = 1;</code>
-       */
-      public java.util.List<cloudserver.model.SmartCity.NodeStatistic.Builder> 
-           getStatisticsBuilderList() {
-        return getStatisticsFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilderV3<
-          cloudserver.model.SmartCity.NodeStatistic, cloudserver.model.SmartCity.NodeStatistic.Builder, cloudserver.model.SmartCity.NodeStatisticOrBuilder> 
-          getStatisticsFieldBuilder() {
-        if (statisticsBuilder_ == null) {
-          statisticsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              cloudserver.model.SmartCity.NodeStatistic, cloudserver.model.SmartCity.NodeStatistic.Builder, cloudserver.model.SmartCity.NodeStatisticOrBuilder>(
-                  statistics_,
-                  ((bitField0_ & 0x00000001) == 0x00000001),
-                  getParentForChildren(),
-                  isClean());
-          statistics_ = null;
-        }
-        return statisticsBuilder_;
-      }
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFieldsProto3(unknownFields);
-      }
-
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:cloudserver.model.NodeStatistics)
-    }
-
-    // @@protoc_insertion_point(class_scope:cloudserver.model.NodeStatistics)
-    private static final cloudserver.model.SmartCity.NodeStatistics DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new cloudserver.model.SmartCity.NodeStatistics();
-    }
-
-    public static cloudserver.model.SmartCity.NodeStatistics getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<NodeStatistics>
-        PARSER = new com.google.protobuf.AbstractParser<NodeStatistics>() {
-      public NodeStatistics parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-          return new NodeStatistics(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<NodeStatistics> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<NodeStatistics> getParserForType() {
-      return PARSER;
-    }
-
-    public cloudserver.model.SmartCity.NodeStatistics getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -8322,8 +7080,8 @@ public final class SmartCity {
 
   }
 
-  public interface InitializationMassageOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:cloudserver.model.InitializationMassage)
+  public interface InitializationMessageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:cloudserver.model.InitializationMessage)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -8336,33 +7094,33 @@ public final class SmartCity {
     cloudserver.model.SmartCity.ErrorType getErrortype();
 
     /**
-     * <code>.cloudserver.model.Nodes nodes = 2;</code>
+     * <code>.cloudserver.model.NodeInsertedResponse response = 2;</code>
      */
-    boolean hasNodes();
+    boolean hasResponse();
     /**
-     * <code>.cloudserver.model.Nodes nodes = 2;</code>
+     * <code>.cloudserver.model.NodeInsertedResponse response = 2;</code>
      */
-    cloudserver.model.SmartCity.Nodes getNodes();
+    cloudserver.model.SmartCity.NodeInsertedResponse getResponse();
     /**
-     * <code>.cloudserver.model.Nodes nodes = 2;</code>
+     * <code>.cloudserver.model.NodeInsertedResponse response = 2;</code>
      */
-    cloudserver.model.SmartCity.NodesOrBuilder getNodesOrBuilder();
+    cloudserver.model.SmartCity.NodeInsertedResponseOrBuilder getResponseOrBuilder();
 
-    public cloudserver.model.SmartCity.InitializationMassage.ErrorOrResultCase getErrorOrResultCase();
+    public cloudserver.model.SmartCity.InitializationMessage.ErrorOrResultCase getErrorOrResultCase();
   }
   /**
-   * Protobuf type {@code cloudserver.model.InitializationMassage}
+   * Protobuf type {@code cloudserver.model.InitializationMessage}
    */
-  public  static final class InitializationMassage extends
+  public  static final class InitializationMessage extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:cloudserver.model.InitializationMassage)
-      InitializationMassageOrBuilder {
+      // @@protoc_insertion_point(message_implements:cloudserver.model.InitializationMessage)
+      InitializationMessageOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use InitializationMassage.newBuilder() to construct.
-    private InitializationMassage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use InitializationMessage.newBuilder() to construct.
+    private InitializationMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private InitializationMassage() {
+    private InitializationMessage() {
     }
 
     @java.lang.Override
@@ -8370,7 +7128,7 @@ public final class SmartCity {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private InitializationMassage(
+    private InitializationMessage(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -8400,14 +7158,14 @@ public final class SmartCity {
               break;
             }
             case 18: {
-              cloudserver.model.SmartCity.Nodes.Builder subBuilder = null;
+              cloudserver.model.SmartCity.NodeInsertedResponse.Builder subBuilder = null;
               if (errorOrResultCase_ == 2) {
-                subBuilder = ((cloudserver.model.SmartCity.Nodes) errorOrResult_).toBuilder();
+                subBuilder = ((cloudserver.model.SmartCity.NodeInsertedResponse) errorOrResult_).toBuilder();
               }
               errorOrResult_ =
-                  input.readMessage(cloudserver.model.SmartCity.Nodes.parser(), extensionRegistry);
+                  input.readMessage(cloudserver.model.SmartCity.NodeInsertedResponse.parser(), extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom((cloudserver.model.SmartCity.Nodes) errorOrResult_);
+                subBuilder.mergeFrom((cloudserver.model.SmartCity.NodeInsertedResponse) errorOrResult_);
                 errorOrResult_ = subBuilder.buildPartial();
               }
               errorOrResultCase_ = 2;
@@ -8427,14 +7185,14 @@ public final class SmartCity {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return cloudserver.model.SmartCity.internal_static_cloudserver_model_InitializationMassage_descriptor;
+      return cloudserver.model.SmartCity.internal_static_cloudserver_model_InitializationMessage_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return cloudserver.model.SmartCity.internal_static_cloudserver_model_InitializationMassage_fieldAccessorTable
+      return cloudserver.model.SmartCity.internal_static_cloudserver_model_InitializationMessage_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              cloudserver.model.SmartCity.InitializationMassage.class, cloudserver.model.SmartCity.InitializationMassage.Builder.class);
+              cloudserver.model.SmartCity.InitializationMessage.class, cloudserver.model.SmartCity.InitializationMessage.Builder.class);
     }
 
     private int errorOrResultCase_ = 0;
@@ -8442,7 +7200,7 @@ public final class SmartCity {
     public enum ErrorOrResultCase
         implements com.google.protobuf.Internal.EnumLite {
       ERRORTYPE(1),
-      NODES(2),
+      RESPONSE(2),
       ERRORORRESULT_NOT_SET(0);
       private final int value;
       private ErrorOrResultCase(int value) {
@@ -8459,7 +7217,7 @@ public final class SmartCity {
       public static ErrorOrResultCase forNumber(int value) {
         switch (value) {
           case 1: return ERRORTYPE;
-          case 2: return NODES;
+          case 2: return RESPONSE;
           case 0: return ERRORORRESULT_NOT_SET;
           default: return null;
         }
@@ -8497,30 +7255,30 @@ public final class SmartCity {
       return cloudserver.model.SmartCity.ErrorType.COORD_NOT_ALLOWED;
     }
 
-    public static final int NODES_FIELD_NUMBER = 2;
+    public static final int RESPONSE_FIELD_NUMBER = 2;
     /**
-     * <code>.cloudserver.model.Nodes nodes = 2;</code>
+     * <code>.cloudserver.model.NodeInsertedResponse response = 2;</code>
      */
-    public boolean hasNodes() {
+    public boolean hasResponse() {
       return errorOrResultCase_ == 2;
     }
     /**
-     * <code>.cloudserver.model.Nodes nodes = 2;</code>
+     * <code>.cloudserver.model.NodeInsertedResponse response = 2;</code>
      */
-    public cloudserver.model.SmartCity.Nodes getNodes() {
+    public cloudserver.model.SmartCity.NodeInsertedResponse getResponse() {
       if (errorOrResultCase_ == 2) {
-         return (cloudserver.model.SmartCity.Nodes) errorOrResult_;
+         return (cloudserver.model.SmartCity.NodeInsertedResponse) errorOrResult_;
       }
-      return cloudserver.model.SmartCity.Nodes.getDefaultInstance();
+      return cloudserver.model.SmartCity.NodeInsertedResponse.getDefaultInstance();
     }
     /**
-     * <code>.cloudserver.model.Nodes nodes = 2;</code>
+     * <code>.cloudserver.model.NodeInsertedResponse response = 2;</code>
      */
-    public cloudserver.model.SmartCity.NodesOrBuilder getNodesOrBuilder() {
+    public cloudserver.model.SmartCity.NodeInsertedResponseOrBuilder getResponseOrBuilder() {
       if (errorOrResultCase_ == 2) {
-         return (cloudserver.model.SmartCity.Nodes) errorOrResult_;
+         return (cloudserver.model.SmartCity.NodeInsertedResponse) errorOrResult_;
       }
-      return cloudserver.model.SmartCity.Nodes.getDefaultInstance();
+      return cloudserver.model.SmartCity.NodeInsertedResponse.getDefaultInstance();
     }
 
     private byte memoizedIsInitialized = -1;
@@ -8539,7 +7297,7 @@ public final class SmartCity {
         output.writeEnum(1, ((java.lang.Integer) errorOrResult_));
       }
       if (errorOrResultCase_ == 2) {
-        output.writeMessage(2, (cloudserver.model.SmartCity.Nodes) errorOrResult_);
+        output.writeMessage(2, (cloudserver.model.SmartCity.NodeInsertedResponse) errorOrResult_);
       }
       unknownFields.writeTo(output);
     }
@@ -8555,7 +7313,7 @@ public final class SmartCity {
       }
       if (errorOrResultCase_ == 2) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, (cloudserver.model.SmartCity.Nodes) errorOrResult_);
+          .computeMessageSize(2, (cloudserver.model.SmartCity.NodeInsertedResponse) errorOrResult_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -8567,10 +7325,10 @@ public final class SmartCity {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof cloudserver.model.SmartCity.InitializationMassage)) {
+      if (!(obj instanceof cloudserver.model.SmartCity.InitializationMessage)) {
         return super.equals(obj);
       }
-      cloudserver.model.SmartCity.InitializationMassage other = (cloudserver.model.SmartCity.InitializationMassage) obj;
+      cloudserver.model.SmartCity.InitializationMessage other = (cloudserver.model.SmartCity.InitializationMessage) obj;
 
       boolean result = true;
       result = result && getErrorOrResultCase().equals(
@@ -8582,8 +7340,8 @@ public final class SmartCity {
               == other.getErrortypeValue();
           break;
         case 2:
-          result = result && getNodes()
-              .equals(other.getNodes());
+          result = result && getResponse()
+              .equals(other.getResponse());
           break;
         case 0:
         default:
@@ -8605,8 +7363,8 @@ public final class SmartCity {
           hash = (53 * hash) + getErrortypeValue();
           break;
         case 2:
-          hash = (37 * hash) + NODES_FIELD_NUMBER;
-          hash = (53 * hash) + getNodes().hashCode();
+          hash = (37 * hash) + RESPONSE_FIELD_NUMBER;
+          hash = (53 * hash) + getResponse().hashCode();
           break;
         case 0:
         default:
@@ -8616,69 +7374,69 @@ public final class SmartCity {
       return hash;
     }
 
-    public static cloudserver.model.SmartCity.InitializationMassage parseFrom(
+    public static cloudserver.model.SmartCity.InitializationMessage parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static cloudserver.model.SmartCity.InitializationMassage parseFrom(
+    public static cloudserver.model.SmartCity.InitializationMessage parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static cloudserver.model.SmartCity.InitializationMassage parseFrom(
+    public static cloudserver.model.SmartCity.InitializationMessage parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static cloudserver.model.SmartCity.InitializationMassage parseFrom(
+    public static cloudserver.model.SmartCity.InitializationMessage parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static cloudserver.model.SmartCity.InitializationMassage parseFrom(byte[] data)
+    public static cloudserver.model.SmartCity.InitializationMessage parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static cloudserver.model.SmartCity.InitializationMassage parseFrom(
+    public static cloudserver.model.SmartCity.InitializationMessage parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static cloudserver.model.SmartCity.InitializationMassage parseFrom(java.io.InputStream input)
+    public static cloudserver.model.SmartCity.InitializationMessage parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static cloudserver.model.SmartCity.InitializationMassage parseFrom(
+    public static cloudserver.model.SmartCity.InitializationMessage parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static cloudserver.model.SmartCity.InitializationMassage parseDelimitedFrom(java.io.InputStream input)
+    public static cloudserver.model.SmartCity.InitializationMessage parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static cloudserver.model.SmartCity.InitializationMassage parseDelimitedFrom(
+    public static cloudserver.model.SmartCity.InitializationMessage parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static cloudserver.model.SmartCity.InitializationMassage parseFrom(
+    public static cloudserver.model.SmartCity.InitializationMessage parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static cloudserver.model.SmartCity.InitializationMassage parseFrom(
+    public static cloudserver.model.SmartCity.InitializationMessage parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -8690,7 +7448,7 @@ public final class SmartCity {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(cloudserver.model.SmartCity.InitializationMassage prototype) {
+    public static Builder newBuilder(cloudserver.model.SmartCity.InitializationMessage prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() {
@@ -8705,25 +7463,25 @@ public final class SmartCity {
       return builder;
     }
     /**
-     * Protobuf type {@code cloudserver.model.InitializationMassage}
+     * Protobuf type {@code cloudserver.model.InitializationMessage}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:cloudserver.model.InitializationMassage)
-        cloudserver.model.SmartCity.InitializationMassageOrBuilder {
+        // @@protoc_insertion_point(builder_implements:cloudserver.model.InitializationMessage)
+        cloudserver.model.SmartCity.InitializationMessageOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return cloudserver.model.SmartCity.internal_static_cloudserver_model_InitializationMassage_descriptor;
+        return cloudserver.model.SmartCity.internal_static_cloudserver_model_InitializationMessage_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return cloudserver.model.SmartCity.internal_static_cloudserver_model_InitializationMassage_fieldAccessorTable
+        return cloudserver.model.SmartCity.internal_static_cloudserver_model_InitializationMessage_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                cloudserver.model.SmartCity.InitializationMassage.class, cloudserver.model.SmartCity.InitializationMassage.Builder.class);
+                cloudserver.model.SmartCity.InitializationMessage.class, cloudserver.model.SmartCity.InitializationMessage.Builder.class);
       }
 
-      // Construct using cloudserver.model.SmartCity.InitializationMassage.newBuilder()
+      // Construct using cloudserver.model.SmartCity.InitializationMessage.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -8747,31 +7505,31 @@ public final class SmartCity {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return cloudserver.model.SmartCity.internal_static_cloudserver_model_InitializationMassage_descriptor;
+        return cloudserver.model.SmartCity.internal_static_cloudserver_model_InitializationMessage_descriptor;
       }
 
-      public cloudserver.model.SmartCity.InitializationMassage getDefaultInstanceForType() {
-        return cloudserver.model.SmartCity.InitializationMassage.getDefaultInstance();
+      public cloudserver.model.SmartCity.InitializationMessage getDefaultInstanceForType() {
+        return cloudserver.model.SmartCity.InitializationMessage.getDefaultInstance();
       }
 
-      public cloudserver.model.SmartCity.InitializationMassage build() {
-        cloudserver.model.SmartCity.InitializationMassage result = buildPartial();
+      public cloudserver.model.SmartCity.InitializationMessage build() {
+        cloudserver.model.SmartCity.InitializationMessage result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public cloudserver.model.SmartCity.InitializationMassage buildPartial() {
-        cloudserver.model.SmartCity.InitializationMassage result = new cloudserver.model.SmartCity.InitializationMassage(this);
+      public cloudserver.model.SmartCity.InitializationMessage buildPartial() {
+        cloudserver.model.SmartCity.InitializationMessage result = new cloudserver.model.SmartCity.InitializationMessage(this);
         if (errorOrResultCase_ == 1) {
           result.errorOrResult_ = errorOrResult_;
         }
         if (errorOrResultCase_ == 2) {
-          if (nodesBuilder_ == null) {
+          if (responseBuilder_ == null) {
             result.errorOrResult_ = errorOrResult_;
           } else {
-            result.errorOrResult_ = nodesBuilder_.build();
+            result.errorOrResult_ = responseBuilder_.build();
           }
         }
         result.errorOrResultCase_ = errorOrResultCase_;
@@ -8806,23 +7564,23 @@ public final class SmartCity {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof cloudserver.model.SmartCity.InitializationMassage) {
-          return mergeFrom((cloudserver.model.SmartCity.InitializationMassage)other);
+        if (other instanceof cloudserver.model.SmartCity.InitializationMessage) {
+          return mergeFrom((cloudserver.model.SmartCity.InitializationMessage)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(cloudserver.model.SmartCity.InitializationMassage other) {
-        if (other == cloudserver.model.SmartCity.InitializationMassage.getDefaultInstance()) return this;
+      public Builder mergeFrom(cloudserver.model.SmartCity.InitializationMessage other) {
+        if (other == cloudserver.model.SmartCity.InitializationMessage.getDefaultInstance()) return this;
         switch (other.getErrorOrResultCase()) {
           case ERRORTYPE: {
             setErrortypeValue(other.getErrortypeValue());
             break;
           }
-          case NODES: {
-            mergeNodes(other.getNodes());
+          case RESPONSE: {
+            mergeResponse(other.getResponse());
             break;
           }
           case ERRORORRESULT_NOT_SET: {
@@ -8842,11 +7600,11 @@ public final class SmartCity {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        cloudserver.model.SmartCity.InitializationMassage parsedMessage = null;
+        cloudserver.model.SmartCity.InitializationMessage parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (cloudserver.model.SmartCity.InitializationMassage) e.getUnfinishedMessage();
+          parsedMessage = (cloudserver.model.SmartCity.InitializationMessage) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -8925,67 +7683,67 @@ public final class SmartCity {
       }
 
       private com.google.protobuf.SingleFieldBuilderV3<
-          cloudserver.model.SmartCity.Nodes, cloudserver.model.SmartCity.Nodes.Builder, cloudserver.model.SmartCity.NodesOrBuilder> nodesBuilder_;
+          cloudserver.model.SmartCity.NodeInsertedResponse, cloudserver.model.SmartCity.NodeInsertedResponse.Builder, cloudserver.model.SmartCity.NodeInsertedResponseOrBuilder> responseBuilder_;
       /**
-       * <code>.cloudserver.model.Nodes nodes = 2;</code>
+       * <code>.cloudserver.model.NodeInsertedResponse response = 2;</code>
        */
-      public boolean hasNodes() {
+      public boolean hasResponse() {
         return errorOrResultCase_ == 2;
       }
       /**
-       * <code>.cloudserver.model.Nodes nodes = 2;</code>
+       * <code>.cloudserver.model.NodeInsertedResponse response = 2;</code>
        */
-      public cloudserver.model.SmartCity.Nodes getNodes() {
-        if (nodesBuilder_ == null) {
+      public cloudserver.model.SmartCity.NodeInsertedResponse getResponse() {
+        if (responseBuilder_ == null) {
           if (errorOrResultCase_ == 2) {
-            return (cloudserver.model.SmartCity.Nodes) errorOrResult_;
+            return (cloudserver.model.SmartCity.NodeInsertedResponse) errorOrResult_;
           }
-          return cloudserver.model.SmartCity.Nodes.getDefaultInstance();
+          return cloudserver.model.SmartCity.NodeInsertedResponse.getDefaultInstance();
         } else {
           if (errorOrResultCase_ == 2) {
-            return nodesBuilder_.getMessage();
+            return responseBuilder_.getMessage();
           }
-          return cloudserver.model.SmartCity.Nodes.getDefaultInstance();
+          return cloudserver.model.SmartCity.NodeInsertedResponse.getDefaultInstance();
         }
       }
       /**
-       * <code>.cloudserver.model.Nodes nodes = 2;</code>
+       * <code>.cloudserver.model.NodeInsertedResponse response = 2;</code>
        */
-      public Builder setNodes(cloudserver.model.SmartCity.Nodes value) {
-        if (nodesBuilder_ == null) {
+      public Builder setResponse(cloudserver.model.SmartCity.NodeInsertedResponse value) {
+        if (responseBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
           errorOrResult_ = value;
           onChanged();
         } else {
-          nodesBuilder_.setMessage(value);
+          responseBuilder_.setMessage(value);
         }
         errorOrResultCase_ = 2;
         return this;
       }
       /**
-       * <code>.cloudserver.model.Nodes nodes = 2;</code>
+       * <code>.cloudserver.model.NodeInsertedResponse response = 2;</code>
        */
-      public Builder setNodes(
-          cloudserver.model.SmartCity.Nodes.Builder builderForValue) {
-        if (nodesBuilder_ == null) {
+      public Builder setResponse(
+          cloudserver.model.SmartCity.NodeInsertedResponse.Builder builderForValue) {
+        if (responseBuilder_ == null) {
           errorOrResult_ = builderForValue.build();
           onChanged();
         } else {
-          nodesBuilder_.setMessage(builderForValue.build());
+          responseBuilder_.setMessage(builderForValue.build());
         }
         errorOrResultCase_ = 2;
         return this;
       }
       /**
-       * <code>.cloudserver.model.Nodes nodes = 2;</code>
+       * <code>.cloudserver.model.NodeInsertedResponse response = 2;</code>
        */
-      public Builder mergeNodes(cloudserver.model.SmartCity.Nodes value) {
-        if (nodesBuilder_ == null) {
+      public Builder mergeResponse(cloudserver.model.SmartCity.NodeInsertedResponse value) {
+        if (responseBuilder_ == null) {
           if (errorOrResultCase_ == 2 &&
-              errorOrResult_ != cloudserver.model.SmartCity.Nodes.getDefaultInstance()) {
-            errorOrResult_ = cloudserver.model.SmartCity.Nodes.newBuilder((cloudserver.model.SmartCity.Nodes) errorOrResult_)
+              errorOrResult_ != cloudserver.model.SmartCity.NodeInsertedResponse.getDefaultInstance()) {
+            errorOrResult_ = cloudserver.model.SmartCity.NodeInsertedResponse.newBuilder((cloudserver.model.SmartCity.NodeInsertedResponse) errorOrResult_)
                 .mergeFrom(value).buildPartial();
           } else {
             errorOrResult_ = value;
@@ -8993,18 +7751,18 @@ public final class SmartCity {
           onChanged();
         } else {
           if (errorOrResultCase_ == 2) {
-            nodesBuilder_.mergeFrom(value);
+            responseBuilder_.mergeFrom(value);
           }
-          nodesBuilder_.setMessage(value);
+          responseBuilder_.setMessage(value);
         }
         errorOrResultCase_ = 2;
         return this;
       }
       /**
-       * <code>.cloudserver.model.Nodes nodes = 2;</code>
+       * <code>.cloudserver.model.NodeInsertedResponse response = 2;</code>
        */
-      public Builder clearNodes() {
-        if (nodesBuilder_ == null) {
+      public Builder clearResponse() {
+        if (responseBuilder_ == null) {
           if (errorOrResultCase_ == 2) {
             errorOrResultCase_ = 0;
             errorOrResult_ = null;
@@ -9015,49 +7773,49 @@ public final class SmartCity {
             errorOrResultCase_ = 0;
             errorOrResult_ = null;
           }
-          nodesBuilder_.clear();
+          responseBuilder_.clear();
         }
         return this;
       }
       /**
-       * <code>.cloudserver.model.Nodes nodes = 2;</code>
+       * <code>.cloudserver.model.NodeInsertedResponse response = 2;</code>
        */
-      public cloudserver.model.SmartCity.Nodes.Builder getNodesBuilder() {
-        return getNodesFieldBuilder().getBuilder();
+      public cloudserver.model.SmartCity.NodeInsertedResponse.Builder getResponseBuilder() {
+        return getResponseFieldBuilder().getBuilder();
       }
       /**
-       * <code>.cloudserver.model.Nodes nodes = 2;</code>
+       * <code>.cloudserver.model.NodeInsertedResponse response = 2;</code>
        */
-      public cloudserver.model.SmartCity.NodesOrBuilder getNodesOrBuilder() {
-        if ((errorOrResultCase_ == 2) && (nodesBuilder_ != null)) {
-          return nodesBuilder_.getMessageOrBuilder();
+      public cloudserver.model.SmartCity.NodeInsertedResponseOrBuilder getResponseOrBuilder() {
+        if ((errorOrResultCase_ == 2) && (responseBuilder_ != null)) {
+          return responseBuilder_.getMessageOrBuilder();
         } else {
           if (errorOrResultCase_ == 2) {
-            return (cloudserver.model.SmartCity.Nodes) errorOrResult_;
+            return (cloudserver.model.SmartCity.NodeInsertedResponse) errorOrResult_;
           }
-          return cloudserver.model.SmartCity.Nodes.getDefaultInstance();
+          return cloudserver.model.SmartCity.NodeInsertedResponse.getDefaultInstance();
         }
       }
       /**
-       * <code>.cloudserver.model.Nodes nodes = 2;</code>
+       * <code>.cloudserver.model.NodeInsertedResponse response = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          cloudserver.model.SmartCity.Nodes, cloudserver.model.SmartCity.Nodes.Builder, cloudserver.model.SmartCity.NodesOrBuilder> 
-          getNodesFieldBuilder() {
-        if (nodesBuilder_ == null) {
+          cloudserver.model.SmartCity.NodeInsertedResponse, cloudserver.model.SmartCity.NodeInsertedResponse.Builder, cloudserver.model.SmartCity.NodeInsertedResponseOrBuilder> 
+          getResponseFieldBuilder() {
+        if (responseBuilder_ == null) {
           if (!(errorOrResultCase_ == 2)) {
-            errorOrResult_ = cloudserver.model.SmartCity.Nodes.getDefaultInstance();
+            errorOrResult_ = cloudserver.model.SmartCity.NodeInsertedResponse.getDefaultInstance();
           }
-          nodesBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              cloudserver.model.SmartCity.Nodes, cloudserver.model.SmartCity.Nodes.Builder, cloudserver.model.SmartCity.NodesOrBuilder>(
-                  (cloudserver.model.SmartCity.Nodes) errorOrResult_,
+          responseBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              cloudserver.model.SmartCity.NodeInsertedResponse, cloudserver.model.SmartCity.NodeInsertedResponse.Builder, cloudserver.model.SmartCity.NodeInsertedResponseOrBuilder>(
+                  (cloudserver.model.SmartCity.NodeInsertedResponse) errorOrResult_,
                   getParentForChildren(),
                   isClean());
           errorOrResult_ = null;
         }
         errorOrResultCase_ = 2;
         onChanged();;
-        return nodesBuilder_;
+        return responseBuilder_;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -9070,39 +7828,39 @@ public final class SmartCity {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:cloudserver.model.InitializationMassage)
+      // @@protoc_insertion_point(builder_scope:cloudserver.model.InitializationMessage)
     }
 
-    // @@protoc_insertion_point(class_scope:cloudserver.model.InitializationMassage)
-    private static final cloudserver.model.SmartCity.InitializationMassage DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:cloudserver.model.InitializationMessage)
+    private static final cloudserver.model.SmartCity.InitializationMessage DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new cloudserver.model.SmartCity.InitializationMassage();
+      DEFAULT_INSTANCE = new cloudserver.model.SmartCity.InitializationMessage();
     }
 
-    public static cloudserver.model.SmartCity.InitializationMassage getDefaultInstance() {
+    public static cloudserver.model.SmartCity.InitializationMessage getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<InitializationMassage>
-        PARSER = new com.google.protobuf.AbstractParser<InitializationMassage>() {
-      public InitializationMassage parsePartialFrom(
+    private static final com.google.protobuf.Parser<InitializationMessage>
+        PARSER = new com.google.protobuf.AbstractParser<InitializationMessage>() {
+      public InitializationMessage parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new InitializationMassage(input, extensionRegistry);
+          return new InitializationMessage(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<InitializationMassage> parser() {
+    public static com.google.protobuf.Parser<InitializationMessage> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<InitializationMassage> getParserForType() {
+    public com.google.protobuf.Parser<InitializationMessage> getParserForType() {
       return PARSER;
     }
 
-    public cloudserver.model.SmartCity.InitializationMassage getDefaultInstanceForType() {
+    public cloudserver.model.SmartCity.InitializationMessage getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -9676,17 +8434,17 @@ public final class SmartCity {
     cloudserver.model.SmartCity.NodeOrBuilder getNodeOrBuilder();
 
     /**
-     * <code>.cloudserver.model.NodeStatisticMessage statisticMsg = 3;</code>
+     * <code>.cloudserver.model.NodeMeasurementMessage statisticMsg = 3;</code>
      */
     boolean hasStatisticMsg();
     /**
-     * <code>.cloudserver.model.NodeStatisticMessage statisticMsg = 3;</code>
+     * <code>.cloudserver.model.NodeMeasurementMessage statisticMsg = 3;</code>
      */
-    cloudserver.model.SmartCity.NodeStatisticMessage getStatisticMsg();
+    cloudserver.model.SmartCity.NodeMeasurementMessage getStatisticMsg();
     /**
-     * <code>.cloudserver.model.NodeStatisticMessage statisticMsg = 3;</code>
+     * <code>.cloudserver.model.NodeMeasurementMessage statisticMsg = 3;</code>
      */
-    cloudserver.model.SmartCity.NodeStatisticMessageOrBuilder getStatisticMsgOrBuilder();
+    cloudserver.model.SmartCity.NodeMeasurementMessageOrBuilder getStatisticMsgOrBuilder();
 
     public cloudserver.model.SmartCity.MessageRequest.HelloOrNodeStatsCase getHelloOrNodeStatsCase();
   }
@@ -9755,14 +8513,14 @@ public final class SmartCity {
               break;
             }
             case 26: {
-              cloudserver.model.SmartCity.NodeStatisticMessage.Builder subBuilder = null;
+              cloudserver.model.SmartCity.NodeMeasurementMessage.Builder subBuilder = null;
               if (helloOrNodeStatsCase_ == 3) {
-                subBuilder = ((cloudserver.model.SmartCity.NodeStatisticMessage) helloOrNodeStats_).toBuilder();
+                subBuilder = ((cloudserver.model.SmartCity.NodeMeasurementMessage) helloOrNodeStats_).toBuilder();
               }
               helloOrNodeStats_ =
-                  input.readMessage(cloudserver.model.SmartCity.NodeStatisticMessage.parser(), extensionRegistry);
+                  input.readMessage(cloudserver.model.SmartCity.NodeMeasurementMessage.parser(), extensionRegistry);
               if (subBuilder != null) {
-                subBuilder.mergeFrom((cloudserver.model.SmartCity.NodeStatisticMessage) helloOrNodeStats_);
+                subBuilder.mergeFrom((cloudserver.model.SmartCity.NodeMeasurementMessage) helloOrNodeStats_);
                 helloOrNodeStats_ = subBuilder.buildPartial();
               }
               helloOrNodeStatsCase_ = 3;
@@ -9874,28 +8632,28 @@ public final class SmartCity {
 
     public static final int STATISTICMSG_FIELD_NUMBER = 3;
     /**
-     * <code>.cloudserver.model.NodeStatisticMessage statisticMsg = 3;</code>
+     * <code>.cloudserver.model.NodeMeasurementMessage statisticMsg = 3;</code>
      */
     public boolean hasStatisticMsg() {
       return helloOrNodeStatsCase_ == 3;
     }
     /**
-     * <code>.cloudserver.model.NodeStatisticMessage statisticMsg = 3;</code>
+     * <code>.cloudserver.model.NodeMeasurementMessage statisticMsg = 3;</code>
      */
-    public cloudserver.model.SmartCity.NodeStatisticMessage getStatisticMsg() {
+    public cloudserver.model.SmartCity.NodeMeasurementMessage getStatisticMsg() {
       if (helloOrNodeStatsCase_ == 3) {
-         return (cloudserver.model.SmartCity.NodeStatisticMessage) helloOrNodeStats_;
+         return (cloudserver.model.SmartCity.NodeMeasurementMessage) helloOrNodeStats_;
       }
-      return cloudserver.model.SmartCity.NodeStatisticMessage.getDefaultInstance();
+      return cloudserver.model.SmartCity.NodeMeasurementMessage.getDefaultInstance();
     }
     /**
-     * <code>.cloudserver.model.NodeStatisticMessage statisticMsg = 3;</code>
+     * <code>.cloudserver.model.NodeMeasurementMessage statisticMsg = 3;</code>
      */
-    public cloudserver.model.SmartCity.NodeStatisticMessageOrBuilder getStatisticMsgOrBuilder() {
+    public cloudserver.model.SmartCity.NodeMeasurementMessageOrBuilder getStatisticMsgOrBuilder() {
       if (helloOrNodeStatsCase_ == 3) {
-         return (cloudserver.model.SmartCity.NodeStatisticMessage) helloOrNodeStats_;
+         return (cloudserver.model.SmartCity.NodeMeasurementMessage) helloOrNodeStats_;
       }
-      return cloudserver.model.SmartCity.NodeStatisticMessage.getDefaultInstance();
+      return cloudserver.model.SmartCity.NodeMeasurementMessage.getDefaultInstance();
     }
 
     private byte memoizedIsInitialized = -1;
@@ -9917,7 +8675,7 @@ public final class SmartCity {
         output.writeMessage(2, (cloudserver.model.SmartCity.Node) helloOrNodeStats_);
       }
       if (helloOrNodeStatsCase_ == 3) {
-        output.writeMessage(3, (cloudserver.model.SmartCity.NodeStatisticMessage) helloOrNodeStats_);
+        output.writeMessage(3, (cloudserver.model.SmartCity.NodeMeasurementMessage) helloOrNodeStats_);
       }
       unknownFields.writeTo(output);
     }
@@ -9937,7 +8695,7 @@ public final class SmartCity {
       }
       if (helloOrNodeStatsCase_ == 3) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, (cloudserver.model.SmartCity.NodeStatisticMessage) helloOrNodeStats_);
+          .computeMessageSize(3, (cloudserver.model.SmartCity.NodeMeasurementMessage) helloOrNodeStats_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -10447,33 +9205,33 @@ public final class SmartCity {
       }
 
       private com.google.protobuf.SingleFieldBuilderV3<
-          cloudserver.model.SmartCity.NodeStatisticMessage, cloudserver.model.SmartCity.NodeStatisticMessage.Builder, cloudserver.model.SmartCity.NodeStatisticMessageOrBuilder> statisticMsgBuilder_;
+          cloudserver.model.SmartCity.NodeMeasurementMessage, cloudserver.model.SmartCity.NodeMeasurementMessage.Builder, cloudserver.model.SmartCity.NodeMeasurementMessageOrBuilder> statisticMsgBuilder_;
       /**
-       * <code>.cloudserver.model.NodeStatisticMessage statisticMsg = 3;</code>
+       * <code>.cloudserver.model.NodeMeasurementMessage statisticMsg = 3;</code>
        */
       public boolean hasStatisticMsg() {
         return helloOrNodeStatsCase_ == 3;
       }
       /**
-       * <code>.cloudserver.model.NodeStatisticMessage statisticMsg = 3;</code>
+       * <code>.cloudserver.model.NodeMeasurementMessage statisticMsg = 3;</code>
        */
-      public cloudserver.model.SmartCity.NodeStatisticMessage getStatisticMsg() {
+      public cloudserver.model.SmartCity.NodeMeasurementMessage getStatisticMsg() {
         if (statisticMsgBuilder_ == null) {
           if (helloOrNodeStatsCase_ == 3) {
-            return (cloudserver.model.SmartCity.NodeStatisticMessage) helloOrNodeStats_;
+            return (cloudserver.model.SmartCity.NodeMeasurementMessage) helloOrNodeStats_;
           }
-          return cloudserver.model.SmartCity.NodeStatisticMessage.getDefaultInstance();
+          return cloudserver.model.SmartCity.NodeMeasurementMessage.getDefaultInstance();
         } else {
           if (helloOrNodeStatsCase_ == 3) {
             return statisticMsgBuilder_.getMessage();
           }
-          return cloudserver.model.SmartCity.NodeStatisticMessage.getDefaultInstance();
+          return cloudserver.model.SmartCity.NodeMeasurementMessage.getDefaultInstance();
         }
       }
       /**
-       * <code>.cloudserver.model.NodeStatisticMessage statisticMsg = 3;</code>
+       * <code>.cloudserver.model.NodeMeasurementMessage statisticMsg = 3;</code>
        */
-      public Builder setStatisticMsg(cloudserver.model.SmartCity.NodeStatisticMessage value) {
+      public Builder setStatisticMsg(cloudserver.model.SmartCity.NodeMeasurementMessage value) {
         if (statisticMsgBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -10487,10 +9245,10 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>.cloudserver.model.NodeStatisticMessage statisticMsg = 3;</code>
+       * <code>.cloudserver.model.NodeMeasurementMessage statisticMsg = 3;</code>
        */
       public Builder setStatisticMsg(
-          cloudserver.model.SmartCity.NodeStatisticMessage.Builder builderForValue) {
+          cloudserver.model.SmartCity.NodeMeasurementMessage.Builder builderForValue) {
         if (statisticMsgBuilder_ == null) {
           helloOrNodeStats_ = builderForValue.build();
           onChanged();
@@ -10501,13 +9259,13 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>.cloudserver.model.NodeStatisticMessage statisticMsg = 3;</code>
+       * <code>.cloudserver.model.NodeMeasurementMessage statisticMsg = 3;</code>
        */
-      public Builder mergeStatisticMsg(cloudserver.model.SmartCity.NodeStatisticMessage value) {
+      public Builder mergeStatisticMsg(cloudserver.model.SmartCity.NodeMeasurementMessage value) {
         if (statisticMsgBuilder_ == null) {
           if (helloOrNodeStatsCase_ == 3 &&
-              helloOrNodeStats_ != cloudserver.model.SmartCity.NodeStatisticMessage.getDefaultInstance()) {
-            helloOrNodeStats_ = cloudserver.model.SmartCity.NodeStatisticMessage.newBuilder((cloudserver.model.SmartCity.NodeStatisticMessage) helloOrNodeStats_)
+              helloOrNodeStats_ != cloudserver.model.SmartCity.NodeMeasurementMessage.getDefaultInstance()) {
+            helloOrNodeStats_ = cloudserver.model.SmartCity.NodeMeasurementMessage.newBuilder((cloudserver.model.SmartCity.NodeMeasurementMessage) helloOrNodeStats_)
                 .mergeFrom(value).buildPartial();
           } else {
             helloOrNodeStats_ = value;
@@ -10523,7 +9281,7 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>.cloudserver.model.NodeStatisticMessage statisticMsg = 3;</code>
+       * <code>.cloudserver.model.NodeMeasurementMessage statisticMsg = 3;</code>
        */
       public Builder clearStatisticMsg() {
         if (statisticMsgBuilder_ == null) {
@@ -10542,37 +9300,37 @@ public final class SmartCity {
         return this;
       }
       /**
-       * <code>.cloudserver.model.NodeStatisticMessage statisticMsg = 3;</code>
+       * <code>.cloudserver.model.NodeMeasurementMessage statisticMsg = 3;</code>
        */
-      public cloudserver.model.SmartCity.NodeStatisticMessage.Builder getStatisticMsgBuilder() {
+      public cloudserver.model.SmartCity.NodeMeasurementMessage.Builder getStatisticMsgBuilder() {
         return getStatisticMsgFieldBuilder().getBuilder();
       }
       /**
-       * <code>.cloudserver.model.NodeStatisticMessage statisticMsg = 3;</code>
+       * <code>.cloudserver.model.NodeMeasurementMessage statisticMsg = 3;</code>
        */
-      public cloudserver.model.SmartCity.NodeStatisticMessageOrBuilder getStatisticMsgOrBuilder() {
+      public cloudserver.model.SmartCity.NodeMeasurementMessageOrBuilder getStatisticMsgOrBuilder() {
         if ((helloOrNodeStatsCase_ == 3) && (statisticMsgBuilder_ != null)) {
           return statisticMsgBuilder_.getMessageOrBuilder();
         } else {
           if (helloOrNodeStatsCase_ == 3) {
-            return (cloudserver.model.SmartCity.NodeStatisticMessage) helloOrNodeStats_;
+            return (cloudserver.model.SmartCity.NodeMeasurementMessage) helloOrNodeStats_;
           }
-          return cloudserver.model.SmartCity.NodeStatisticMessage.getDefaultInstance();
+          return cloudserver.model.SmartCity.NodeMeasurementMessage.getDefaultInstance();
         }
       }
       /**
-       * <code>.cloudserver.model.NodeStatisticMessage statisticMsg = 3;</code>
+       * <code>.cloudserver.model.NodeMeasurementMessage statisticMsg = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
-          cloudserver.model.SmartCity.NodeStatisticMessage, cloudserver.model.SmartCity.NodeStatisticMessage.Builder, cloudserver.model.SmartCity.NodeStatisticMessageOrBuilder> 
+          cloudserver.model.SmartCity.NodeMeasurementMessage, cloudserver.model.SmartCity.NodeMeasurementMessage.Builder, cloudserver.model.SmartCity.NodeMeasurementMessageOrBuilder> 
           getStatisticMsgFieldBuilder() {
         if (statisticMsgBuilder_ == null) {
           if (!(helloOrNodeStatsCase_ == 3)) {
-            helloOrNodeStats_ = cloudserver.model.SmartCity.NodeStatisticMessage.getDefaultInstance();
+            helloOrNodeStats_ = cloudserver.model.SmartCity.NodeMeasurementMessage.getDefaultInstance();
           }
           statisticMsgBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              cloudserver.model.SmartCity.NodeStatisticMessage, cloudserver.model.SmartCity.NodeStatisticMessage.Builder, cloudserver.model.SmartCity.NodeStatisticMessageOrBuilder>(
-                  (cloudserver.model.SmartCity.NodeStatisticMessage) helloOrNodeStats_,
+              cloudserver.model.SmartCity.NodeMeasurementMessage, cloudserver.model.SmartCity.NodeMeasurementMessage.Builder, cloudserver.model.SmartCity.NodeMeasurementMessageOrBuilder>(
+                  (cloudserver.model.SmartCity.NodeMeasurementMessage) helloOrNodeStats_,
                   getParentForChildren(),
                   isClean());
           helloOrNodeStats_ = null;
@@ -10630,6 +9388,779 @@ public final class SmartCity {
 
   }
 
+  public interface NodeInsertedResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:cloudserver.model.NodeInsertedResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>.cloudserver.model.Node father = 1;</code>
+     */
+    boolean hasFather();
+    /**
+     * <code>.cloudserver.model.Node father = 1;</code>
+     */
+    cloudserver.model.SmartCity.Node getFather();
+    /**
+     * <code>.cloudserver.model.Node father = 1;</code>
+     */
+    cloudserver.model.SmartCity.NodeOrBuilder getFatherOrBuilder();
+
+    /**
+     * <code>.cloudserver.model.Nodes allNodes = 2;</code>
+     */
+    boolean hasAllNodes();
+    /**
+     * <code>.cloudserver.model.Nodes allNodes = 2;</code>
+     */
+    cloudserver.model.SmartCity.Nodes getAllNodes();
+    /**
+     * <code>.cloudserver.model.Nodes allNodes = 2;</code>
+     */
+    cloudserver.model.SmartCity.NodesOrBuilder getAllNodesOrBuilder();
+  }
+  /**
+   * Protobuf type {@code cloudserver.model.NodeInsertedResponse}
+   */
+  public  static final class NodeInsertedResponse extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:cloudserver.model.NodeInsertedResponse)
+      NodeInsertedResponseOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use NodeInsertedResponse.newBuilder() to construct.
+    private NodeInsertedResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private NodeInsertedResponse() {
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private NodeInsertedResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              cloudserver.model.SmartCity.Node.Builder subBuilder = null;
+              if (father_ != null) {
+                subBuilder = father_.toBuilder();
+              }
+              father_ = input.readMessage(cloudserver.model.SmartCity.Node.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(father_);
+                father_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 18: {
+              cloudserver.model.SmartCity.Nodes.Builder subBuilder = null;
+              if (allNodes_ != null) {
+                subBuilder = allNodes_.toBuilder();
+              }
+              allNodes_ = input.readMessage(cloudserver.model.SmartCity.Nodes.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(allNodes_);
+                allNodes_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeInsertedResponse_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeInsertedResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cloudserver.model.SmartCity.NodeInsertedResponse.class, cloudserver.model.SmartCity.NodeInsertedResponse.Builder.class);
+    }
+
+    public static final int FATHER_FIELD_NUMBER = 1;
+    private cloudserver.model.SmartCity.Node father_;
+    /**
+     * <code>.cloudserver.model.Node father = 1;</code>
+     */
+    public boolean hasFather() {
+      return father_ != null;
+    }
+    /**
+     * <code>.cloudserver.model.Node father = 1;</code>
+     */
+    public cloudserver.model.SmartCity.Node getFather() {
+      return father_ == null ? cloudserver.model.SmartCity.Node.getDefaultInstance() : father_;
+    }
+    /**
+     * <code>.cloudserver.model.Node father = 1;</code>
+     */
+    public cloudserver.model.SmartCity.NodeOrBuilder getFatherOrBuilder() {
+      return getFather();
+    }
+
+    public static final int ALLNODES_FIELD_NUMBER = 2;
+    private cloudserver.model.SmartCity.Nodes allNodes_;
+    /**
+     * <code>.cloudserver.model.Nodes allNodes = 2;</code>
+     */
+    public boolean hasAllNodes() {
+      return allNodes_ != null;
+    }
+    /**
+     * <code>.cloudserver.model.Nodes allNodes = 2;</code>
+     */
+    public cloudserver.model.SmartCity.Nodes getAllNodes() {
+      return allNodes_ == null ? cloudserver.model.SmartCity.Nodes.getDefaultInstance() : allNodes_;
+    }
+    /**
+     * <code>.cloudserver.model.Nodes allNodes = 2;</code>
+     */
+    public cloudserver.model.SmartCity.NodesOrBuilder getAllNodesOrBuilder() {
+      return getAllNodes();
+    }
+
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (father_ != null) {
+        output.writeMessage(1, getFather());
+      }
+      if (allNodes_ != null) {
+        output.writeMessage(2, getAllNodes());
+      }
+      unknownFields.writeTo(output);
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (father_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, getFather());
+      }
+      if (allNodes_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getAllNodes());
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof cloudserver.model.SmartCity.NodeInsertedResponse)) {
+        return super.equals(obj);
+      }
+      cloudserver.model.SmartCity.NodeInsertedResponse other = (cloudserver.model.SmartCity.NodeInsertedResponse) obj;
+
+      boolean result = true;
+      result = result && (hasFather() == other.hasFather());
+      if (hasFather()) {
+        result = result && getFather()
+            .equals(other.getFather());
+      }
+      result = result && (hasAllNodes() == other.hasAllNodes());
+      if (hasAllNodes()) {
+        result = result && getAllNodes()
+            .equals(other.getAllNodes());
+      }
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasFather()) {
+        hash = (37 * hash) + FATHER_FIELD_NUMBER;
+        hash = (53 * hash) + getFather().hashCode();
+      }
+      if (hasAllNodes()) {
+        hash = (37 * hash) + ALLNODES_FIELD_NUMBER;
+        hash = (53 * hash) + getAllNodes().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static cloudserver.model.SmartCity.NodeInsertedResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cloudserver.model.SmartCity.NodeInsertedResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cloudserver.model.SmartCity.NodeInsertedResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cloudserver.model.SmartCity.NodeInsertedResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cloudserver.model.SmartCity.NodeInsertedResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cloudserver.model.SmartCity.NodeInsertedResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cloudserver.model.SmartCity.NodeInsertedResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cloudserver.model.SmartCity.NodeInsertedResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cloudserver.model.SmartCity.NodeInsertedResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static cloudserver.model.SmartCity.NodeInsertedResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cloudserver.model.SmartCity.NodeInsertedResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cloudserver.model.SmartCity.NodeInsertedResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(cloudserver.model.SmartCity.NodeInsertedResponse prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code cloudserver.model.NodeInsertedResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:cloudserver.model.NodeInsertedResponse)
+        cloudserver.model.SmartCity.NodeInsertedResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeInsertedResponse_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeInsertedResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cloudserver.model.SmartCity.NodeInsertedResponse.class, cloudserver.model.SmartCity.NodeInsertedResponse.Builder.class);
+      }
+
+      // Construct using cloudserver.model.SmartCity.NodeInsertedResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      public Builder clear() {
+        super.clear();
+        if (fatherBuilder_ == null) {
+          father_ = null;
+        } else {
+          father_ = null;
+          fatherBuilder_ = null;
+        }
+        if (allNodesBuilder_ == null) {
+          allNodes_ = null;
+        } else {
+          allNodes_ = null;
+          allNodesBuilder_ = null;
+        }
+        return this;
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cloudserver.model.SmartCity.internal_static_cloudserver_model_NodeInsertedResponse_descriptor;
+      }
+
+      public cloudserver.model.SmartCity.NodeInsertedResponse getDefaultInstanceForType() {
+        return cloudserver.model.SmartCity.NodeInsertedResponse.getDefaultInstance();
+      }
+
+      public cloudserver.model.SmartCity.NodeInsertedResponse build() {
+        cloudserver.model.SmartCity.NodeInsertedResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public cloudserver.model.SmartCity.NodeInsertedResponse buildPartial() {
+        cloudserver.model.SmartCity.NodeInsertedResponse result = new cloudserver.model.SmartCity.NodeInsertedResponse(this);
+        if (fatherBuilder_ == null) {
+          result.father_ = father_;
+        } else {
+          result.father_ = fatherBuilder_.build();
+        }
+        if (allNodesBuilder_ == null) {
+          result.allNodes_ = allNodes_;
+        } else {
+          result.allNodes_ = allNodesBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cloudserver.model.SmartCity.NodeInsertedResponse) {
+          return mergeFrom((cloudserver.model.SmartCity.NodeInsertedResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cloudserver.model.SmartCity.NodeInsertedResponse other) {
+        if (other == cloudserver.model.SmartCity.NodeInsertedResponse.getDefaultInstance()) return this;
+        if (other.hasFather()) {
+          mergeFather(other.getFather());
+        }
+        if (other.hasAllNodes()) {
+          mergeAllNodes(other.getAllNodes());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cloudserver.model.SmartCity.NodeInsertedResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cloudserver.model.SmartCity.NodeInsertedResponse) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private cloudserver.model.SmartCity.Node father_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cloudserver.model.SmartCity.Node, cloudserver.model.SmartCity.Node.Builder, cloudserver.model.SmartCity.NodeOrBuilder> fatherBuilder_;
+      /**
+       * <code>.cloudserver.model.Node father = 1;</code>
+       */
+      public boolean hasFather() {
+        return fatherBuilder_ != null || father_ != null;
+      }
+      /**
+       * <code>.cloudserver.model.Node father = 1;</code>
+       */
+      public cloudserver.model.SmartCity.Node getFather() {
+        if (fatherBuilder_ == null) {
+          return father_ == null ? cloudserver.model.SmartCity.Node.getDefaultInstance() : father_;
+        } else {
+          return fatherBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.cloudserver.model.Node father = 1;</code>
+       */
+      public Builder setFather(cloudserver.model.SmartCity.Node value) {
+        if (fatherBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          father_ = value;
+          onChanged();
+        } else {
+          fatherBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cloudserver.model.Node father = 1;</code>
+       */
+      public Builder setFather(
+          cloudserver.model.SmartCity.Node.Builder builderForValue) {
+        if (fatherBuilder_ == null) {
+          father_ = builderForValue.build();
+          onChanged();
+        } else {
+          fatherBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cloudserver.model.Node father = 1;</code>
+       */
+      public Builder mergeFather(cloudserver.model.SmartCity.Node value) {
+        if (fatherBuilder_ == null) {
+          if (father_ != null) {
+            father_ =
+              cloudserver.model.SmartCity.Node.newBuilder(father_).mergeFrom(value).buildPartial();
+          } else {
+            father_ = value;
+          }
+          onChanged();
+        } else {
+          fatherBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cloudserver.model.Node father = 1;</code>
+       */
+      public Builder clearFather() {
+        if (fatherBuilder_ == null) {
+          father_ = null;
+          onChanged();
+        } else {
+          father_ = null;
+          fatherBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cloudserver.model.Node father = 1;</code>
+       */
+      public cloudserver.model.SmartCity.Node.Builder getFatherBuilder() {
+        
+        onChanged();
+        return getFatherFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.cloudserver.model.Node father = 1;</code>
+       */
+      public cloudserver.model.SmartCity.NodeOrBuilder getFatherOrBuilder() {
+        if (fatherBuilder_ != null) {
+          return fatherBuilder_.getMessageOrBuilder();
+        } else {
+          return father_ == null ?
+              cloudserver.model.SmartCity.Node.getDefaultInstance() : father_;
+        }
+      }
+      /**
+       * <code>.cloudserver.model.Node father = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cloudserver.model.SmartCity.Node, cloudserver.model.SmartCity.Node.Builder, cloudserver.model.SmartCity.NodeOrBuilder> 
+          getFatherFieldBuilder() {
+        if (fatherBuilder_ == null) {
+          fatherBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              cloudserver.model.SmartCity.Node, cloudserver.model.SmartCity.Node.Builder, cloudserver.model.SmartCity.NodeOrBuilder>(
+                  getFather(),
+                  getParentForChildren(),
+                  isClean());
+          father_ = null;
+        }
+        return fatherBuilder_;
+      }
+
+      private cloudserver.model.SmartCity.Nodes allNodes_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cloudserver.model.SmartCity.Nodes, cloudserver.model.SmartCity.Nodes.Builder, cloudserver.model.SmartCity.NodesOrBuilder> allNodesBuilder_;
+      /**
+       * <code>.cloudserver.model.Nodes allNodes = 2;</code>
+       */
+      public boolean hasAllNodes() {
+        return allNodesBuilder_ != null || allNodes_ != null;
+      }
+      /**
+       * <code>.cloudserver.model.Nodes allNodes = 2;</code>
+       */
+      public cloudserver.model.SmartCity.Nodes getAllNodes() {
+        if (allNodesBuilder_ == null) {
+          return allNodes_ == null ? cloudserver.model.SmartCity.Nodes.getDefaultInstance() : allNodes_;
+        } else {
+          return allNodesBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.cloudserver.model.Nodes allNodes = 2;</code>
+       */
+      public Builder setAllNodes(cloudserver.model.SmartCity.Nodes value) {
+        if (allNodesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          allNodes_ = value;
+          onChanged();
+        } else {
+          allNodesBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cloudserver.model.Nodes allNodes = 2;</code>
+       */
+      public Builder setAllNodes(
+          cloudserver.model.SmartCity.Nodes.Builder builderForValue) {
+        if (allNodesBuilder_ == null) {
+          allNodes_ = builderForValue.build();
+          onChanged();
+        } else {
+          allNodesBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cloudserver.model.Nodes allNodes = 2;</code>
+       */
+      public Builder mergeAllNodes(cloudserver.model.SmartCity.Nodes value) {
+        if (allNodesBuilder_ == null) {
+          if (allNodes_ != null) {
+            allNodes_ =
+              cloudserver.model.SmartCity.Nodes.newBuilder(allNodes_).mergeFrom(value).buildPartial();
+          } else {
+            allNodes_ = value;
+          }
+          onChanged();
+        } else {
+          allNodesBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cloudserver.model.Nodes allNodes = 2;</code>
+       */
+      public Builder clearAllNodes() {
+        if (allNodesBuilder_ == null) {
+          allNodes_ = null;
+          onChanged();
+        } else {
+          allNodes_ = null;
+          allNodesBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cloudserver.model.Nodes allNodes = 2;</code>
+       */
+      public cloudserver.model.SmartCity.Nodes.Builder getAllNodesBuilder() {
+        
+        onChanged();
+        return getAllNodesFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.cloudserver.model.Nodes allNodes = 2;</code>
+       */
+      public cloudserver.model.SmartCity.NodesOrBuilder getAllNodesOrBuilder() {
+        if (allNodesBuilder_ != null) {
+          return allNodesBuilder_.getMessageOrBuilder();
+        } else {
+          return allNodes_ == null ?
+              cloudserver.model.SmartCity.Nodes.getDefaultInstance() : allNodes_;
+        }
+      }
+      /**
+       * <code>.cloudserver.model.Nodes allNodes = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cloudserver.model.SmartCity.Nodes, cloudserver.model.SmartCity.Nodes.Builder, cloudserver.model.SmartCity.NodesOrBuilder> 
+          getAllNodesFieldBuilder() {
+        if (allNodesBuilder_ == null) {
+          allNodesBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              cloudserver.model.SmartCity.Nodes, cloudserver.model.SmartCity.Nodes.Builder, cloudserver.model.SmartCity.NodesOrBuilder>(
+                  getAllNodes(),
+                  getParentForChildren(),
+                  isClean());
+          allNodes_ = null;
+        }
+        return allNodesBuilder_;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:cloudserver.model.NodeInsertedResponse)
+    }
+
+    // @@protoc_insertion_point(class_scope:cloudserver.model.NodeInsertedResponse)
+    private static final cloudserver.model.SmartCity.NodeInsertedResponse DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new cloudserver.model.SmartCity.NodeInsertedResponse();
+    }
+
+    public static cloudserver.model.SmartCity.NodeInsertedResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<NodeInsertedResponse>
+        PARSER = new com.google.protobuf.AbstractParser<NodeInsertedResponse>() {
+      public NodeInsertedResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new NodeInsertedResponse(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<NodeInsertedResponse> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<NodeInsertedResponse> getParserForType() {
+      return PARSER;
+    }
+
+    public cloudserver.model.SmartCity.NodeInsertedResponse getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_cloudserver_model_Node_descriptor;
   private static final 
@@ -10646,15 +10177,10 @@ public final class SmartCity {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_cloudserver_model_NodeMeasurement_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_cloudserver_model_NodeStatistic_descriptor;
+    internal_static_cloudserver_model_NodeMeasurementMessage_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_cloudserver_model_NodeStatistic_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_cloudserver_model_NodeStatisticMessage_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_cloudserver_model_NodeStatisticMessage_fieldAccessorTable;
+      internal_static_cloudserver_model_NodeMeasurementMessage_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_cloudserver_model_NodeLocalStatistics_descriptor;
   private static final 
@@ -10676,20 +10202,15 @@ public final class SmartCity {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_cloudserver_model_NodeMeasurements_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_cloudserver_model_NodeStatistics_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_cloudserver_model_NodeStatistics_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_cloudserver_model_AggregatedStatistic_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_cloudserver_model_AggregatedStatistic_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_cloudserver_model_InitializationMassage_descriptor;
+    internal_static_cloudserver_model_InitializationMessage_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_cloudserver_model_InitializationMassage_fieldAccessorTable;
+      internal_static_cloudserver_model_InitializationMessage_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_cloudserver_model_HelloResponse_descriptor;
   private static final 
@@ -10700,6 +10221,11 @@ public final class SmartCity {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_cloudserver_model_MessageRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_cloudserver_model_NodeInsertedResponse_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_cloudserver_model_NodeInsertedResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -10714,40 +10240,42 @@ public final class SmartCity {
       "\016otherNodesPort\030\003 \001(\005\022\014\n\004xPos\030\004 \001(\005\022\014\n\004y" +
       "Pos\030\005 \001(\005\022\016\n\006selfIp\030\006 \001(\t\"/\n\005Nodes\022&\n\005no" +
       "des\030\001 \003(\0132\027.cloudserver.model.Node\"3\n\017No" +
-      "deMeasurement\022\r\n\005value\030\001 \001(\001\022\021\n\ttimestam" +
-      "p\030\002 \001(\003\"0\n\rNodeStatistic\022\014\n\004mean\030\002 \001(\001\022\021" +
-      "\n\ttimestamp\030\003 \001(\003\"r\n\024NodeStatisticMessag" +
-      "e\022%\n\004node\030\001 \001(\0132\027.cloudserver.model.Node" +
-      "\0223\n\tstatistic\030\002 \001(\0132 .cloudserver.model.",
-      "NodeStatistic\"n\n\023NodeLocalStatistics\022%\n\004" +
-      "node\030\001 \001(\0132\027.cloudserver.model.Node\0220\n\006l" +
-      "ocals\030\002 \003(\0132 .cloudserver.model.NodeStat" +
-      "istic\"\205\001\n\024LocalsGlobalsMessage\0220\n\006global" +
-      "\030\001 \001(\0132 .cloudserver.model.NodeStatistic" +
-      "\022;\n\013nodesLocals\030\002 \003(\0132&.cloudserver.mode" +
-      "l.NodeLocalStatistics\"z\n\021LastLocalsGloba" +
-      "ls\0222\n\007globals\030\001 \001(\0132!.cloudserver.model." +
-      "NodeStatistics\0221\n\006locals\030\002 \001(\0132!.cloudse" +
-      "rver.model.NodeStatistics\"L\n\020NodeMeasure",
-      "ments\0228\n\014measurements\030\001 \003(\0132\".cloudserve" +
-      "r.model.NodeMeasurement\"F\n\016NodeStatistic" +
-      "s\0224\n\nstatistics\030\001 \003(\0132 .cloudserver.mode" +
-      "l.NodeStatistic\"3\n\023AggregatedStatistic\022\016" +
-      "\n\006devstd\030\001 \001(\001\022\014\n\004mean\030\002 \001(\001\"\206\001\n\025Initial" +
-      "izationMassage\0221\n\terrortype\030\001 \001(\0162\034.clou" +
-      "dserver.model.ErrorTypeH\000\022)\n\005nodes\030\002 \001(\013" +
-      "2\030.cloudserver.model.NodesH\000B\017\n\rerrorOrR" +
-      "esult\"[\n\rHelloResponse\0223\n\013typemessage\030\001 " +
-      "\001(\0162\036.cloudserver.model.MessageType\022\025\n\ri",
-      "scoordinator\030\002 \001(\010\"\303\001\n\016MessageRequest\0223\n" +
-      "\013typemessage\030\001 \001(\0162\036.cloudserver.model.M" +
-      "essageType\022\'\n\004node\030\002 \001(\0132\027.cloudserver.m" +
-      "odel.NodeH\000\022?\n\014statisticMsg\030\003 \001(\0132\'.clou" +
-      "dserver.model.NodeStatisticMessageH\000B\022\n\020" +
-      "helloOrNodeStats*9\n\013MessageType\022\t\n\005HELLO" +
-      "\020\000\022\013\n\007WELCOME\020\001\022\022\n\016LOCALSTATISTIC\020\002*K\n\tE" +
-      "rrorType\022\025\n\021COORD_NOT_ALLOWED\020\000\022\021\n\rDUPLI" +
-      "CATED_ID\020\001\022\024\n\020UNEXPECTED_ERROR\020\002b\006proto3"
+      "deMeasurement\022\r\n\005value\030\002 \001(\001\022\021\n\ttimestam" +
+      "p\030\003 \001(\003\"v\n\026NodeMeasurementMessage\022%\n\004nod" +
+      "e\030\001 \001(\0132\027.cloudserver.model.Node\0225\n\tstat" +
+      "istic\030\002 \001(\0132\".cloudserver.model.NodeMeas" +
+      "urement\"p\n\023NodeLocalStatistics\022%\n\004node\030\001",
+      " \001(\0132\027.cloudserver.model.Node\0222\n\006locals\030" +
+      "\002 \003(\0132\".cloudserver.model.NodeMeasuremen" +
+      "t\"\207\001\n\024LocalsGlobalsMessage\0222\n\006global\030\001 \001" +
+      "(\0132\".cloudserver.model.NodeMeasurement\022;" +
+      "\n\013nodesLocals\030\002 \003(\0132&.cloudserver.model." +
+      "NodeLocalStatistics\"~\n\021LastLocalsGlobals" +
+      "\0224\n\007globals\030\001 \001(\0132#.cloudserver.model.No" +
+      "deMeasurements\0223\n\006locals\030\002 \001(\0132#.cloudse" +
+      "rver.model.NodeMeasurements\"J\n\020NodeMeasu" +
+      "rements\0226\n\nstatistics\030\001 \003(\0132\".cloudserve",
+      "r.model.NodeMeasurement\"3\n\023AggregatedSta" +
+      "tistic\022\016\n\006devstd\030\001 \001(\001\022\014\n\004mean\030\002 \001(\001\"\230\001\n" +
+      "\025InitializationMessage\0221\n\terrortype\030\001 \001(" +
+      "\0162\034.cloudserver.model.ErrorTypeH\000\022;\n\010res" +
+      "ponse\030\002 \001(\0132\'.cloudserver.model.NodeInse" +
+      "rtedResponseH\000B\017\n\rerrorOrResult\"[\n\rHello" +
+      "Response\0223\n\013typemessage\030\001 \001(\0162\036.cloudser" +
+      "ver.model.MessageType\022\025\n\riscoordinator\030\002" +
+      " \001(\010\"\305\001\n\016MessageRequest\0223\n\013typemessage\030\001" +
+      " \001(\0162\036.cloudserver.model.MessageType\022\'\n\004",
+      "node\030\002 \001(\0132\027.cloudserver.model.NodeH\000\022A\n" +
+      "\014statisticMsg\030\003 \001(\0132).cloudserver.model." +
+      "NodeMeasurementMessageH\000B\022\n\020helloOrNodeS" +
+      "tats\"k\n\024NodeInsertedResponse\022\'\n\006father\030\001" +
+      " \001(\0132\027.cloudserver.model.Node\022*\n\010allNode" +
+      "s\030\002 \001(\0132\030.cloudserver.model.Nodes*u\n\013Mes" +
+      "sageType\022\t\n\005HELLO\020\000\022\013\n\007WELCOME\020\001\022\022\n\016LOCA" +
+      "LSTATISTIC\020\002\022\020\n\014ELECTIONTIME\020\003\022\024\n\020ELECTI" +
+      "ONRECEIVED\020\004\022\022\n\016ELECTIONRESULT\020\005*K\n\tErro" +
+      "rType\022\025\n\021COORD_NOT_ALLOWED\020\000\022\021\n\rDUPLICAT",
+      "ED_ID\020\001\022\024\n\020UNEXPECTED_ERROR\020\002b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -10779,72 +10307,66 @@ public final class SmartCity {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cloudserver_model_NodeMeasurement_descriptor,
         new java.lang.String[] { "Value", "Timestamp", });
-    internal_static_cloudserver_model_NodeStatistic_descriptor =
+    internal_static_cloudserver_model_NodeMeasurementMessage_descriptor =
       getDescriptor().getMessageTypes().get(3);
-    internal_static_cloudserver_model_NodeStatistic_fieldAccessorTable = new
+    internal_static_cloudserver_model_NodeMeasurementMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_cloudserver_model_NodeStatistic_descriptor,
-        new java.lang.String[] { "Mean", "Timestamp", });
-    internal_static_cloudserver_model_NodeStatisticMessage_descriptor =
-      getDescriptor().getMessageTypes().get(4);
-    internal_static_cloudserver_model_NodeStatisticMessage_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_cloudserver_model_NodeStatisticMessage_descriptor,
+        internal_static_cloudserver_model_NodeMeasurementMessage_descriptor,
         new java.lang.String[] { "Node", "Statistic", });
     internal_static_cloudserver_model_NodeLocalStatistics_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_cloudserver_model_NodeLocalStatistics_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cloudserver_model_NodeLocalStatistics_descriptor,
         new java.lang.String[] { "Node", "Locals", });
     internal_static_cloudserver_model_LocalsGlobalsMessage_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_cloudserver_model_LocalsGlobalsMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cloudserver_model_LocalsGlobalsMessage_descriptor,
         new java.lang.String[] { "Global", "NodesLocals", });
     internal_static_cloudserver_model_LastLocalsGlobals_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_cloudserver_model_LastLocalsGlobals_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cloudserver_model_LastLocalsGlobals_descriptor,
         new java.lang.String[] { "Globals", "Locals", });
     internal_static_cloudserver_model_NodeMeasurements_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_cloudserver_model_NodeMeasurements_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cloudserver_model_NodeMeasurements_descriptor,
-        new java.lang.String[] { "Measurements", });
-    internal_static_cloudserver_model_NodeStatistics_descriptor =
-      getDescriptor().getMessageTypes().get(9);
-    internal_static_cloudserver_model_NodeStatistics_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_cloudserver_model_NodeStatistics_descriptor,
         new java.lang.String[] { "Statistics", });
     internal_static_cloudserver_model_AggregatedStatistic_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_cloudserver_model_AggregatedStatistic_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cloudserver_model_AggregatedStatistic_descriptor,
         new java.lang.String[] { "Devstd", "Mean", });
-    internal_static_cloudserver_model_InitializationMassage_descriptor =
-      getDescriptor().getMessageTypes().get(11);
-    internal_static_cloudserver_model_InitializationMassage_fieldAccessorTable = new
+    internal_static_cloudserver_model_InitializationMessage_descriptor =
+      getDescriptor().getMessageTypes().get(9);
+    internal_static_cloudserver_model_InitializationMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_cloudserver_model_InitializationMassage_descriptor,
-        new java.lang.String[] { "Errortype", "Nodes", "ErrorOrResult", });
+        internal_static_cloudserver_model_InitializationMessage_descriptor,
+        new java.lang.String[] { "Errortype", "Response", "ErrorOrResult", });
     internal_static_cloudserver_model_HelloResponse_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_cloudserver_model_HelloResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cloudserver_model_HelloResponse_descriptor,
         new java.lang.String[] { "Typemessage", "Iscoordinator", });
     internal_static_cloudserver_model_MessageRequest_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_cloudserver_model_MessageRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cloudserver_model_MessageRequest_descriptor,
         new java.lang.String[] { "Typemessage", "Node", "StatisticMsg", "HelloOrNodeStats", });
+    internal_static_cloudserver_model_NodeInsertedResponse_descriptor =
+      getDescriptor().getMessageTypes().get(12);
+    internal_static_cloudserver_model_NodeInsertedResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_cloudserver_model_NodeInsertedResponse_descriptor,
+        new java.lang.String[] { "Father", "AllNodes", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
