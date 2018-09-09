@@ -7,6 +7,16 @@
     <groupId>cloudserver</groupId>
     <artifactId>cloudserver</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <tomcat.version>8.5.23</tomcat.version>
+        <jersey.version>2.26</jersey.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+
     <build>
         <extensions>
             <extension>
@@ -42,16 +52,32 @@
                     </execution>
                 </executions>
             </plugin>
-
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>cloudserver.ServerStarter</mainClass>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
     <!-- https://mvnrepository.com/artifact/com.sun.jersey/jersey-server -->
     <dependencies>
         <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-server</artifactId>
-            <version>1.19.4</version>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-grizzly2-servlet</artifactId>
+            <version>2.27</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.connectors</groupId>
+            <artifactId>jersey-grizzly-connector</artifactId>
+            <version>2.27</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>2.27</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.sun.jersey/jersey-json -->
         <dependency>
@@ -63,7 +89,7 @@
         <dependency>
             <groupId>org.codehaus.jettison</groupId>
             <artifactId>jettison</artifactId>
-            <version>1.4.0</version>
+            <version>1.1</version>
         </dependency>
         <dependency>
             <groupId>io.grpc</groupId>
@@ -81,12 +107,12 @@
             <version>1.7.0</version>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.2</version>
-            <scope>test</scope>
+            <groupId>org.glassfish.jersey</groupId>
+            <artifactId>jersey-bom</artifactId>
+            <version>${jersey.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
         </dependency>
-
     </dependencies>
 
 </project>

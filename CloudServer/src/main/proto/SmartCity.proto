@@ -14,35 +14,36 @@ message Nodes{
     repeated Node nodes = 1;
 }
 
-message NodeMeasurement{
+/*message NodeMeasurement{
     double value=1;
     int64 timestamp=2;
 }
-message NodeStatistic{
-    double mean=2;
+message NodeMeasurements{
+    repeated NodeMeasurement measurements = 1;
+}*/
+
+message NodeMeasurement{
+    double value=2;
     int64 timestamp=3;
 }
-message NodeStatisticMessage{
+message NodeMeasurementMessage{
     Node node=1;
-    NodeStatistic statistic=2;
+    NodeMeasurement statistic=2;
 }
 message NodeLocalStatistics{
     Node node=1;
-    repeated NodeStatistic locals=2;
+    repeated NodeMeasurement locals=2;
 }
 message LocalsGlobalsMessage{
-    NodeStatistic global=1;
-    repeated NodeLocalStatistics nodesLocals=2;
+    NodeMeasurement global=2;
+    repeated NodeLocalStatistics nodesLocals=3;
 }
 message LastLocalsGlobals{
-    NodeStatistics globals=1;
-    NodeStatistics locals=2;
+    NodeMeasurements globals=1;
+    NodeMeasurements locals=2;
 }
 message NodeMeasurements{
-    repeated NodeMeasurement measurements = 1;
-}
-message NodeStatistics{
-    repeated NodeStatistic statistics = 1;
+    repeated NodeMeasurement statistics = 1;
 }
 message AggregatedStatistic{
     double devstd = 1;
@@ -56,6 +57,7 @@ enum MessageType{
     ELECTIONTIME=3;
     ELECTIONRECEIVED=4;
     ELECTIONRESULT=5;
+    LOCALSGLOBALS=6;
 }
 enum ErrorType{
     COORD_NOT_ALLOWED=0;
@@ -76,9 +78,10 @@ message HelloResponse{
 
 message MessageRequest{
     MessageType typemessage=1;
-    oneof helloOrNodeStats{
+    oneof possibleMessages{
         Node node=2;
-        NodeStatisticMessage statisticMsg=3;
+        NodeMeasurementMessage statisticMsg=3;
+        LocalsGlobalsMessage localsglobalsUpdate=4;
     }
 }
 

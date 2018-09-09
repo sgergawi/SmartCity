@@ -1,46 +1,42 @@
+package cloudserver;
+
+import cloudserver.controller.CloudServerInterfaces;
 import cloudserver.model.CityMap;
-import com.sun.jersey.api.container.httpserver.HttpServerFactory;
-import com.sun.net.httpserver.HttpServer;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.glassfish.jersey.servlet.ServletContainer;
+import org.glassfish.grizzly.http.server.HttpHandler;
+import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+import org.glassfish.jersey.server.ResourceConfig;
+
+import javax.ws.rs.ext.RuntimeDelegate;
+import java.net.URI;
 
 public class ServerStarter {
 	final static String HOST = "localhost";
 	final static int PORT = 8480;
 
 	public static void main (String[] args) {
-		Server server = new Server(PORT);
 		try {
-			/*HttpServer server = HttpServerFactory.create("http://" + HOST + ":" + PORT + "/");
-			 *//**
-			 * Per ora non ce n'è bisogno ma se volessi customizzarlo devo modificare questo pezzo
-			 *//*
-			CityMap.setMaxChildsNum(3);
-			server.start();*/
-			ServletContextHandler ctx =
-					new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
-			ctx.setContextPath("/");
-			server.setHandler(ctx);
+			URI baseUri = new URI("http://localhost:" + PORT + "/");
+			ResourceConfig rc = new ResourceConfig();
+			rc.registerClasses(CloudServerInterfaces.class);
 
-			ServletHolder serHol = ctx.addServlet(ServletContainer.class, "/cloud-server/*");
-			serHol.setInitOrder(1);
-			serHol.setInitParameter("jersey.config.server.provider.packages",
-					"cloudserver.controller");
-			System.out.println("Server running!");
-			System.out.println("Hit return to stop...");
-			System.in.read();
-			System.out.println("Stopping server");
+			final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(
+					baseUri,
+					rc,
+					false);
 			CityMap.setMaxChildsNum(3);
+			System.out.println("Starting server...");
 			server.start();
-			server.join();
-			System.out.println("Server stopped");
+			System.out.println("Server running!");
+			System.out.println("Press any button to stop server...");
+			System.in.read();
+			server.shutdownNow();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Errore nella connessione");
-		} finally {
-			server.destroy();
+			System.exit(1);
 		}
 	}
+
 }
+

@@ -4,34 +4,38 @@ import java.util.List;
 import java.util.Vector;
 
 public class CityNode {
-    private SmartCity.Node node;
-    private List<CityNode> childNodes;
-    private SmartCity.NodeStatistics nodeStatistics;
+	private SmartCity.Node node;
+	private List<CityNode> childNodes;
+	private SmartCity.NodeMeasurements nodeStatistics;
 
-    public SmartCity.Node getNode(){
-        return this.node;
-    }
-    public SmartCity.NodeStatistics getNodeStatistics(){
-        return this.nodeStatistics;
-    }
+	public SmartCity.Node getNode () {
+		return this.node;
+	}
 
-    public CityNode(SmartCity.Node node, SmartCity.NodeStatistics statistics){
-        this.node = node;
-        this.nodeStatistics = statistics;
-        this.childNodes = new Vector<>();
-    }
-    public CityNode(){}
+	public SmartCity.NodeMeasurements getNodeStatistics () {
+		return this.nodeStatistics;
+	}
 
-    public void addAllStatistics(List<SmartCity.NodeStatistic> stats){
-        List<SmartCity.NodeStatistic> currentStats = this.nodeStatistics.getStatisticsList();
-        this.nodeStatistics = SmartCity.NodeStatistics.newBuilder().addAllStatistics(currentStats).addAllStatistics(stats).build();
-    }
+	public CityNode (SmartCity.Node node, SmartCity.NodeMeasurements statistics) {
+		this.node = node;
+		this.nodeStatistics = statistics;
+		this.childNodes = new Vector<>();
+	}
 
-    public List<CityNode> getChildNodes(){
-        return this.childNodes;
-    }
-    @Override
-    public String toString(){
-        return this.node + ", Statistics: "+ nodeStatistics;
-    }
+	public CityNode () {
+	}
+
+	public void addAllStatistics (List<SmartCity.NodeMeasurement> stats) {
+		//List<SmartCity.NodeMeasurement> currentStats = this.nodeStatistics.getStatisticsList();
+		this.nodeStatistics = SmartCity.NodeMeasurements.newBuilder().addAllStatistics(stats).build();
+	}
+
+	public List<CityNode> getChildNodes () {
+		return this.childNodes;
+	}
+
+	@Override
+	public String toString () {
+		return this.node + ", Statistics: " + nodeStatistics;
+	}
 }
