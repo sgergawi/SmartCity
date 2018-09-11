@@ -36,6 +36,10 @@ public class CityNode {
 
 	@Override
 	public String toString () {
-		return this.node + ", Statistics: " + nodeStatistics;
+		return "CityNode{" +
+				"node=" + node +
+				", childNodes=" + childNodes +
+				", nodeStatistics=" + nodeStatistics +
+				'}';
 	}
 }

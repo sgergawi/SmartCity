@@ -1,11 +1,14 @@
 package edgenodes.controller;
 
 import cloudserver.model.SmartCity;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 import edgenodes.NodeMain;
 import edgenodes.model.Coordinator;
 import edgenodes.model.GlobalStatistic;
 import edgenodes.model.MajorNodes;
 
+import javax.ws.rs.core.MediaType;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
@@ -105,7 +108,12 @@ public class NodeCommunicationThread extends Thread {
 	private void sendCurrentGlobalToChild () {
 		try {
 			DataOutputStream outputStream = new DataOutputStream(this.connection.getOutputStream());
-			SmartCity.NodeMeasurement global = GlobalStatistic.getInstance().getGlobal();
+			SmartCity.NodeMeasurement global = null;
+			if (this.node.getId() == Coordinator.getInstance().getCoordinator().getId()) {
+				global = GlobalStatistic.getInstance().getGlobal();
+			} else {
+				global = GlobalStatistic.getInstance().getLastGlobalReceived();
+			}
 			byte[] output = global == null ? SmartCity.NodeMeasurement.newBuilder().build().toByteArray() : global.toByteArray();
 			outputStream.writeInt(output.length);
 			outputStream.write(output);
@@ -131,12 +139,12 @@ public class NodeCommunicationThread extends Thread {
 		globalSituation.addAggregatedGlobals(global);
 		childsMeasurements.stream().forEach(measurement -> globalSituation.setAllLocalStatistics(measurement.getNode(), measurement.getLocalsList()));
 		sendCurrentGlobalToChild();
+
 	}
 
 	public void manageElectionTime (SmartCity.MessageRequest request) {
 		try {
 			System.out.println("Mi ha chiamato il nodo " + request.getNode().getId());
-			/*Socket socket = new Socket(request.getNode().getSelfIp(), request.getNode().getOtherNodesPort());*/
 			DataOutputStream outputStream = new DataOutputStream(this.connection.getOutputStream());
 			SmartCity.MessageRequest response = SmartCity.MessageRequest.newBuilder().setNode(this.node).setTypemessage(SmartCity.MessageType.ELECTIONRECEIVED).build();
 			byte[] respBytes = response.toByteArray();
@@ -158,6 +166,7 @@ public class NodeCommunicationThread extends Thread {
 				thread.start();
 				thread.join();
 			}
+			Coordinator.getInstance().setFatherNode(NodeMain.getNewFather(node));
 		} catch (Exception e) {
 			System.out.println("Errore nell'aggiornamento del coordinatore: " + e);
 			NodeMain.deleteNodeServerSide(this.node);

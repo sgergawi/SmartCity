@@ -13,7 +13,9 @@ import java.util.Vector;
 public class MeasurementsBuffer {
 
 	private List<SmartCity.NodeMeasurement> measurementsBuffer;
-	private SmartCity.NodeMeasurement global;
+	/*
+		private SmartCity.NodeMeasurement global;
+	*/
 	private static MeasurementsBuffer buffer;
 
 	private MeasurementsBuffer () {
@@ -27,9 +29,9 @@ public class MeasurementsBuffer {
 		return buffer;
 	}
 
-	public synchronized SmartCity.NodeMeasurement getGlobal () {
+	/*public synchronized SmartCity.NodeMeasurement getGlobal () {
 		return this.global;
-	}
+	}*/
 
 	public synchronized List<SmartCity.NodeMeasurement> getMeasurementsBuffer () {
 		return this.measurementsBuffer;
@@ -39,9 +41,11 @@ public class MeasurementsBuffer {
 		this.measurementsBuffer = measurements;
 	}
 
+/*
 	public synchronized void setGlobal (SmartCity.NodeMeasurement global) {
 		this.global = global;
 	}
+*/
 
 	/**
 	 * Una volta ricevuta la misurazione, se sono state raccolte più di 40 misurazionioni, devono essere spedite al

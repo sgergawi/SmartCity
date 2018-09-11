@@ -44,10 +44,19 @@ public class CityMap {
 		return this.root;
 	}
 
+	public void setTreeRoot (SmartCity.Node newCoord) {
+		CityNode treeroot = new CityNode(newCoord, SmartCity.NodeMeasurements.newBuilder().addAllStatistics(new Vector<>()).build());
+		this.root = treeroot;
+	}
+
+	public void setTreeRoot (CityNode citynode) {
+		this.root = citynode;
+	}
+
 	public SmartCity.Node addChildNode (CityNode currentRoot, CityNode node) {
 		//CityNode nodeToBeInserted = new CityNode(node, SmartCity.NodeStatistics.newBuilder().addAllStatistics(new Vector<>()).build());
 		if (currentRoot == null) {
-			this.root = node;
+			this.setTreeRoot(node);
 			return node.getNode();
 		}
 		List<CityNode> childs = currentRoot.getChildNodes();
@@ -80,11 +89,27 @@ public class CityMap {
 			//Il nodo non c'è
 			return;
 		}
-		if (currentNode.getNode().getId() == nodeId) {
-			currentFather.getChildNodes().removeIf(cityNode -> cityNode.getNode().getId() == nodeId);
-			currentNode.getChildNodes().forEach(citynode -> this.map.addChildNode(this.root, citynode));
+		if (this.root.getNode().getId() == nodeId) {
+			System.out.println("root: " + this.root.getNode());
+			System.out.println("current node: " + currentNode.getNode());
+			this.setTreeRoot((CityNode) null);
+			return;
 		}
-		currentNode.getChildNodes().forEach(cityNode -> removeNodeFromTree(currentNode, cityNode, nodeId));
+		List<CityNode> childs = new Vector<>();
+		childs.addAll(currentNode.getChildNodes());
+
+		if (currentNode.getNode().getId() == nodeId) {
+			if (currentFather != null) {
+				currentFather.getChildNodes().removeIf(cityNode -> cityNode.getNode().getId() == nodeId);
+			}
+			System.out.println("Ciao");
+			currentNode.getChildNodes().forEach(citynode -> this.map.addChildNode(this.root, citynode));
+		} else {
+			for (CityNode cityNode : childs) {
+				System.out.println("fa un giro");
+				removeNodeFromTree(currentNode, cityNode, nodeId);
+			}
+		}
 	}
 
 	public synchronized void removeNode (int nodeId) {

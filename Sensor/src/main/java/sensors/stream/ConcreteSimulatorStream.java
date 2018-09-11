@@ -36,10 +36,15 @@ public class ConcreteSimulatorStream implements SensorStream {
         /*int xPos = rand.nextInt(100);
         int yPos = rand.nextInt(100);*/
 		//TODO questi dovrebbero essere generati casualmente
-		this.xPos = 7;
+		this.xPos = 31;
 		this.yPos = 44;
 		this.serverHost = host;
 		this.serverPort = port;
+		updateCloserMethod();
+		//TODO sistemare l'aggiornamento del nodo più vicino quando l'albero della città cambia
+	}
+
+	private void updateCloserMethod () {
 		MultivaluedMap<String, String> params = new MultivaluedMapImpl();
 		params.put("xcoord", Arrays.asList(xPos + ""));
 		params.put("ycoord", Arrays.asList(yPos + ""));
@@ -54,14 +59,6 @@ public class ConcreteSimulatorStream implements SensorStream {
 		return this.yPos;
 	}
 
-	public String getServerHost () {
-		return this.serverHost;
-	}
-
-	public int getServerPort () {
-		return this.serverPort;
-	}
-
 	public synchronized void updateCloserNode (MultivaluedMap<String, String> params) {
 		Client client = Client.create();
 		WebResource resource = client.resource("http://" + this.serverHost + ":" + this.serverPort + "/cloud-server/nodes").queryParams(params);
@@ -72,9 +69,12 @@ public class ConcreteSimulatorStream implements SensorStream {
 				SmartCity.Node node = SmartCity.Node.parseFrom(nodeResp);
 				this.node = node;
 			} catch (Exception e) {
+				this.node = null;
 				System.out.println("Errore ricezione nodo vicino");
 			}
 
+		} else {
+			this.node = null;
 		}
 		response.close();
 	}
@@ -106,9 +106,6 @@ public class ConcreteSimulatorStream implements SensorStream {
 				}
 			}
 		}
-		MultivaluedMap<String, String> params = new MultivaluedMapImpl();
-		params.put("xcoord", Arrays.asList(xPos + ""));
-		params.put("ycoord", Arrays.asList(yPos + ""));
-		updateCloserNode(params);
+		updateCloserMethod();
 	}
 }

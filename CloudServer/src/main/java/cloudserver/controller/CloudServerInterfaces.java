@@ -36,15 +36,47 @@ public class CloudServerInterfaces {
 				byte[] toSend = nodes.get(0).toByteArray();
 				return Response.ok().entity(toSend).header(HttpHeaders.CONTENT_LENGTH, toSend.length).build();
 			} else {
-				return Response.status(404).build();
+				return Response.status(Response.Status.NOT_FOUND).build();
 			}
 		}
 		List<SmartCity.Node> nodes = map.getNodes() != null ? map.getNodes().getNodesList() : new Vector<>();
 		if (nodes.isEmpty()) {
-			return Response.status(404).build();
+			return Response.status(Response.Status.NOT_FOUND).build();
 		} else {
 			return Response.ok().entity(map.getNodes().toByteArray()).build();
 		}
+	}
+
+	@POST
+	@Path("/coordinator")
+	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	public Response refreshCoordinator (byte[] coordinator) {
+		try {
+			System.out.println("Aggiornamento coordinatore");
+			CityMap cityMap = CityMap.getInstance();
+			SmartCity.Node node = SmartCity.Node.parseFrom(coordinator);
+			if (node.getId() != cityMap.getTreeRoot().getNode().getId()) {
+				List<CityNode> citynodes = cityMap.getCityNodes();
+				//Rimuovo il vecchio padre perchè se è stata richiamata la refresh vuol dire che non è piu presente
+				//TODO chiamare la delete?
+				//citynodes.removeIf(cityNode -> cityNode.getNode().getId() == cityMap.getTreeRoot().getNode().getId());
+				this.deleteNode(cityMap.getTreeRoot().getNode().getId());
+				cityMap.setTreeRoot(node);
+				CityNode currentRoot = cityMap.getTreeRoot();
+				//Non voglio considerare anche la root tra i nodi da aggiungere all'albero
+				citynodes = citynodes.stream().filter(cityNode -> cityNode.getNode().getId() != currentRoot.getNode().getId()).collect(Collectors.toList());
+				citynodes.stream().forEach(cityNode -> cityMap.addChildNode(currentRoot, cityNode));
+			}
+			System.out.println("Nuovo albero: " + cityMap.getTreeRoot());
+			System.out.println("nuove foglie: " + cityMap.getLeafNodes(cityMap.getTreeRoot()));
+			return Response.status(Response.Status.OK).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Errore nella gestione del nuovo coordinatore");
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+
 	}
 
 	/**
@@ -89,7 +121,6 @@ public class CloudServerInterfaces {
 			response = response.toBuilder().setErrortype(SmartCity.ErrorType.UNEXPECTED_ERROR).build();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response.toByteArray()).build();
 		}
-		System.out.println("Finito");
 		if (copy.isEmpty()) {
 			response = response.toBuilder().setResponse(SmartCity.NodeInsertedResponse.newBuilder().setFather(father).build()).build();
 			return Response.ok().entity(response.toByteArray()).build();
@@ -116,8 +147,10 @@ public class CloudServerInterfaces {
 			}
 			map.removeNode(nodeId);
 			map.removeNodeFromTree(null, map.getTreeRoot(), nodeId);
+
 			return Response.ok().build();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 
@@ -130,6 +163,10 @@ public class CloudServerInterfaces {
 		try {
 			CityMap map = CityMap.getInstance();
 			SmartCity.Node father = map.getNodeFather(null, map.getTreeRoot(), nodeId);
+			if (father == null) {
+				System.out.println(nodeId + " mi ha chiesto chi è suo padre");
+				return Response.status(Response.Status.NOT_FOUND).build();
+			}
 			return Response.ok().entity(father.toByteArray()).build();
 		} catch (Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();

@@ -14,6 +14,7 @@ public class GlobalStatistic {
 	private HashMap<SmartCity.Node, List<SmartCity.NodeMeasurement>> nodesLocals;
 	private List<SmartCity.NodeMeasurement> aggregatedGlobals;
 	private SmartCity.NodeMeasurement global;
+	private List<SmartCity.NodeMeasurement> globalsReceived;
 	private static GlobalStatistic instance;
 
 	public static synchronized GlobalStatistic getInstance () {
@@ -26,6 +27,7 @@ public class GlobalStatistic {
 	private GlobalStatistic () {
 		this.nodesLocals = new HashMap<>();
 		this.aggregatedGlobals = new Vector<>();
+		this.globalsReceived = new Vector<>();
 	}
 
 	public synchronized void addLocalStatistics (SmartCity.Node node, SmartCity.NodeMeasurement statistic) {
@@ -54,11 +56,8 @@ public class GlobalStatistic {
 
 	public synchronized void updateGlobal () {
 		if (!aggregatedGlobals.isEmpty()) {
-			System.out.println("Tutte le aggregazioni: " + this.aggregatedGlobals);
 			Double sum = this.aggregatedGlobals.stream().map(stat -> stat.getValue()).reduce((a, b) -> a + b).orElse(0.);
-			global = SmartCity.NodeMeasurement.newBuilder().setValue(sum / this.aggregatedGlobals.size()).setTimestamp(Utility.generateTimestamp()).build();
-
-			System.out.println("Media globale aggiornata: " + global);
+			this.global = SmartCity.NodeMeasurement.newBuilder().setValue(sum / this.aggregatedGlobals.size()).setTimestamp(Utility.generateTimestamp()).build();
 		}
 
 	}
@@ -73,12 +72,6 @@ public class GlobalStatistic {
 
 	public HashMap<SmartCity.Node, List<SmartCity.NodeMeasurement>> getNodesLocals () {
 		return this.nodesLocals;
-	}
-
-	public List<SmartCity.NodeMeasurement> getNodesLocalMeasurements () {
-		List<SmartCity.NodeMeasurement> result = new Vector<>();
-		this.nodesLocals.values().forEach(result::addAll);
-		return result;
 	}
 
 	public List<SmartCity.NodeLocalStatistics> getNodeslocalsMsg () {
@@ -103,6 +96,23 @@ public class GlobalStatistic {
 	public synchronized void clearLocals () {
 		//TODO il syncronized andrebbe messo sulla nodesLocals e non sul metodo
 		this.nodesLocals.clear();
+	}
+
+	public synchronized void addGlobalsReceived (SmartCity.NodeMeasurement global) {
+		this.globalsReceived.add(global);
+	}
+
+	public synchronized SmartCity.NodeMeasurement getLastGlobalReceived () {
+		if (globalsReceived != null && !globalsReceived.isEmpty()) {
+			this.globalsReceived.sort(Utility.getComparator());
+			this.globalsReceived.get(this.globalsReceived.size() - 1);
+		}
+		return null;
+
+	}
+
+	public List<SmartCity.NodeMeasurement> getGlobalsReceived () {
+		return this.globalsReceived;
 	}
 
 	@Override
