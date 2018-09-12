@@ -2,6 +2,7 @@ package analista.controller;
 
 import analista.utility.AnalistaUtility;
 import cloudserver.model.SmartCity;
+import com.google.protobuf.InvalidProtocolBufferException;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -23,15 +24,17 @@ public class AnalistaController {
 			if (response.getStatus() == 200) {
 				byte[] output = response.getEntity(byte[].class);
 				SmartCity.Nodes nodes = SmartCity.Nodes.parseFrom(output);
-				System.out.println("Stato attuale: \n" + nodes);
+				System.out.println("Stato attuale della città: \n" + nodes);
 			} else if (response.getStatus() == 404) {
-				System.out.println("Dati non trovati");
+				System.out.println("Dati non trovati.");
 			} else {
-				System.out.println("Si è verificato un errore.");
+				System.out.println("Errore :- Si è verificato un errore nell'elaborazione della richiesta.");
 			}
 			response.close();
+		} catch (InvalidProtocolBufferException e) {
+			System.out.println("Errore :- si è verificato un errore nel parsing del messaggio ricevuto.");
 		} catch (Exception e) {
-			System.out.println("Errore nella connessione con cloud server");
+			System.out.println("Errore :- si è verificato un errore generico nella comunicazione con il server.");
 		}
 
 	}
@@ -54,11 +57,13 @@ public class AnalistaController {
 			} else if (response.getStatus() == 404) {
 				System.out.println("Dati non trovati");
 			} else {
-				System.out.println("Si è verificato un errore");
+				System.out.println("Errore :- Si è verificato un errore nell'elaborazione della richiesta.");
 			}
 			response.close();
-		} catch (Exception io) {
-			System.out.println("Errore nella ricezione dei dati in input");
+		} catch (InvalidProtocolBufferException e) {
+			System.out.println("Errore :- si è verificato un errore nel parsing del messaggio ricevuto.");
+		} catch (Exception e) {
+			System.out.println("Errore :- si è verificato un errore generico nella comunicazione con il server.");
 		}
 
 	}
@@ -77,11 +82,13 @@ public class AnalistaController {
 			} else if (response.getStatus() == 404) {
 				System.out.println("Dati non trovati");
 			} else {
-				System.out.println("Si è verificato un errore");
+				System.out.println("Errore :- Si è verificato un errore nell'elaborazione della richiesta.");
 			}
 			response.close();
+		} catch (InvalidProtocolBufferException e) {
+			System.out.println("Errore :- si è verificato un errore nel parsing del messaggio ricevuto.");
 		} catch (Exception e) {
-			System.out.println("Errore nella ricezione dei dati in input");
+			System.out.println("Errore :- si è verificato un errore generico nella comunicazione con il server.");
 		}
 	}
 
@@ -98,10 +105,16 @@ public class AnalistaController {
 				byte[] output = response.getEntity(byte[].class);
 				SmartCity.AggregatedStatistic aggregate = SmartCity.AggregatedStatistic.parseFrom(output);
 				System.out.println("Deviazione std e media delle N statistiche del nodo " + nodeId + ": " + aggregate);
+			} else if (response.getStatus() == 404) {
+				System.out.println("Dati non trovati");
+			} else {
+				System.out.println("Errore :- Si è verificato un errore nell'elaborazione della richiesta.");
 			}
 			response.close();
-		} catch (Exception io) {
-			System.out.println("Errore nella ricezione dei dati in input");
+		} catch (InvalidProtocolBufferException e) {
+			System.out.println("Errore :- si è verificato un errore nel parsing del messaggio ricevuto.");
+		} catch (Exception e) {
+			System.out.println("Errore :- si è verificato un errore generico nella comunicazione con il server.");
 		}
 	}
 
@@ -116,10 +129,16 @@ public class AnalistaController {
 				byte[] output = response.getEntity(byte[].class);
 				SmartCity.AggregatedStatistic aggregate = SmartCity.AggregatedStatistic.parseFrom(output);
 				System.out.println("Deviazione std e media delle N statistiche: " + aggregate);
+			} else if (response.getStatus() == 404) {
+				System.out.println("Dati non trovati");
+			} else {
+				System.out.println("Errore :- Si è verificato un errore nell'elaborazione della richiesta.");
 			}
 			response.close();
-		} catch (Exception io) {
-			System.out.println("Errore nella ricezione dei dati in input");
+		} catch (InvalidProtocolBufferException e) {
+			System.out.println("Errore :- si è verificato un errore nel parsing del messaggio ricevuto.");
+		} catch (Exception e) {
+			System.out.println("Errore :- si è verificato un errore generico nella comunicazione con il server.");
 		}
 	}
 }

@@ -8,8 +8,7 @@ import java.io.InputStreamReader;
 
 public class AnalistaApp {
 	public static void main (String[] args) {
-		boolean anotherChoice = true;
-		while (anotherChoice) {
+		while (true) {
 
 			System.out.println("Scegliere una delle seguenti opzioni: ");
 			System.out.println("1. Conoscere lo stato attuale della città");
@@ -22,44 +21,38 @@ public class AnalistaApp {
 			try {
 				BufferedReader bufReader = new BufferedReader(new InputStreamReader(System.in));
 				String option = bufReader.readLine();
-				if (option != null && option.trim().equalsIgnoreCase("Q")) {
-					System.out.println("L'applicativo sta per terminare ...");
-					anotherChoice = false;
-				} else {
-					Integer choice = Integer.valueOf(option);
-					AnalistaController functs = new AnalistaController();
+				Integer choice = Integer.valueOf(option);
+				AnalistaController functs = new AnalistaController();
 
-					switch (choice) {
-						case 1:
-							functs.getCityState();
-							break;
-						case 2:
-							functs.getEdgeNodeStats();
-							break;
-						case 3:
-							functs.getGlobalAndLocalStats();
-							break;
-						case 4:
-							functs.getStdDevMeanSingleNode();
-							break;
-						case 5:
-							functs.getStdDevMeanNodes();
-							break;
-						case 6:
-							System.exit(0);
-						default:
-							System.out.println("Input non riconosciuto");
-							break;
-					}
+				switch (choice) {
+					case 1:
+						functs.getCityState();
+						break;
+					case 2:
+						functs.getEdgeNodeStats();
+						break;
+					case 3:
+						functs.getGlobalAndLocalStats();
+						break;
+					case 4:
+						functs.getStdDevMeanSingleNode();
+						break;
+					case 5:
+						functs.getStdDevMeanNodes();
+						break;
+					case 6:
+						System.exit(0);
+					default:
+						System.out.println("Errore :- Input non riconosciuto");
+						break;
 				}
+
 				System.out.println("--------------------------------");
 				System.out.println("\n\n");
-
-
 			} catch (IOException io) {
-				System.out.println("Errore nella ricezione dell'input.");
+				System.out.println("Errore :- si è verificato un problema nella ricezione dell'input");
 			} catch (Exception e) {
-				System.out.println("Si è verificato un errore.");
+				System.out.println("Errore :- si è verificato un errore inaspettato");
 			}
 		}
 
