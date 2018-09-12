@@ -8,11 +8,11 @@ public class CityNode {
 	private List<CityNode> childNodes;
 	private SmartCity.NodeMeasurements nodeStatistics;
 
-	public SmartCity.Node getNode () {
+	public synchronized SmartCity.Node getNode () {
 		return this.node;
 	}
 
-	public SmartCity.NodeMeasurements getNodeStatistics () {
+	public synchronized SmartCity.NodeMeasurements getNodeStatistics () {
 		return this.nodeStatistics;
 	}
 
@@ -25,7 +25,7 @@ public class CityNode {
 	public CityNode () {
 	}
 
-	public void addAllStatistics (List<SmartCity.NodeMeasurement> stats) {
+	public synchronized void addAllStatistics (List<SmartCity.NodeMeasurement> stats) {
 		//List<SmartCity.NodeMeasurement> currentStats = this.nodeStatistics.getStatisticsList();
 		this.nodeStatistics = SmartCity.NodeMeasurements.newBuilder().addAllStatistics(stats).build();
 	}

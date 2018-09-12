@@ -8,7 +8,9 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import javax.ws.rs.ext.RuntimeDelegate;
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 public class ServerStarter {
 	final static String HOST = "localhost";
@@ -31,9 +33,12 @@ public class ServerStarter {
 			System.out.println("Press any button to stop server...");
 			System.in.read();
 			server.shutdownNow();
+		} catch (URISyntaxException e) {
+			System.out.println("Errore :- si è verificato un errore dovuto alla sintassi dell'URI");
+		} catch (IOException e) {
+			System.out.println("Errore :- si è verificato un errore nello startup/shutdown del server");
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Errore nella connessione");
+			System.out.println("Errore :- si è verificato un errore generico.");
 			System.exit(1);
 		}
 	}

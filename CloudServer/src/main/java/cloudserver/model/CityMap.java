@@ -10,11 +10,9 @@ import java.util.stream.Collectors;
 public class CityMap {
 
 	private List<CityNode> cityNodes;
-	private List<SmartCity.NodeMeasurement> globalStats;
 	private CityNode root;
 	private static CityMap map;
 	private static int maxChildsNum = 3;
-
 
 	public synchronized static CityMap getInstance () {
 		if (map == null) {
@@ -29,10 +27,9 @@ public class CityMap {
 
 	private CityMap () {
 		this.cityNodes = new Vector<CityNode>();
-		this.globalStats = new Vector<SmartCity.NodeMeasurement>();
 	}
 
-	public SmartCity.Nodes getNodes () {
+	public synchronized SmartCity.Nodes getNodes () {
 		return cityNodes == null ? null : SmartCity.Nodes.newBuilder().addAllNodes(cityNodes.stream().map(nd -> nd.getNode()).collect(Collectors.toList())).build();
 	}
 
@@ -40,7 +37,7 @@ public class CityMap {
 		this.cityNodes.add(new CityNode(node, measurements));
 	}
 
-	public CityNode getTreeRoot () {
+	public synchronized CityNode getTreeRoot () {
 		return this.root;
 	}
 
@@ -53,7 +50,7 @@ public class CityMap {
 		this.root = citynode;
 	}
 
-	public SmartCity.Node addChildNode (CityNode currentRoot, CityNode node) {
+	public synchronized SmartCity.Node addChildNode (CityNode currentRoot, CityNode node) {
 		//CityNode nodeToBeInserted = new CityNode(node, SmartCity.NodeStatistics.newBuilder().addAllStatistics(new Vector<>()).build());
 		if (currentRoot == null) {
 			this.setTreeRoot(node);
@@ -75,11 +72,11 @@ public class CityMap {
 			}
 		}
 		if (childs.size() < maxChildsNum && (minDistance == null || distanceFromRoot <= minDistance)) {
-			System.out.println("Inserisco il nodo nei figli di: " + currentRoot.getNode().getId());
+			//System.out.println("Inserisco il nodo nei figli di: " + currentRoot.getNode().getId());
 			childs.add(node);
 			return currentRoot.getNode();
 		} else {
-			System.out.println("Voglio aggiungerlo sotto il nodo: " + closerNode);
+			//System.out.println("Voglio aggiungerlo sotto il nodo: " + closerNode);
 			return this.addChildNode(closerNode, node);
 		}
 	}
@@ -90,8 +87,8 @@ public class CityMap {
 			return;
 		}
 		if (this.root.getNode().getId() == nodeId) {
-			System.out.println("root: " + this.root.getNode());
-			System.out.println("current node: " + currentNode.getNode());
+			//System.out.println("root: " + this.root.getNode());
+			//System.out.println("current node: " + currentNode.getNode());
 			this.setTreeRoot((CityNode) null);
 			return;
 		}
@@ -102,11 +99,9 @@ public class CityMap {
 			if (currentFather != null) {
 				currentFather.getChildNodes().removeIf(cityNode -> cityNode.getNode().getId() == nodeId);
 			}
-			System.out.println("Ciao");
 			currentNode.getChildNodes().forEach(citynode -> this.map.addChildNode(this.root, citynode));
 		} else {
 			for (CityNode cityNode : childs) {
-				System.out.println("fa un giro");
 				removeNodeFromTree(currentNode, cityNode, nodeId);
 			}
 		}
@@ -114,20 +109,15 @@ public class CityMap {
 
 	public synchronized void removeNode (int nodeId) {
 		this.cityNodes.removeIf(cn -> cn.getNode().getId() == nodeId);
+		this.removeNodeFromTree(null, this.getTreeRoot(), nodeId);
 	}
 
 	public List<CityNode> getCityNodes () {
 		return this.cityNodes;
 	}
 
-	public synchronized void addGlobal (SmartCity.NodeMeasurement global) {
-		//TODO qua il synchronized va messo sulle globals
-		if (global != null) {
-			this.globalStats.add(global);
-		}
-	}
 
-	public List<SmartCity.Node> getLeafNodes (CityNode currentRoot) {
+	public synchronized List<SmartCity.Node> getLeafNodes (CityNode currentRoot) {
 		if (currentRoot == null) {
 			return new Vector<>();
 		}
@@ -141,7 +131,7 @@ public class CityMap {
 		return result;
 	}
 
-	public SmartCity.Node getNodeFather (CityNode currentFather, CityNode currentNode, int nodeId) {
+	public synchronized SmartCity.Node getNodeFather (CityNode currentFather, CityNode currentNode, int nodeId) {
 		if (currentNode == null || (currentNode.getNode().getId() != nodeId && currentNode.getChildNodes().isEmpty())) {
 			return null;
 		}
@@ -157,12 +147,11 @@ public class CityMap {
 		return null;
 	}
 
-	public List<SmartCity.NodeMeasurement> getGlobals () {
-		return this.globalStats;
-	}
-
 	@Override
 	public String toString () {
-		return this.cityNodes.toString() + ", global statistics: " + globalStats;
+		return "CityMap{" +
+				"cityNodes=" + cityNodes +
+				", root=" + root +
+				'}';
 	}
 }
