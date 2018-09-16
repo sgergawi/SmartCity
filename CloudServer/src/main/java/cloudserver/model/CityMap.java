@@ -136,7 +136,7 @@ public class CityMap {
 			return null;
 		}
 		if (currentNode.getNode().getId() == nodeId) {
-			return currentFather.getNode();
+			return currentFather == null ? currentNode.getNode() : currentFather.getNode();
 		}
 		for (CityNode child : currentNode.getChildNodes()) {
 			SmartCity.Node result = getNodeFather(currentNode, child, nodeId);
