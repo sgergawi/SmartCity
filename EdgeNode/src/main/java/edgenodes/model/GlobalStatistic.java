@@ -1,11 +1,8 @@
 package edgenodes.model;
 
 import cloudserver.model.SmartCity;
-import edgenodes.NodeMain;
 import edgenodes.utility.Utility;
-import jdk.nashorn.internal.objects.Global;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
@@ -15,6 +12,7 @@ public class GlobalStatistic {
 	private List<SmartCity.NodeMeasurement> aggregatedGlobals;
 	private SmartCity.NodeMeasurement global;
 	private List<SmartCity.NodeMeasurement> globalsReceived;
+	private List<SmartCity.NodeMeasurement> globalsCalculated;
 	private static GlobalStatistic instance;
 
 	public static synchronized GlobalStatistic getInstance () {
@@ -28,10 +26,13 @@ public class GlobalStatistic {
 		this.nodesLocals = new HashMap<>();
 		this.aggregatedGlobals = new Vector<>();
 		this.globalsReceived = new Vector<>();
+		this.globalsCalculated = new Vector<>();
 	}
 
 	public synchronized void addLocalStatistics (SmartCity.Node node, SmartCity.NodeMeasurement statistic) {
 		if (nodesLocals.containsKey(node)) {
+			System.out.println(nodesLocals.get(node));
+			System.out.println(statistic);
 			nodesLocals.get(node).add(statistic);
 		} else {
 			Vector<SmartCity.NodeMeasurement> nodeStat = new Vector<>();
@@ -58,6 +59,7 @@ public class GlobalStatistic {
 		if (!aggregatedGlobals.isEmpty()) {
 			Double sum = this.aggregatedGlobals.stream().map(stat -> stat.getValue()).reduce((a, b) -> a + b).orElse(0.);
 			this.global = SmartCity.NodeMeasurement.newBuilder().setValue(sum / this.aggregatedGlobals.size()).setTimestamp(Utility.generateTimestamp()).build();
+			this.globalsCalculated.add(this.global);
 		}
 
 	}
@@ -89,26 +91,34 @@ public class GlobalStatistic {
 	}
 
 	public synchronized void clearGlobals () {
-		//TODO il syncronized andrebbe messo sulla nodesLocals e non sul metodo
 		this.aggregatedGlobals.clear();
 	}
 
 	public synchronized void clearLocals () {
-		//TODO il syncronized andrebbe messo sulla nodesLocals e non sul metodo
 		this.nodesLocals.clear();
 	}
 
 	public synchronized void addGlobalsReceived (SmartCity.NodeMeasurement global) {
-		this.globalsReceived.add(global);
+		if (global != null && global.getTimestamp() != 0 && global.getValue() != 0.) {
+			this.globalsReceived.add(global);
+		}
+
 	}
 
 	public synchronized SmartCity.NodeMeasurement getLastGlobalReceived () {
 		if (globalsReceived != null && !globalsReceived.isEmpty()) {
 			this.globalsReceived.sort(Utility.getComparator());
-			this.globalsReceived.get(this.globalsReceived.size() - 1);
+			return this.globalsReceived.get(this.globalsReceived.size() - 1);
 		}
 		return null;
+	}
 
+	public synchronized SmartCity.NodeMeasurement getLastGlobalCalculated () {
+		if (globalsCalculated != null && !globalsCalculated.isEmpty()) {
+			this.globalsCalculated.sort(Utility.getComparator());
+			return this.globalsCalculated.get(this.globalsCalculated.size() - 1);
+		}
+		return null;
 	}
 
 	public List<SmartCity.NodeMeasurement> getGlobalsReceived () {

@@ -5,31 +5,43 @@ import cloudserver.model.SmartCity;
 import java.util.List;
 import java.util.Vector;
 
-public class MajorNodes {
-    private List<SmartCity.Node> majorThanMe;
+public class CityNodes {
+	private List<SmartCity.Node> allNodes;
 
-    private static MajorNodes majors;
+	private static CityNodes instance;
 
-    public synchronized static MajorNodes getInstance(){
-        if(majors==null){
-            majors = new MajorNodes();
-        }
-        return majors;
-    }
-    private MajorNodes(){majorThanMe=new Vector<>();}
+	public synchronized static CityNodes getInstance () {
+		if (instance == null) {
+			instance = new CityNodes();
+		}
+		return instance;
+	}
 
-    public synchronized void addMajorThanMe(SmartCity.Node node){
-        this.majorThanMe.add(node);
-    }
+	private CityNodes () {
+		allNodes = new Vector<>();
+	}
 
-    @Override
-    public String toString(){
-        return this.majorThanMe!=null?this.majorThanMe.toString():null;
-    }
+	public synchronized void addCityNode (SmartCity.Node node) {
+		this.allNodes.removeIf(n -> n.getId() == node.getId());
+		this.allNodes.add(node);
+	}
 
-    public List<SmartCity.Node> getMajorThanMe(){
-        return this.majorThanMe;
-    }
+	public synchronized void addAllCityNodes (List<SmartCity.Node> nodes) {
+		nodes.stream().forEach(n -> this.addCityNode(n));
+	}
+
+	public synchronized void removeCityNode (SmartCity.Node node) {
+		this.allNodes.removeIf(n -> n.getId() == node.getId());
+	}
+
+	@Override
+	public String toString () {
+		return this.allNodes != null ? this.allNodes.toString() : null;
+	}
+
+	public List<SmartCity.Node> getAllNodes () {
+		return this.allNodes;
+	}
 
 
 }

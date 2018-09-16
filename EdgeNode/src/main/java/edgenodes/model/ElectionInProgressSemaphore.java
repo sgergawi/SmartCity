@@ -3,27 +3,27 @@ package edgenodes.model;
 import java.util.List;
 import java.util.Vector;
 
-public class PendingThreadsSemaphore {
+public class ElectionInProgressSemaphore {
 
-	private static PendingThreadsSemaphore instance;
-	private List<Thread> inpending;
+	private static ElectionInProgressSemaphore instance;
 
-	public static synchronized PendingThreadsSemaphore getInstance () {
+	//private List<Thread> inpending;
+	public static synchronized ElectionInProgressSemaphore getInstance () {
 		if (instance == null) {
-			instance = new PendingThreadsSemaphore();
+			instance = new ElectionInProgressSemaphore();
 		}
 		return instance;
 	}
 
-	private PendingThreadsSemaphore () {
-		this.inpending = new Vector<>();
+	private ElectionInProgressSemaphore () {
+		//this.inpending = new Vector<>();
 	}
 
-	public synchronized void blockMeIfElection () {
+	public synchronized void blockMeIfElectionInProgress () {
 		while (ThreadsPool.getInstance().isElectionInPending()) {
 			try {
 				System.out.println("Thread " + Thread.currentThread().getId() + " è in pending");
-				this.inpending.add(Thread.currentThread());
+				//this.inpending.add(Thread.currentThread());
 				this.wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -32,13 +32,13 @@ public class PendingThreadsSemaphore {
 	}
 
 	public synchronized void exit () {
-		this.inpending.forEach(t -> {
+		/*this.inpending.forEach(t -> {
 			try {
 				t.notify();
 			} catch (IllegalMonitorStateException e) {
 
 			}
-		});
-		System.out.println("Risveglio tutti");
+		});*/
+		this.notify();
 	}
 }

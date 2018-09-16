@@ -1,12 +1,8 @@
 package edgenodes.controller;
 
 import cloudserver.model.SmartCity;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
 import edgenodes.NodeMain;
-import edgenodes.model.Coordinator;
-import edgenodes.model.GlobalStatistic;
-import edgenodes.model.MeasurementsBuffer;
+import edgenodes.model.*;
 
 public class GlobalStatisticsThread extends Thread {
 	private SmartCity.Node node;
@@ -18,12 +14,15 @@ public class GlobalStatisticsThread extends Thread {
 	@Override
 	public void run () {
 		while (true) {
+			ElectionInProgressSemaphore.getInstance().blockMeIfElectionInProgress();
+			//ElectionLock.getInstance().lock();
 			try {
+				System.out.println("Thread " + Thread.currentThread().getId() + ": aggiornamento ?");
 				Thread.sleep(5000);
-				System.out.println("Aggiornamento globals");
 				GlobalStatistic globalSituation = GlobalStatistic.getInstance();
 				globalSituation.updateGlobal();
 				if (globalSituation.getGlobal() != null) {
+					System.out.println("Thread " + Thread.currentThread().getId() + ":ho calcolato una nuova global: " + globalSituation.getGlobal().getValue() + " " + globalSituation.getGlobal().getTimestamp());
 					globalSituation.addLocalStatistics(this.node, GlobalStatistic.getInstance().getGlobal());
 				}
 				if (Coordinator.getInstance().getCoordinator().getId() == this.node.getId()) {
@@ -37,9 +36,14 @@ public class GlobalStatisticsThread extends Thread {
 				GlobalStatistic.getInstance().setGlobal(null);
 				GlobalStatistic.getInstance().clearGlobals();
 			} catch (InterruptedException e) {
-				System.out.println("Il calcolo della statistica globale è stato interrotto");
+				e.printStackTrace();
+				System.out.println("Errore :- Il calcolo della statistica globale è stato interrotto");
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Errore :- si è verificato un errore generico durante l'aggiornamento della statistica globale");
 			}
-
+			ElectionInProgressSemaphore.getInstance().exit();
+			//ElectionLock.getInstance().unlock();
 		}
 	}
 }

@@ -1,16 +1,12 @@
 package edgenodes.controller;
 
 import cloudserver.model.SmartCity;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
 import edgenodes.NodeMain;
-import edgenodes.model.Coordinator;
-import edgenodes.model.GlobalStatistic;
-import edgenodes.model.MajorNodes;
+import edgenodes.model.*;
 
-import javax.ws.rs.core.MediaType;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
 
@@ -52,7 +48,6 @@ public class NodeCommunicationThread extends Thread {
 					manageElectionTime(request);
 					break;
 				case ELECTIONRECEIVED:
-					System.out.println("ELECTION RECEIVED");
 					break;
 				case ELECTIONRESULT:
 					manageElectionResult(request);
@@ -63,7 +58,7 @@ public class NodeCommunicationThread extends Thread {
 			}
 			this.connection.close();
 		} catch (Exception e) {
-			System.out.println("Errore nel parsing del messaggio");
+			System.out.println("Errore :- si è verificato un errore generico nel parsing del messaggio.");
 		}
 
 	}
@@ -71,9 +66,8 @@ public class NodeCommunicationThread extends Thread {
 	public void manageHelloRequest (SmartCity.MessageRequest request) {
 		try {
 			DataOutputStream outputStream = new DataOutputStream(this.connection.getOutputStream());
-			if (request.getNode().getId() > this.node.getId()) {
-				MajorNodes.getInstance().addMajorThanMe(request.getNode());
-			}
+			CityNodes.getInstance().addCityNode(request.getNode());
+
 			SmartCity.HelloResponse response = SmartCity.HelloResponse.newBuilder().setTypemessage(SmartCity.MessageType.WELCOME).build();
 			if (Coordinator.getInstance().getCoordinator().getId() == this.node.getId()) {
 				response = response.toBuilder().setIscoordinator(true).build();
@@ -83,8 +77,10 @@ public class NodeCommunicationThread extends Thread {
 			byte[] output = response.toByteArray();
 			outputStream.writeInt(output.length);
 			outputStream.write(output);
+		} catch (IOException e) {
+			System.out.println("Errore :- si è verificato un problema di comunicazione durante la ricezione di un HELLO.");
 		} catch (Exception e) {
-			System.out.println("Errore durante la hello request");
+			System.out.println("Errore :- si è verificato un problema generico durante la hello request.");
 		}
 
 	}
@@ -100,25 +96,29 @@ public class NodeCommunicationThread extends Thread {
 	public void manageStatisticUpdate (SmartCity.MessageRequest request) {
 		SmartCity.NodeMeasurement statistic = request.getStatisticMsg().getStatistic();
 		SmartCity.Node node = request.getStatisticMsg().getNode();
+		System.out.println("Ricevo statistica dal figlio " + node.getId());
 		GlobalStatistic.getInstance().addLocalStatistics(node, statistic);
 		GlobalStatistic.getInstance().addAggregatedGlobals(statistic);
-		sendCurrentGlobalToChild();
+		sendCurrentGlobalToChild(node);
 	}
 
-	private void sendCurrentGlobalToChild () {
+	private void sendCurrentGlobalToChild (SmartCity.Node child) {
 		try {
 			DataOutputStream outputStream = new DataOutputStream(this.connection.getOutputStream());
 			SmartCity.NodeMeasurement global = null;
 			if (this.node.getId() == Coordinator.getInstance().getCoordinator().getId()) {
-				global = GlobalStatistic.getInstance().getGlobal();
+				global = GlobalStatistic.getInstance().getLastGlobalCalculated();
 			} else {
 				global = GlobalStatistic.getInstance().getLastGlobalReceived();
 			}
 			byte[] output = global == null ? SmartCity.NodeMeasurement.newBuilder().build().toByteArray() : global.toByteArray();
 			outputStream.writeInt(output.length);
 			outputStream.write(output);
+		} catch (IOException e) {
+			CityNodes.getInstance().removeCityNode(child);
+			System.out.println("Errore :- Non è stato possibile comunicare con il figlio");
 		} catch (Exception e) {
-			System.out.println("Non è stato possibile rispondere all'aggiornamento di statistiche");
+			System.out.println("Errore :- Non è stato possibile condividere la statistica globale con il figlio");
 		}
 	}
 
@@ -131,46 +131,67 @@ public class NodeCommunicationThread extends Thread {
 	 * @param request
 	 */
 	public void manageLocalsGlobalsStatisticUpdate (SmartCity.MessageRequest request) {
-		System.out.println("Ricevo un aggregato dal nodo figlio");
 		SmartCity.LocalsGlobalsMessage msg = request.getLocalsglobalsUpdate();
+		SmartCity.Node sender = msg.getSender();
+		System.out.println("Thread " + Thread.currentThread().getId() + " Ricevo un aggregato dal nodo figlio: " + sender.getId());
 		SmartCity.NodeMeasurement global = msg.getGlobal();
 		List<SmartCity.NodeLocalStatistics> childsMeasurements = msg.getNodesLocalsList();
 		GlobalStatistic globalSituation = GlobalStatistic.getInstance();
 		globalSituation.addAggregatedGlobals(global);
 		childsMeasurements.stream().forEach(measurement -> globalSituation.setAllLocalStatistics(measurement.getNode(), measurement.getLocalsList()));
-		sendCurrentGlobalToChild();
-
+		sendCurrentGlobalToChild(sender);
 	}
 
-	public void manageElectionTime (SmartCity.MessageRequest request) {
+	public synchronized void manageElectionTime (SmartCity.MessageRequest request) {
 		try {
-			System.out.println("Mi ha chiamato il nodo " + request.getNode().getId());
+			System.out.println("Thread " + Thread.currentThread().getId() + " Mi ha chiamato il nodo " + request.getNode().getId() + " per inizio elezione");
 			DataOutputStream outputStream = new DataOutputStream(this.connection.getOutputStream());
 			SmartCity.MessageRequest response = SmartCity.MessageRequest.newBuilder().setNode(this.node).setTypemessage(SmartCity.MessageType.ELECTIONRECEIVED).build();
 			byte[] respBytes = response.toByteArray();
 			outputStream.writeInt(respBytes.length);
 			outputStream.write(respBytes);
+			//if (!ThreadsPool.getInstance().isElectionInPending()) {
+			System.out.println("Thread " + Thread.currentThread().getId() + " inizio elezione");
+			NodeMain.startElection(this.node);
+			/*} else {
+				System.out.println("Thread " + Thread.currentThread().getId() + "Stavo già gestendo un'elezione");
+			}*/
+			System.out.println("Thread " + Thread.currentThread().getId() + "Termine elezione");
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("Errore :- si è verificato un errore nell'invio dell'ACK di elezione");
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println("Errore :- si è verificato un errore generico nell'invio dell'ACK di elezione");
 		}
-		NodeMain.startElection(this.node);
 	}
 
-	public void manageElectionResult (SmartCity.MessageRequest request) {
-		System.out.println(this.node.getId() + " ha aggiornato il coordinatore");
-		try {
-			Coordinator.getInstance().setCoordinator(request.getNode());
-			System.out.println("Coordinatore: " + Coordinator.getInstance().getCoordinator());
-			if (node.getId() == Coordinator.getInstance().getCoordinator().getId()) {
-				GlobalStatisticsThread thread = new GlobalStatisticsThread(node);
-				thread.start();
-				thread.join();
+	public synchronized void manageElectionResult (SmartCity.MessageRequest request) {
+		//TODO
+		/*if (ElectionLock.getInstance().tryLock()) {
+			ElectionLock.getInstance().lock();
+		}*/
+		System.out.println("Thread " + Thread.currentThread().getId() + " " + this.node.getId() + " è chiamato per la result di elezione");
+		ElectionMutex.getInstance().enter();
+		List<SmartCity.Node> allNodes = CityNodes.getInstance().getAllNodes();
+		if (allNodes.stream().allMatch(n -> n.getId() < this.node.getId())) {
+			NodeMain.broadcastElectionResult(this.node);
+		} else {
+			System.out.println("Thread " + Thread.currentThread().getId() + " " + this.node.getId() + " ha aggiornato il coordinatore in: " + request.getNode().getId());
+			try {
+				Coordinator.getInstance().setCoordinator(request.getNode());
+				Coordinator.getInstance().setFatherNode(NodeMain.getNewFather(node));
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Errore :- si è verificato un errore nell'aggiornamento del coordinatore e del nodo padre");
+				//NodeMain.deleteNodeServerSide(this.node);
 			}
-			Coordinator.getInstance().setFatherNode(NodeMain.getNewFather(node));
-		} catch (Exception e) {
-			System.out.println("Errore nell'aggiornamento del coordinatore: " + e);
-			NodeMain.deleteNodeServerSide(this.node);
 		}
-
+		System.out.println("Thread " + Thread.currentThread().getId() + " fine aggiornamento coordinatore");
+		ElectionMutex.getInstance().exit();
+		ElectionInProgressSemaphore.getInstance().exit();
+		/*ThreadsPool.getInstance().setIsElectionInPending(false);
+		ElectionInProgressSemaphore.getInstance().exit();*/
+		/*ElectionLock.getInstance().unlock();*/
 	}
 }

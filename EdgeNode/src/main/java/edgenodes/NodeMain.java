@@ -1,24 +1,20 @@
 package edgenodes;
 
 import cloudserver.model.SmartCity;
+import com.google.protobuf.InvalidProtocolBufferException;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import edgenodes.controller.*;
 import edgenodes.model.*;
 import edgenodes.utility.Utility;
-import io.grpc.Status;
-import jdk.nashorn.internal.objects.Global;
 
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Random;
-import java.util.Vector;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class NodeMain {
 	private final static String CLOUDHOST = "http://localhost";
@@ -37,7 +33,6 @@ public class NodeMain {
 		int nodeId, nodesPort, sensorsPort, xPos, yPos;
 		SmartCity.Node node, father;
 		try {
-
 			System.out.println("Inserire id del nodo");
 			Scanner scanner = new Scanner(System.in);
 			nodeId = scanner.nextInt();
@@ -53,6 +48,7 @@ public class NodeMain {
 			//presentarsi agli altri nodi in broadcast
 			integrateInto(node, nodes);
 			startToWork(node);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Errore inizializzazione dati nodo edge");
@@ -82,14 +78,12 @@ public class NodeMain {
 			ServerSocket selfSensorsSocket = new ServerSocket(node.getSensorsPort());
 			SensorsDispatcher sensorsDispatcher = new SensorsDispatcher(node, selfSensorsSocket);
 			sensorsDispatcher.start();
-			System.out.println("Coordinatore: " + Coordinator.getInstance().getCoordinator());
-			//if (node.getId() == Coordinator.getInstance().getCoordinator().getId()) {
 			GlobalStatisticsThread thread = new GlobalStatisticsThread(node);
 			thread.start();
 			ControlPanelThread controlPanel = new ControlPanelThread(node);
 			controlPanel.start();
+
 			thread.join();
-			//}
 			nodeDispatcher.join();
 			sensorsDispatcher.join();
 			controlPanel.join();
@@ -169,16 +163,16 @@ public class NodeMain {
 		//Tento un massimo di 10 volte l' inserimento del nodo nella mappa se il primo tentativo non è andato a buon fine
 		//generando posizioni x,y casuali
 		while (retry < 10) {
-
 			if (response.getStatus() != ClientResponse.Status.OK.getStatusCode()) {
 				//Controllo che in realtà sia stato rifiutato per la posizione e non per ID già esistente
 				byte[] responseMsgByteArr = response.getEntity(byte[].class);
 				SmartCity.InitializationMessage responseMsg = SmartCity.InitializationMessage.parseFrom(responseMsgByteArr);
-				if (responseMsg.getErrortype() != SmartCity.ErrorType.COORD_NOT_ALLOWED) {
+				/*if (responseMsg.getErrortype() != SmartCity.ErrorType.COORD_NOT_ALLOWED) {
 					retry = 10;
 				} else {
 					retry++;
-				}
+				}*/
+				retry = responseMsg.getErrortype() != SmartCity.ErrorType.COORD_NOT_ALLOWED ? 10 : retry + 1;
 				//Genero le posizioni x,y random comprese tra 0-99 entrambe
 				xPos = rand.nextInt(100);
 				yPos = rand.nextInt(100);
@@ -191,7 +185,6 @@ public class NodeMain {
 		if (retry >= 10) {
 			System.out.println("Non è stato possibile connettersi con il cloud server");
 			response.close();
-			//TODO dovrei aggiungere delle eccezioni specifiche
 			throw new IOException();
 		}
 		SmartCity.InitializationMessage msgFromCloud = SmartCity.InitializationMessage.parseFrom(response.getEntity(byte[].class));
@@ -201,6 +194,7 @@ public class NodeMain {
 		System.out.println("Mio padre sarà: " + father.getId());
 		System.out.println("Io sono " + node);
 		response.close();
+		CityNodes.getInstance().addAllCityNodes(nodes.getNodesList());
 		return nodes;
 	}
 
@@ -208,6 +202,8 @@ public class NodeMain {
 		//Tenta l'inserimento del nodo passato in input
 		if (GlobalStatistic.getInstance().getGlobal() != null && GlobalStatistic.getInstance().isThereAnyLocal()) {
 			System.out.println("Invio statistiche al server");
+			//GlobalStatistic.getInstance().addGlobalsReceived(GlobalStatistic.getInstance().getGlobal());
+			//System.out.println(GlobalStatistic.getInstance().getGlobalsReceived());
 			Client client = Client.create();
 			WebResource resource = client.resource(CLOUDHOST + ":" + CLOUDPORT + ROOT + "/measurements");
 			SmartCity.LocalsGlobalsMessage msg = SmartCity.LocalsGlobalsMessage.newBuilder().setGlobal(GlobalStatistic.getInstance().getGlobal()).addAllNodesLocals(GlobalStatistic.getInstance().getNodeslocalsMsg()).build();
@@ -218,18 +214,17 @@ public class NodeMain {
 	}
 
 	public static void sendGlobalsLocalsToFather (SmartCity.Node node) {
-		System.out.println("Invio locals e globals al papà " + Coordinator.getInstance().getFatherNode().getId());
 		SmartCity.Node fatherNode = Coordinator.getInstance().getFatherNode();
 		if (fatherNode != null) {
 			if (GlobalStatistic.getInstance().getGlobal() != null && GlobalStatistic.getInstance().isThereAnyLocal()) {
-				System.out.println("Invio globals " + GlobalStatistic.getInstance());
+				System.out.println("Invio locals e globals al papà " + Coordinator.getInstance().getFatherNode().getId() + " globals: " + GlobalStatistic.getInstance().getGlobal());
 				try {
 					Socket fatherSocket = new Socket(fatherNode.getSelfIp(), fatherNode.getOtherNodesPort());
 					//Utilizzo l'output stream per metterci la statistica locale calcolata da questo nodo cioè la media con il suo timestamp
 					DataOutputStream outputStream = new DataOutputStream(fatherSocket.getOutputStream());
 					SmartCity.NodeMeasurement global = GlobalStatistic.getInstance().getGlobal();
 					List<SmartCity.NodeLocalStatistics> nodesLocals = GlobalStatistic.getInstance().getNodeslocalsMsg();
-					SmartCity.LocalsGlobalsMessage localsglobalsMessage = SmartCity.LocalsGlobalsMessage.newBuilder().addAllNodesLocals(nodesLocals).setGlobal(global).build();
+					SmartCity.LocalsGlobalsMessage localsglobalsMessage = SmartCity.LocalsGlobalsMessage.newBuilder().addAllNodesLocals(nodesLocals).setSender(node).setGlobal(global).build();
 					SmartCity.MessageRequest messageToFather = SmartCity.MessageRequest.newBuilder().setLocalsglobalsUpdate(localsglobalsMessage).setTypemessage(SmartCity.MessageType.LOCALSGLOBALS).build();
 					byte[] statistics = messageToFather.toByteArray();
 					outputStream.writeInt(statistics.length);
@@ -240,9 +235,13 @@ public class NodeMain {
 					SmartCity.NodeMeasurement globalReceivedFromFather = SmartCity.NodeMeasurement.parseFrom(globalReceived);
 					GlobalStatistic.getInstance().addGlobalsReceived(globalReceivedFromFather);
 					System.out.println("Statistica globale ricevuta dal nodo padre " + fatherNode.getId() + "=> media: " + globalReceivedFromFather.getValue() + ", timestamp: " + globalReceivedFromFather.getTimestamp());
+				} catch (IOException e) {
+					e.printStackTrace();
+					System.out.println("Errore :- si è verificato un errore durante lo scambio di aggregazioni con il nodo padre");
+					NodeMain.updateFather(node);
 				} catch (Exception e) {
 					e.printStackTrace();
-					System.out.println("Errore nella comunicazione delle aggregazioni al nodo padre");
+					System.out.println("Errore :- si è verificato un errore generico nella comunicazione delle aggregazioni al nodo padre");
 					NodeMain.updateFather(node);
 				}
 
@@ -254,7 +253,7 @@ public class NodeMain {
 	}
 
 	/**
-	 * La rimozione del nodo dalla mappa dovrebbe essere fatta in safe mode.
+	 * La rimozione del nodo dalla mappa dovrebbe essere fatta in safe model.
 	 * Il nodo deve comunicare la sua chiusura solo al server.
 	 *
 	 * @param node
@@ -265,134 +264,236 @@ public class NodeMain {
 		WebResource resource = client.resource(CLOUDHOST + ":" + CLOUDPORT + ROOT + "/" + node.getId());
 		ClientResponse response = resource.accept(MediaType.APPLICATION_OCTET_STREAM).delete(ClientResponse.class);
 		response.close();
+		SocketsPool.getInstance().getElectionSockets().forEach(socket -> {
+			try {
+				socket.close();
+			} catch (IOException e) {
+
+			}
+		});
+		SocketsPool.getInstance().getOtherNodesSockets().forEach(socket -> {
+			try {
+				socket.close();
+			} catch (IOException e) {
+
+			}
+		});
+		SocketsPool.getInstance().getSensorsSockets().forEach(socket -> {
+			try {
+				socket.close();
+			} catch (IOException e) {
+
+			}
+		});
 		System.exit(1);
 	}
 
 	/**
 	 * Implementazione dell'algoritmo Bully di elezione.
 	 */
-	public static void startElection (SmartCity.Node node) {
-		List<SmartCity.Node> majors = MajorNodes.getInstance().getMajorThanMe();
+	public synchronized static void startElection (SmartCity.Node node) {
+		/*if (ThreadsPool.getInstance().isElectionInPending()) {
+			return;
+		}*/
+		//ElectionLock.getInstance().lock();
+		ElectionMutex.getInstance().enter();
+		ThreadsPool.getInstance().setIsElectionInPending(true);
+		System.out.println("Thread " + Thread.currentThread().getId() + " " + node.getId() + " inizia elezione");
+		List<SmartCity.Node> allNodes = CityNodes.getInstance().getAllNodes();
 		SmartCity.MessageRequest msg = SmartCity.MessageRequest.newBuilder().setNode(node).setTypemessage(SmartCity.MessageType.ELECTIONTIME).build();
-		Semaphore semaphore = new Semaphore();
+		ElectionSemaphore semaphore = new ElectionSemaphore();
 		List<ElectionThread> threads = new Vector<>();
-		for (SmartCity.Node major : majors) {
-			ElectionThread thread = new ElectionThread(msg, major, semaphore);
-			threads.add(thread);
-			thread.start();
+		for (SmartCity.Node otherNode : allNodes) {
+			if (otherNode.getId() > node.getId()) {
+				ElectionThread thread = new ElectionThread(msg, otherNode, semaphore);
+				threads.add(thread);
+				thread.start();
+			}
 		}
 		if (!threads.isEmpty()) {
 			semaphore.startCritical(threads.size());
 		}
 		if (threads.isEmpty() || threads.stream().allMatch(thr -> thr.isAlive())) {
 			//Vuol dire che è scattato il timeout e ha vinto questo thread
-			System.out.println("Ho vinto io " + node.getId());
-			//TODO si deve autoproclamare coord e broadcastarlo a tutti
-			Coordinator.getInstance().setCoordinator(node);
+			//System.out.println("Ho vinto io " + node.getId());
 			broadcastElectionResult(node);
+			//ElectionLock.getInstance().unlock();
 		} else {
 			System.out.println("Ha vinto qualche altro nodo che ha risposto");
+			//ElectionLock.getInstance().unlock();
+			ElectionMutex.getInstance().exit();
+			ElectionInProgressSemaphore.getInstance().blockMeIfElectionInProgress();
+			Coordinator.getInstance().setFatherNode(NodeMain.getNewFather(node));
 		}
+		System.out.println("Thread " + Thread.currentThread().getId() + " " + node.getId() + " termina elezione");
+		ElectionInProgressSemaphore.getInstance().exit();
 
 	}
 
-	public static void broadcastElectionResult (SmartCity.Node newCoordinator) {
-		System.out.println("BEGIN BROADCAST");
+	public synchronized static void broadcastElectionResult (SmartCity.Node newCoordinator) {
+		//ElectionLock.getInstance().lock();
+		ElectionMutex.getInstance().enter();
+		Coordinator.getInstance().setCoordinator(newCoordinator);
+		Coordinator.getInstance().setFatherNode(newCoordinator);
+		System.out.println("Thread " + Thread.currentThread().getId() + " BEGIN BROADCAST");
 		Client client = Client.create();
-		WebResource resource = client.resource(CLOUDHOST + ":" + CLOUDPORT + ROOT);
-		ClientResponse response = resource.accept(MediaType.APPLICATION_OCTET_STREAM).get(ClientResponse.class);
-		byte[] cityNodes = response.getEntity(byte[].class);
 		try {
-			SmartCity.Nodes nodes = SmartCity.Nodes.parseFrom(cityNodes);
-			SmartCity.MessageRequest msg = SmartCity.MessageRequest.newBuilder().setTypemessage(SmartCity.MessageType.ELECTIONRESULT).setNode(newCoordinator).build();
-			for (SmartCity.Node node : nodes.getNodesList()) {
-				if (node.getId() != newCoordinator.getId()) {
-					ElectionBroadcastResultThread thread = new ElectionBroadcastResultThread(msg, newCoordinator, node);
-					thread.start();
-				}
-			}
+			List<SmartCity.Node> allCityNodes = CityNodes.getInstance().getAllNodes();
 			WebResource coordinatorResource = client.resource(CLOUDHOST + ":" + CLOUDPORT + ROOT + "/coordinator");
 			ClientResponse newCoordinatorToClient = coordinatorResource.accept(MediaType.APPLICATION_OCTET_STREAM).post(ClientResponse.class, newCoordinator.toByteArray());
 			if (newCoordinatorToClient.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
-				System.out.println("Nuov coordinatore spedito al client");
+				System.out.println("Nuovo coordinatore spedito al client");
 			}
-			//byte[] responseNewCoordinator = newCoordinatorToClient.getEntity(byte[].class);
+			newCoordinatorToClient.close();
+			SmartCity.MessageRequest msg = SmartCity.MessageRequest.newBuilder().setTypemessage(SmartCity.MessageType.ELECTIONRESULT).setNode(newCoordinator).build();
+			List<Thread> threads = new Vector<>();
+			for (SmartCity.Node node : allCityNodes) {
+				if (node.getId() != newCoordinator.getId()) {
+					ElectionBroadcastResultThread thread = new ElectionBroadcastResultThread(msg, newCoordinator, node);
+					thread.start();
+					threads.add(thread);
+				}
+			}
+			threads.stream().forEach(thread -> {
+				try {
+					thread.join();
+				} catch (InterruptedException e) {
+				}
+			});
+			System.out.println("Thread " + Thread.currentThread().getId() + " END BROADCAST");
 		} catch (Exception e) {
-			System.out.println("Errore nella ricezione dei nodi rimanenti nella mappa");
+			e.printStackTrace();
+			System.out.println("Errore :- si è verificato un errore durante il broadcast del risultato dell'elezione");
 		}
-		response.close();
+		ThreadsPool.getInstance().setIsElectionInPending(false);
+		ElectionInProgressSemaphore.getInstance().exit();
+		//ElectionLock.getInstance().unlock();
+		ElectionMutex.getInstance().exit();
 	}
 
 	public static void calculateOverlappedStats (SmartCity.Node node, MeasurementsBuffer measurementsBuffer) {
-		List<SmartCity.NodeMeasurement> measurements = measurementsBuffer.getMeasurementsBuffer();
+		//MeasurementsBufferLock.getInstance().lock();
+		ElectionInProgressSemaphore.getInstance().blockMeIfElectionInProgress();
+		List<SmartCity.NodeMeasurement> measurements = measurementsBuffer.getMeasurementsBuffer().stream().sorted(Utility.getComparator()).collect(Collectors.toList());
+		Collections.reverse(measurements);
 		double sumOfValues = measurements.subList(0, 40).stream().map(a -> a.getValue()).reduce((a, b) -> a + b).orElse(0.);
 		Long timestamp = Utility.generateTimestamp();
 		double mean = sumOfValues / 40.;
 		measurementsBuffer.setMeasurementsBuffer(measurements.subList(20, 40));
-		System.out.println("Invio al padre " + mean + ", timest: " + timestamp);
+		//System.out.println("Invio al padre " + mean + ", timest: " + timestamp);
 		sendOverlappedStats(node, mean, timestamp);
+		ElectionInProgressSemaphore.getInstance().exit();
+		//MeasurementsBufferLock.getInstance().unlock();
 	}
 
 	public static void sendOverlappedStats (SmartCity.Node node, double mean, long timestamp) {
 		SmartCity.NodeMeasurement global = null;
-		if (Coordinator.getInstance().getFatherNode() != null) {
-			System.out.println("spedisco al father le misurazioni dai sensori");
-			SmartCity.Node fatherNode = Coordinator.getInstance().getFatherNode();
-			try {
-				//Apro la socket con il nodo padre
-				//TODO da gestire il fatto che il nodo padre ancora non se lo aspetta
-				Socket fatherSocket = new Socket(fatherNode.getSelfIp(), fatherNode.getOtherNodesPort());
-				//Utilizzo l'output stream per metterci la statistica locale calcolata da questo nodo cioè la media con il suo timestamp
-				DataOutputStream outputStream = new DataOutputStream(fatherSocket.getOutputStream());
-				SmartCity.NodeMeasurement meanStatistic = SmartCity.NodeMeasurement.newBuilder().setValue(mean).setTimestamp(timestamp).build();
-				SmartCity.NodeMeasurementMessage statisticMessage = SmartCity.NodeMeasurementMessage.newBuilder().setStatistic(meanStatistic).setNode(node).build();
-				SmartCity.MessageRequest messageToFather = SmartCity.MessageRequest.newBuilder().setStatisticMsg(statisticMessage).setTypemessage(SmartCity.MessageType.LOCALSTATISTIC).build();
-				byte[] statistic = messageToFather.toByteArray();
-				outputStream.writeInt(statistic.length);
-				outputStream.write(statistic);
-				//Voglio ricevere invece la statistica globale misurata dal nodo coordinatore
-				DataInputStream inputStream = new DataInputStream(fatherSocket.getInputStream());
-				byte[] globalReceived = new byte[inputStream.readInt()];
-				inputStream.read(globalReceived);
-				SmartCity.NodeMeasurement globalReceivedFromFather = SmartCity.NodeMeasurement.parseFrom(globalReceived);
-				GlobalStatistic.getInstance().addGlobalsReceived(globalReceivedFromFather);
-				fatherSocket.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-				//TODO una volta terminata l'elezione dovrei ritentare l'invio della statistica al nodo padre
-				//NodeMain.startElection(node);
+		int retry = 10;
+		while (retry > 0) {
+			ElectionInProgressSemaphore.getInstance().blockMeIfElectionInProgress();
+			if (Coordinator.getInstance().getFatherNode() != null) {
+				System.out.println("Thread " + Thread.currentThread().getId() + " Spedisco al father le misurazioni dai sensori");
+				SmartCity.Node fatherNode = Coordinator.getInstance().getFatherNode();
+				try {
+					//Apro la socket con il nodo padre
+					Socket fatherSocket = new Socket(fatherNode.getSelfIp(), fatherNode.getOtherNodesPort());
+					//Utilizzo l'output stream per metterci la statistica locale calcolata da questo nodo cioè la media con il suo timestamp
+					DataOutputStream outputStream = new DataOutputStream(fatherSocket.getOutputStream());
+					SmartCity.NodeMeasurement meanStatistic = SmartCity.NodeMeasurement.newBuilder().setValue(mean).setTimestamp(timestamp).build();
+					SmartCity.NodeMeasurementMessage statisticMessage = SmartCity.NodeMeasurementMessage.newBuilder().setStatistic(meanStatistic).setNode(node).build();
+					SmartCity.MessageRequest messageToFather = SmartCity.MessageRequest.newBuilder().setStatisticMsg(statisticMessage).setTypemessage(SmartCity.MessageType.LOCALSTATISTIC).build();
+					byte[] statistic = messageToFather.toByteArray();
+					outputStream.writeInt(statistic.length);
+					outputStream.write(statistic);
+					//Voglio ricevere invece la statistica globale misurata dal nodo coordinatore
+					DataInputStream inputStream = new DataInputStream(fatherSocket.getInputStream());
+					byte[] globalReceived = new byte[inputStream.readInt()];
+					inputStream.read(globalReceived);
+					SmartCity.NodeMeasurement globalReceivedFromFather = SmartCity.NodeMeasurement.parseFrom(globalReceived);
+					GlobalStatistic.getInstance().addGlobalsReceived(globalReceivedFromFather);
+					//System.out.println("Globale ricevuta: " + globalReceivedFromFather);
+					fatherSocket.close();
+					retry = 0;
+					System.out.println("Thread " + Thread.currentThread().getId() + ", fine invio statistica locale al padre " + Coordinator.getInstance().getFatherNode().getId());
+				} catch (IOException e) {
+					e.printStackTrace();
+					NodeMain.updateFather(node);
+					System.out.println("Errore :- si è presentato un problema di comunicazione durante l'invio delle misurazioni con overlap.");
+					retry--;
+				} catch (Exception e) {
+					e.printStackTrace();
+					NodeMain.updateFather(node);
+					System.out.println("Errore :- si è presentato un problema generico durante l'invio delle misurazioni con overlap.");
+					retry--;
+				}
+			} else {
 				NodeMain.updateFather(node);
+				retry--;
 			}
-		} else {
-			//NodeMain.startElection(node);
-			NodeMain.updateFather(node);
+			ElectionInProgressSemaphore.getInstance().exit();
 		}
+
 	}
 
-	public static void updateFather (SmartCity.Node node) {
+
+	public synchronized static void updateFather (SmartCity.Node node) {
 		Coordinator coord = Coordinator.getInstance();
 		SmartCity.Node father = coord.getFatherNode();
 		SmartCity.Node coordinator = coord.getCoordinator();
-		if (father != null && coordinator != null && father.getId() == coordinator.getId()) {
-			NodeMain.startElection(node);
-		} else {
-			//Contatto il Server cloud per conoscere il mio nuovo padre per aggiornarlo
-			Coordinator.getInstance().setFatherNode(NodeMain.getNewFather(node));
+		//ElectionLock.getInstance().lock();
+		ElectionMutex.getInstance().enter();
+		System.out.println("Thread " + Thread.currentThread().getId() + " va in updateFather");
+		try {
+			if (!ThreadsPool.getInstance().isElectionInPending()) {
+				if (father != null && coordinator != null && father.getId() == coordinator.getId()) {
+					NodeMain.startElection(node);
+				} else {
+					CityNodes.getInstance().getAllNodes().removeIf(othernode -> othernode.getId() == father.getId());
+					Coordinator.getInstance().setFatherNode(NodeMain.getNewFather(node));
+				}
+			} else {
+				ElectionInProgressSemaphore.getInstance().blockMeIfElectionInProgress();
+				ElectionMutex.getInstance().exit();
+				ElectionInProgressSemaphore.getInstance().exit();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Errore :- si è verificato un errore generico durante l'aggiornamento del nodo padre.");
 		}
+		System.out.println("Thread " + Thread.currentThread().getId() + " termina update father: " + Coordinator.getInstance().getFatherNode().getId());
+		ElectionMutex.getInstance().exit();
+		//ElectionLock.getInstance().unlock();
+
 	}
 
 	public static SmartCity.Node getNewFather (SmartCity.Node node) {
+		//ElectionLock.getInstance().lock();
+		ElectionMutex.getInstance().enter();
 		try {
+			System.out.println("Thread " + Thread.currentThread().getId() + " il nodo " + node.getId() + " sta chiedendo il father.");
 			Client client = Client.create();
 			WebResource resource = client.resource(CLOUDHOST + ":" + CLOUDPORT + ROOT + "/" + node.getId() + "/father");
 			ClientResponse response = resource.accept(MediaType.APPLICATION_OCTET_STREAM).get(ClientResponse.class);
 			byte[] newFather = response.getEntity(byte[].class);
 			SmartCity.Node newFatherNode = SmartCity.Node.parseFrom(newFather);
+			//ElectionLock.getInstance().unlock();
+			//ThreadsPool.getInstance().getWaitingElectionResultLock().unlock();
+			ThreadsPool.getInstance().setIsElectionInPending(false);
+			ElectionInProgressSemaphore.getInstance().exit();
+			ElectionMutex.getInstance().exit();
+			System.out.println("Thread " + Thread.currentThread().getId() + " il nodo " + node.getId() + " ha aggiornato il father in " + newFatherNode.getId());
 			return newFatherNode;
+		} catch (InvalidProtocolBufferException e) {
+			e.printStackTrace();
+			System.out.println("Errore :- si è verificato un errore durante la ricezione del nuovo nodo padre dal server");
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Errore nell'aggiornamento del nodo padre");
+			System.out.println("Errore :- si è verificato un problema nell'aggiornamento del nodo padre");
 		}
+		//ElectionLock.getInstance().unlock();
+		ThreadsPool.getInstance().setIsElectionInPending(false);
+		ElectionInProgressSemaphore.getInstance().exit();
+		ElectionMutex.getInstance().exit();
 		return null;
 	}
 }

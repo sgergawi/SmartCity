@@ -41,22 +41,23 @@ public class ControlPanelThread extends Thread {
 							System.out.println(GlobalStatistic.getInstance().getGlobalsReceived());
 							break;
 						case 3:
-							//Restituire info locali;
+							System.out.println(GlobalStatistic.getInstance().getNodesLocals().get(this.node));
 							break;
 						case 4:
 							anotherChoice = false;
 							break;
 						default:
-							System.out.println("Input non riconosciuto");
+							System.out.println("Errore :- Input non riconosciuto");
 							break;
 					}
 				}
 				System.out.println("--------------------------------");
 				System.out.println("\n\n");
 			} catch (IOException io) {
-				System.out.println("Errore nella ricezione dell'input.");
+				System.out.println("Errore :- problema nella ricezione dell'input.");
 			} catch (Exception e) {
-				System.out.println("Si è verificato un errore.");
+				e.printStackTrace();
+				System.out.println("Errore :- si è verificato un errore generico.");
 			}
 		}
 	}

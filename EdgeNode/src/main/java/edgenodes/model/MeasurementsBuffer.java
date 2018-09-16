@@ -13,13 +13,14 @@ import java.util.Vector;
 public class MeasurementsBuffer {
 
 	private List<SmartCity.NodeMeasurement> measurementsBuffer;
-	/*
-		private SmartCity.NodeMeasurement global;
-	*/
+
+	private List<SmartCity.NodeMeasurement> inPendingMeasurements;
+
 	private static MeasurementsBuffer buffer;
 
 	private MeasurementsBuffer () {
 		this.measurementsBuffer = new Vector<>();
+		this.inPendingMeasurements = new Vector<>();
 	}
 
 	public synchronized static MeasurementsBuffer getInstance () {
@@ -29,12 +30,16 @@ public class MeasurementsBuffer {
 		return buffer;
 	}
 
-	/*public synchronized SmartCity.NodeMeasurement getGlobal () {
-		return this.global;
-	}*/
-
 	public synchronized List<SmartCity.NodeMeasurement> getMeasurementsBuffer () {
 		return this.measurementsBuffer;
+	}
+
+	public synchronized List<SmartCity.NodeMeasurement> getInPendingMeasurements () {
+		return this.inPendingMeasurements;
+	}
+
+	public synchronized void addInPendingMeasurement (SmartCity.NodeMeasurement measurement) {
+		this.inPendingMeasurements.add(measurement);
 	}
 
 	public synchronized void setMeasurementsBuffer (List<SmartCity.NodeMeasurement> measurements) {
@@ -55,14 +60,18 @@ public class MeasurementsBuffer {
 	 *
 	 * @param m
 	 */
-	public synchronized void addMeasurement (SmartCity.Node node, SmartCity.NodeMeasurement m) {
+	public void addMeasurement (SmartCity.Node node, SmartCity.NodeMeasurement m) {
+		MeasurementsBufferLock.getInstance().lock();
+		//ElectionLock.getInstance().lock();
+		System.out.println("Thread: " + Thread.currentThread().getId() + " Ho acquisito i locks");
 		this.measurementsBuffer.add(m);
-		this.measurementsBuffer.sort(Utility.getComparator());
-
+		//this.measurementsBuffer.sort(Utility.getComparator());
 		if (this.measurementsBuffer.size() >= 40) {
 			System.out.println("Superate 40 misurazioni");
 			NodeMain.calculateOverlappedStats(node, MeasurementsBuffer.getInstance());
 		}
+		//ElectionLock.getInstance().unlock();
+		MeasurementsBufferLock.getInstance().unlock();
 	}
 
 }

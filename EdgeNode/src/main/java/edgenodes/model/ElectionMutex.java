@@ -1,18 +1,18 @@
 package edgenodes.model;
 
-public class ElectionInProgressSemaphore {
+public class ElectionMutex {
 	private boolean token;
 	private long threadid;
-	private static ElectionInProgressSemaphore electionInProgress;
+	private static ElectionMutex electionInProgress;
 
-	public synchronized static ElectionInProgressSemaphore getInstance () {
+	public synchronized static ElectionMutex getInstance () {
 		if (electionInProgress == null) {
-			electionInProgress = new ElectionInProgressSemaphore();
+			electionInProgress = new ElectionMutex();
 		}
 		return electionInProgress;
 	}
 
-	private ElectionInProgressSemaphore () {
+	private ElectionMutex () {
 		token = false;
 	}
 
@@ -20,9 +20,9 @@ public class ElectionInProgressSemaphore {
 		synchronized (ElectionLock.getInstance()) {
 			if (token && threadid != Thread.currentThread().getId()) {
 				try {
-					System.out.println("entro nella critica");
+					//System.out.println("entro nella critica");
 					ElectionLock.getInstance().wait();
-					System.out.println("Esco dalla critica");
+					//System.out.println("Esco dalla critica");
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 					System.out.println("Errore :- si è verificato un errore durante la wait sul semaforo");
@@ -35,10 +35,8 @@ public class ElectionInProgressSemaphore {
 
 	public void exit () {
 		synchronized (ElectionLock.getInstance()) {
-			System.out.println("Ho chiamato la notify");
 			token = false;
 			ElectionLock.getInstance().notify();
-			System.out.println("Ho svegliato qualcuno");
 		}
 	}
 }

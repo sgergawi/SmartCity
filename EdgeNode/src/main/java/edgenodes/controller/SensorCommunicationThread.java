@@ -26,7 +26,8 @@ public class SensorCommunicationThread extends Thread {
 			MeasurementsBuffer.getInstance().addMeasurement(node, measurement);
 			this.connection.close();
 		} catch (Exception e) {
-			System.out.println("Errore ricezione dato da sensore" + e);
+			e.printStackTrace();
+			System.out.println("Errore ricezione dato da sensore");
 		}
 
 	}

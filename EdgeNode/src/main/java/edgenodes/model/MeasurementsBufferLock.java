@@ -1,16 +1,16 @@
 package edgenodes.model;
 
-public class MeasurementsBufferLocker {
+public class MeasurementsBufferLock extends MyLock {
 
-	private static MeasurementsBufferLocker instance;
+	private static MeasurementsBufferLock instance;
 
-	public static synchronized MeasurementsBufferLocker getInstance () {
+	public static synchronized MeasurementsBufferLock getInstance () {
 		if (instance == null) {
-			instance = new MeasurementsBufferLocker();
+			instance = new MeasurementsBufferLock();
 		}
 		return instance;
 	}
 
-	private MeasurementsBufferLocker () {
+	private MeasurementsBufferLock () {
 	}
 }

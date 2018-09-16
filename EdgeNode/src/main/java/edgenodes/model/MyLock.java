@@ -4,20 +4,22 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 
-public class ElectionMyLock implements Lock {
+public class MyLock implements Lock {
 	private int holdlock;
 	private long threadid;
 
 	@Override
-
 	public synchronized void lock () {
 		if (holdlock == 0) {
+			System.out.println("Thread " + Thread.currentThread().getId() + ", acquisisco il lock di elezione. ");
 			holdlock++;
 			threadid = Thread.currentThread().getId();
 		} else if (holdlock > 0 && threadid == Thread.currentThread().getId()) {
+			System.out.println("Thread " + Thread.currentThread().getId() + ", acquisisco il lock di elezione. ");
 			holdlock++;
 		} else {
 			try {
+				System.out.println("Thread " + Thread.currentThread().getId() + " va in wait di elezione. ");
 				wait();
 				holdlock++;
 				threadid = Thread.currentThread().getId();
@@ -33,8 +35,8 @@ public class ElectionMyLock implements Lock {
 	}
 
 	@Override
-	public boolean tryLock () {
-		return false;
+	public synchronized boolean tryLock () {
+		return (this.holdlock <= 0 || (holdlock > 0 && threadid == Thread.currentThread().getId()));
 	}
 
 	@Override
@@ -44,10 +46,11 @@ public class ElectionMyLock implements Lock {
 
 	@Override
 	public synchronized void unlock () {
-		if(holdlock>0){
+		if (holdlock > 0) {
 			holdlock--;
 		}
-		if(holdlock==0){
+		if (holdlock == 0) {
+			System.out.println("Thread " + Thread.currentThread().getId() + " rilascio lock elezione.");
 			notify();
 		}
 	}
