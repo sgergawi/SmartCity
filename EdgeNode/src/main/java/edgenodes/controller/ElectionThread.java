@@ -28,7 +28,6 @@ public class ElectionThread extends Thread {
 			outputStream.writeInt(msg.toByteArray().length);
 			outputStream.write(msg.toByteArray());
 			System.out.println("Aspetto l'ok dal nodo " + this.majorNode.getId());
-
 			DataInputStream inputStream = new DataInputStream(nodeSocket.getInputStream());
 			byte[] response = new byte[inputStream.readInt()];
 			inputStream.read(response);

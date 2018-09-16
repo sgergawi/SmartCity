@@ -1,6 +1,8 @@
 package edgenodes.controller;
 
 import cloudserver.model.SmartCity;
+import edgenodes.model.SocketsPool;
+import edgenodes.model.ThreadsPool;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -20,12 +22,13 @@ public class NodesDispatcher extends Thread {
 		while (true) {
 			try {
 				Socket connectionSocket = nodesServerSocket.accept();
+				SocketsPool.getInstance().addNodesSocket(connectionSocket);
 				NodeCommunicationThread thread = new NodeCommunicationThread(connectionSocket, node);
 				thread.start();
 			} catch (IOException e) {
 				System.out.println("Errore :- si è verificato un errore durante la comunicazione con il nodo " + node.getId());
 			} catch (Exception e) {
-				System.out.println("Errore :- si è verificato un errore generico");
+				System.out.println("Errore :- si è verificato un errore generico.");
 			}
 
 		}

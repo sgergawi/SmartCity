@@ -8,7 +8,6 @@ public class SocketsPool {
 	private static SocketsPool instance;
 	private List<Socket> otherNodesSockets;
 	private List<Socket> otherSensorsSockets;
-	private List<Socket> electionSockets;
 
 	public static synchronized SocketsPool getInstance () {
 		if (instance == null) {
@@ -20,7 +19,6 @@ public class SocketsPool {
 	private SocketsPool () {
 		this.otherNodesSockets = new Vector<>();
 		this.otherSensorsSockets = new Vector<>();
-		this.electionSockets = new Vector<>();
 	}
 
 	public synchronized void addNodesSocket (Socket s) {
@@ -30,15 +28,7 @@ public class SocketsPool {
 	public synchronized void addSensorsSocket (Socket s) {
 		this.otherSensorsSockets.add(s);
 	}
-
-	public synchronized void addElectionSockets (Socket s) {
-		this.electionSockets.add(s);
-	}
-
-	public synchronized List<Socket> getElectionSockets () {
-		return this.electionSockets;
-	}
-
+	
 	public synchronized List<Socket> getSensorsSockets () {
 		return this.otherSensorsSockets;
 	}

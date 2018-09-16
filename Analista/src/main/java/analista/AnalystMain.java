@@ -1,12 +1,12 @@
 package analista;
 
-import analista.controller.AnalistaController;
+import analista.controller.AnalystController;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class AnalistaApp {
+public class AnalystMain {
 	public static void main (String[] args) {
 		while (true) {
 
@@ -22,7 +22,7 @@ public class AnalistaApp {
 				BufferedReader bufReader = new BufferedReader(new InputStreamReader(System.in));
 				String option = bufReader.readLine();
 				Integer choice = Integer.valueOf(option);
-				AnalistaController functs = new AnalistaController();
+				AnalystController functs = new AnalystController();
 
 				switch (choice) {
 					case 1:

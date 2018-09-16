@@ -15,7 +15,6 @@ public class GlobalStatisticsThread extends Thread {
 	public void run () {
 		while (true) {
 			ElectionInProgressSemaphore.getInstance().blockMeIfElectionInProgress();
-			//ElectionLock.getInstance().lock();
 			try {
 				System.out.println("Thread " + Thread.currentThread().getId() + ": aggiornamento ?");
 				Thread.sleep(5000);
@@ -43,7 +42,6 @@ public class GlobalStatisticsThread extends Thread {
 				System.out.println("Errore :- si è verificato un errore generico durante l'aggiornamento della statistica globale");
 			}
 			ElectionInProgressSemaphore.getInstance().exit();
-			//ElectionLock.getInstance().unlock();
 		}
 	}
 }

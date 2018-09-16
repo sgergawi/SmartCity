@@ -32,8 +32,8 @@ public class MyLock implements Lock {
 	}
 
 	@Override
-	public boolean tryLock () {
-		return false;
+	public synchronized boolean tryLock () {
+		return (this.holdlock <= 0 || (holdlock > 0 && threadid == Thread.currentThread().getId()));
 	}
 
 	@Override

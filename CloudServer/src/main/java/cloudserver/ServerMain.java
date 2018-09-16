@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class ServerStarter {
+public class ServerMain {
 	final static String HOST = "localhost";
 	final static int PORT = 8480;
 

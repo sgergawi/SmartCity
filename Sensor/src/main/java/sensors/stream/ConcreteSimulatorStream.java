@@ -1,6 +1,7 @@
 package sensors.stream;
 
 import cloudserver.model.SmartCity;
+import com.google.common.io.Closer;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -8,6 +9,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 import lib.Measurement;
 import lib.SensorStream;
 import sensors.assembler.MeasurementAssembler;
+import sensors.model.CloserNode;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -19,7 +21,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class ConcreteSimulatorStream implements SensorStream {
-	private SmartCity.Node node = null;
+	//private SmartCity.Node node = null;
 	private int xPos, yPos;
 	private String serverHost;
 	private int serverPort;
@@ -33,15 +35,13 @@ public class ConcreteSimulatorStream implements SensorStream {
 	 */
 	public ConcreteSimulatorStream (String host, int port) {
 		Random rand = new Random();
-        /*int xPos = rand.nextInt(100);
-        int yPos = rand.nextInt(100);*/
-		//TODO questi dovrebbero essere generati casualmente
-		this.xPos = 31;
-		this.yPos = 44;
+		this.xPos = rand.nextInt(100);
+		this.yPos = rand.nextInt(100);
+		/*this.xPos = 3;
+		this.yPos = 93;*/
 		this.serverHost = host;
 		this.serverPort = port;
 		updateCloserMethod();
-		//TODO sistemare l'aggiornamento del nodo più vicino quando l'albero della città cambia
 	}
 
 	private void updateCloserMethod () {
@@ -60,23 +60,32 @@ public class ConcreteSimulatorStream implements SensorStream {
 	}
 
 	public synchronized void updateCloserNode (MultivaluedMap<String, String> params) {
-		Client client = Client.create();
-		WebResource resource = client.resource("http://" + this.serverHost + ":" + this.serverPort + "/cloud-server/nodes").queryParams(params);
-		ClientResponse response = resource.accept(MediaType.APPLICATION_OCTET_STREAM).get(ClientResponse.class);
-		if (response.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
-			byte[] nodeResp = response.getEntity(byte[].class);
-			try {
-				SmartCity.Node node = SmartCity.Node.parseFrom(nodeResp);
-				this.node = node;
-			} catch (Exception e) {
-				this.node = null;
-				System.out.println("Errore ricezione nodo vicino");
+		CloserNode.getInstance().lock();
+		try {
+			Client client = Client.create();
+			WebResource resource = client.resource("http://" + this.serverHost + ":" + this.serverPort + "/cloud-server/nodes").queryParams(params);
+			ClientResponse response = resource.accept(MediaType.APPLICATION_OCTET_STREAM).get(ClientResponse.class);
+
+			if (response.getStatus() == ClientResponse.Status.OK.getStatusCode()) {
+				byte[] nodeResp = response.getEntity(byte[].class);
+
+				try {
+					SmartCity.Node node = SmartCity.Node.parseFrom(nodeResp);
+					CloserNode.getInstance().setNode(node);
+				} catch (Exception e) {
+					CloserNode.getInstance().setNode(null);
+					System.out.println("Errore ricezione nodo vicino");
+				}
+
+			} else {
+				CloserNode.getInstance().setNode(null);
 			}
 
-		} else {
-			this.node = null;
+			response.close();
+		} catch (Exception e) {
+			System.out.println("Errore :- si è verificato un errore di connessione con il server");
 		}
-		response.close();
+		CloserNode.getInstance().unlock();
 	}
 
 	/**
@@ -89,10 +98,11 @@ public class ConcreteSimulatorStream implements SensorStream {
 	@Override
 	public void sendMeasurement (Measurement m) {
 		int retry = 10;
-		if (node != null) {
+		CloserNode.getInstance().lock();
+		if (CloserNode.getInstance().getNode() != null) {
 			while (retry > 0) {
 				try {
-					Socket connectionSocket = new Socket(node.getSelfIp(), node.getSensorsPort());
+					Socket connectionSocket = new Socket(CloserNode.getInstance().getNode().getSelfIp(), CloserNode.getInstance().getNode().getSensorsPort());
 					DataOutputStream outStream = new DataOutputStream(connectionSocket.getOutputStream());
 					SmartCity.NodeMeasurement mToSend = MeasurementAssembler.assembleFrom(m);
 					outStream.writeInt(mToSend.toByteArray().length);
@@ -101,11 +111,12 @@ public class ConcreteSimulatorStream implements SensorStream {
 					connectionSocket.close();
 					retry = 0;
 				} catch (Exception e) {
-					System.out.println("Si è verificato un errore nella comunicazione della misurazione");
+					System.out.println("Errore :- si è verificato un errore nella comunicazione della misurazione.");
 					retry--;
 				}
 			}
 		}
+		CloserNode.getInstance().unlock();
 		updateCloserMethod();
 	}
 }

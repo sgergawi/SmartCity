@@ -17,11 +17,11 @@ public class ElectionMutex {
 	}
 
 	public void enter () {
-		synchronized (ElectionLock.getInstance()) {
+		synchronized (ElectionSingleton.getInstance()) {
 			if (token && threadid != Thread.currentThread().getId()) {
 				try {
 					//System.out.println("entro nella critica");
-					ElectionLock.getInstance().wait();
+					ElectionSingleton.getInstance().wait();
 					//System.out.println("Esco dalla critica");
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -34,9 +34,9 @@ public class ElectionMutex {
 	}
 
 	public void exit () {
-		synchronized (ElectionLock.getInstance()) {
+		synchronized (ElectionSingleton.getInstance()) {
 			token = false;
-			ElectionLock.getInstance().notify();
+			ElectionSingleton.getInstance().notify();
 		}
 	}
 }

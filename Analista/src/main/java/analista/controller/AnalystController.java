@@ -11,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 import java.io.ByteArrayInputStream;
 import java.util.Scanner;
 
-public class AnalistaController {
+public class AnalystController {
 	private final String CLOUDHOST = "http://localhost";
 	private final int CLOUDPORT = 8480;
 	private final String ROOT = "/cloud-server/nodes";

@@ -62,7 +62,7 @@ public class MeasurementsBuffer {
 	 */
 	public void addMeasurement (SmartCity.Node node, SmartCity.NodeMeasurement m) {
 		MeasurementsBufferLock.getInstance().lock();
-		//ElectionLock.getInstance().lock();
+		//ElectionSingleton.getInstance().lock();
 		System.out.println("Thread: " + Thread.currentThread().getId() + " Ho acquisito i locks");
 		this.measurementsBuffer.add(m);
 		//this.measurementsBuffer.sort(Utility.getComparator());
@@ -70,7 +70,7 @@ public class MeasurementsBuffer {
 			System.out.println("Superate 40 misurazioni");
 			NodeMain.calculateOverlappedStats(node, MeasurementsBuffer.getInstance());
 		}
-		//ElectionLock.getInstance().unlock();
+		//ElectionSingleton.getInstance().unlock();
 		MeasurementsBufferLock.getInstance().unlock();
 	}
 

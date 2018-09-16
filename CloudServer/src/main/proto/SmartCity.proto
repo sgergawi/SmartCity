@@ -35,6 +35,7 @@ message NodeLocalStatistics{
     repeated NodeMeasurement locals=2;
 }
 message LocalsGlobalsMessage{
+    Node sender=1;
     NodeMeasurement global=2;
     repeated NodeLocalStatistics nodesLocals=3;
 }

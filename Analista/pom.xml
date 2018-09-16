@@ -76,7 +76,7 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>analista.AnalistaApp</mainClass>
+                    <mainClass>analista.AnalystMain</mainClass>
                 </configuration>
             </plugin>
         </plugins>

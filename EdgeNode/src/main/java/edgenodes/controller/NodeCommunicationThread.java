@@ -63,6 +63,11 @@ public class NodeCommunicationThread extends Thread {
 
 	}
 
+	/**
+	 * Metodo che gestisce la ricezione della presentazione di un nuovo nodo in rete.
+	 *
+	 * @param request
+	 */
 	public void manageHelloRequest (SmartCity.MessageRequest request) {
 		try {
 			DataOutputStream outputStream = new DataOutputStream(this.connection.getOutputStream());
@@ -142,6 +147,11 @@ public class NodeCommunicationThread extends Thread {
 		sendCurrentGlobalToChild(sender);
 	}
 
+	/**
+	 * Questo metodo gestisce gli inviti a iniziare l'elezione ricevuti dai nodi che si sono accorti della mancanza del coordinatore.
+	 *
+	 * @param request
+	 */
 	public synchronized void manageElectionTime (SmartCity.MessageRequest request) {
 		try {
 			System.out.println("Thread " + Thread.currentThread().getId() + " Mi ha chiamato il nodo " + request.getNode().getId() + " per inizio elezione");
@@ -150,12 +160,8 @@ public class NodeCommunicationThread extends Thread {
 			byte[] respBytes = response.toByteArray();
 			outputStream.writeInt(respBytes.length);
 			outputStream.write(respBytes);
-			//if (!ThreadsPool.getInstance().isElectionInPending()) {
 			System.out.println("Thread " + Thread.currentThread().getId() + " inizio elezione");
 			NodeMain.startElection(this.node);
-			/*} else {
-				System.out.println("Thread " + Thread.currentThread().getId() + "Stavo già gestendo un'elezione");
-			}*/
 			System.out.println("Thread " + Thread.currentThread().getId() + "Termine elezione");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -166,11 +172,13 @@ public class NodeCommunicationThread extends Thread {
 		}
 	}
 
+	/**
+	 * Il metodo gestisce la ricezione dei risultati dell'elezione e la chiamata successiva al server
+	 * in modo tale da conoscere il nuovo padre.
+	 *
+	 * @param request
+	 */
 	public synchronized void manageElectionResult (SmartCity.MessageRequest request) {
-		//TODO
-		/*if (ElectionLock.getInstance().tryLock()) {
-			ElectionLock.getInstance().lock();
-		}*/
 		System.out.println("Thread " + Thread.currentThread().getId() + " " + this.node.getId() + " è chiamato per la result di elezione");
 		ElectionMutex.getInstance().enter();
 		List<SmartCity.Node> allNodes = CityNodes.getInstance().getAllNodes();
@@ -184,14 +192,10 @@ public class NodeCommunicationThread extends Thread {
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("Errore :- si è verificato un errore nell'aggiornamento del coordinatore e del nodo padre");
-				//NodeMain.deleteNodeServerSide(this.node);
 			}
 		}
 		System.out.println("Thread " + Thread.currentThread().getId() + " fine aggiornamento coordinatore");
 		ElectionMutex.getInstance().exit();
 		ElectionInProgressSemaphore.getInstance().exit();
-		/*ThreadsPool.getInstance().setIsElectionInPending(false);
-		ElectionInProgressSemaphore.getInstance().exit();*/
-		/*ElectionLock.getInstance().unlock();*/
 	}
 }

@@ -35,10 +35,9 @@ public class CloudServerInterfaces {
 			if (xPos != null && yPos != null) {
 				//se vengono specificati vuol dire che mi sta chiamando un sensore quindi
 				//vuole conoscere quali sono i nodi più vicini a lui in base all'alberatura dei nodi -> cerco solo le foglie!!!
-
+				System.out.println(xPos + " " + yPos);
 				CityLock.getInstance().lock();
 				nodes = map.getLeafNodes(map.getTreeRoot()).stream().filter(node -> CloudServerUtility.getNodesDistance(node, xPos, yPos) < 20).sorted(CloudServerUtility.getNodesDistanceComparator(xPos, yPos)).collect(Collectors.toList());
-				CityLock.getInstance().unlock();
 				if (nodes != null && !nodes.isEmpty()) {
 					byte[] toSend = nodes.get(0).toByteArray();
 					CityLock.getInstance().unlock();
@@ -127,10 +126,11 @@ public class CloudServerInterfaces {
 	@Produces({MediaType.APPLICATION_OCTET_STREAM, MediaType.APPLICATION_JSON})
 	public Response deleteNode (@PathParam("nodeid") int nodeId) {
 		try {
-			System.out.println("Rimozione nodo: " + nodeId);
+			System.out.println("Thread " + Thread.currentThread().getId() + " Rimozione nodo: " + nodeId);
 			CityLock.getInstance().lock();
 			CityMap map = CityMap.getInstance();
 			if (!map.getNodes().getNodesList().stream().anyMatch(node -> node.getId() == nodeId)) {
+				CityLock.getInstance().unlock();
 				return Response.status(Response.Status.NOT_FOUND).build();
 			}
 			map.removeNode(nodeId);
@@ -149,16 +149,18 @@ public class CloudServerInterfaces {
 	@Produces({MediaType.APPLICATION_OCTET_STREAM, MediaType.APPLICATION_JSON})
 	public Response getNodeFather (@PathParam("nodeId") int nodeId) {
 		try {
-			System.out.println("Trovo il padre di " + nodeId);
+			System.out.println("Thread " + Thread.currentThread().getId() + " Trovo il padre di " + nodeId);
 			CityLock.getInstance().lock();
+			System.out.println("Thread " + Thread.currentThread().getId() + " Entro nel lock");
 			CityMap map = CityMap.getInstance();
 			SmartCity.Node father = map.getNodeFather(null, map.getTreeRoot(), nodeId);
 			CityLock.getInstance().unlock();
 			if (father == null) {
 				//System.out.println(nodeId + " mi ha chiesto chi è suo padre");
+				System.out.println("Thread " + Thread.currentThread().getId() + " Non ha un padre");
 				return Response.status(Response.Status.NOT_FOUND).build();
 			}
-			System.out.println("Suo padre è: " + father.getId());
+			System.out.println("Thread " + Thread.currentThread().getId() + " Suo padre è: " + father.getId());
 			return Response.ok().entity(father.toByteArray()).build();
 		} catch (Exception e) {
 			System.out.println("Errore :- Si è verificato un errore generico nell'elaborazione dei dati");
@@ -174,26 +176,27 @@ public class CloudServerInterfaces {
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public Response refreshCoordinator (byte[] coordinator) {
 		try {
-			System.out.println("Aggiornamento coordinatore");
+			System.out.println("Thread " + Thread.currentThread().getId() + " Aggiornamento coordinatore");
+			CityLock.getInstance().lock();
 			CityMap cityMap = CityMap.getInstance();
 			SmartCity.Node node = SmartCity.Node.parseFrom(coordinator);
 
 			if (node != null && (cityMap.getTreeRoot() == null || node.getId() != cityMap.getTreeRoot().getNode().getId())) {
 				List<CityNode> citynodes = null;
-				CityLock.getInstance().lock();
 				citynodes = cityMap.getCityNodes();
 
 				//Rimuovo il vecchio padre perchè se è stata richiamata la refresh vuol dire che non è piu presente
 				//citynodes.removeIf(cityNode -> cityNode.getNode().getId() == cityMap.getTreeRoot().getNode().getId());
-				this.deleteNode(cityMap.getTreeRoot().getNode().getId());
+				//this.deleteNode(cityMap.getTreeRoot().getNode().getId());
 				cityMap.setTreeRoot(node);
 				CityNode currentRoot = cityMap.getTreeRoot();
 				//Non voglio considerare anche la root tra i nodi da aggiungere all'albero
 				citynodes = citynodes.stream().filter(cityNode -> cityNode.getNode().getId() != currentRoot.getNode().getId()).collect(Collectors.toList());
 				citynodes.stream().forEach(cityNode -> cityMap.addChildNode(currentRoot, cityNode));
-				CityLock.getInstance().unlock();
+				System.out.println("Thread " + Thread.currentThread().getId() + " nuovo albero: " + cityMap.getTreeRoot());
 			}
-			System.out.println("Il coordinatore diventa: " + node.getId());
+			CityLock.getInstance().unlock();
+			System.out.println("Thread " + Thread.currentThread().getId() + " Il coordinatore diventa: " + node.getId());
 			return Response.status(Response.Status.OK).build();
 		} catch (Exception e) {
 			CityLock.getInstance().unlock();
@@ -258,7 +261,7 @@ public class CloudServerInterfaces {
 					node.addAllStatistics(localStats.getLocalsList());
 				}
 			}
-			System.out.println("Refresh statistiche " + CityMeasurements.getInstance());
+			System.out.println("Thread " + Thread.currentThread().getId() + " Refresh statistiche " + CityMeasurements.getInstance());
 			MeasurementsLock.getInstance().unlock();
 			return Response.ok().build();
 		} catch (InvalidProtocolBufferException e) {
@@ -291,6 +294,7 @@ public class CloudServerInterfaces {
 			CityNode myNode = nodes != null ? nodes.stream().filter(nd -> nd.getNode().getId() == nodeId).findFirst().orElseGet(null) : null;
 			List<SmartCity.NodeMeasurement> nodeMeasurements = null;
 			if (myNode == null || myNode.getNodeStatistics() == null) {
+				MeasurementsLock.getInstance().unlock();
 				//System.out.println("Non ci sono statistiche per quel nodo");
 				return Response.status(404).build();
 			}
@@ -365,6 +369,7 @@ public class CloudServerInterfaces {
 			globals = globals.size() > n ? globals.subList(0, n) : globals;
 			if (globals.isEmpty()) {
 				//System.out.println("Non ci sono globals");
+				MeasurementsLock.getInstance().unlock();
 				return Response.status(Response.Status.NOT_FOUND).build();
 			}
 			mean = CloudServerUtility.getMean(globals);

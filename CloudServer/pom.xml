@@ -56,7 +56,7 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>cloudserver.ServerStarter</mainClass>
+                    <mainClass>cloudserver.ServerMain</mainClass>
                 </configuration>
             </plugin>
         </plugins>
@@ -113,7 +113,7 @@
             <type>pom</type>
             <scope>import</scope>
         </dependency>
-        
+
     </dependencies>
 
 </project>
