@@ -35,27 +35,26 @@ public class CloudServerInterfaces {
 			if (xPos != null && yPos != null) {
 				//se vengono specificati vuol dire che mi sta chiamando un sensore quindi
 				//vuole conoscere quali sono i nodi più vicini a lui in base all'alberatura dei nodi -> cerco solo le foglie!!!
-				System.out.println(xPos + " " + yPos);
-				CityLock.getInstance().lock();
+				CityMutex.getInstance().enter();
 				nodes = map.getLeafNodes(map.getTreeRoot()).stream().filter(node -> CloudServerUtility.getNodesDistance(node, xPos, yPos) < 20).sorted(CloudServerUtility.getNodesDistanceComparator(xPos, yPos)).collect(Collectors.toList());
 				if (nodes != null && !nodes.isEmpty()) {
 					byte[] toSend = nodes.get(0).toByteArray();
-					CityLock.getInstance().unlock();
+					CityMutex.getInstance().exit();
 					return Response.ok().entity(toSend).build();
 				} else {
-					CityLock.getInstance().unlock();
+					CityMutex.getInstance().exit();
 					return Response.status(Response.Status.NOT_FOUND).build();
 				}
 			}
 			nodes = map.getNodes() != null ? map.getNodes().getNodesList() : new Vector<>();
-			CityLock.getInstance().unlock();
+			CityMutex.getInstance().exit();
 			if (nodes.isEmpty()) {
 				return Response.status(Response.Status.NOT_FOUND).build();
 			} else {
 				return Response.ok().entity(map.getNodes().toByteArray()).build();
 			}
 		} catch (Exception e) {
-			CityLock.getInstance().unlock();
+			CityMutex.getInstance().exit();
 			System.out.println("Errore :- Si è verificato un errore generico nell'elaborazione dei dati");
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
@@ -79,7 +78,7 @@ public class CloudServerInterfaces {
 		SmartCity.Node father;
 		try {
 			SmartCity.Node node = SmartCity.Node.parseFrom(input);
-			CityLock.getInstance().lock();
+			CityMutex.getInstance().enter();
 			List<SmartCity.Node> nodes = map.getNodes().getNodesList();
 			copy.addAll(nodes);
 			List<SmartCity.Node> nodesEqual = nodes.stream().filter(nd -> nd.getId() == node.getId()).collect(Collectors.toList());
@@ -87,20 +86,20 @@ public class CloudServerInterfaces {
 			if (nodesEqual != null && !nodesEqual.isEmpty()) {
 				System.out.println("Il nodo " + node.getId() + " è gia presente");
 				response = response.toBuilder().setErrortype(SmartCity.ErrorType.DUPLICATED_ID).build();
-				CityLock.getInstance().unlock();
+				CityMutex.getInstance().exit();
 				return Response.status(Response.Status.BAD_REQUEST).entity(response.toByteArray()).build();
 			}
 			if (nodesAround != null && !nodesAround.isEmpty()) {
 				System.out.println("Il nodo " + node.getId() + " è vicino ad altri nodi");
 				response = response.toBuilder().setErrortype(SmartCity.ErrorType.COORD_NOT_ALLOWED).build();
 				//System.out.println(response);
-				CityLock.getInstance().unlock();
+				CityMutex.getInstance().exit();
 				return Response.status(Response.Status.BAD_REQUEST).entity(response.toByteArray()).build();
 			}
 			map.addNode(node, SmartCity.NodeMeasurements.newBuilder().addAllStatistics(new Vector<>()).build());
 			CityNode nodeToBeInserted = new CityNode(node, SmartCity.NodeMeasurements.newBuilder().addAllStatistics(new Vector<>()).build());
 			father = map.addChildNode(map.getTreeRoot(), nodeToBeInserted);
-			CityLock.getInstance().unlock();
+			CityMutex.getInstance().exit();
 			if (copy.isEmpty()) {
 				response = response.toBuilder().setResponse(SmartCity.NodeInsertedResponse.newBuilder().setFather(father).build()).build();
 				return Response.ok().entity(response.toByteArray()).build();
@@ -110,7 +109,7 @@ public class CloudServerInterfaces {
 				return Response.ok().entity(response.toByteArray()).build();
 			}
 		} catch (Exception e) {
-			CityLock.getInstance().unlock();
+			CityMutex.getInstance().exit();
 			System.out.println("Errore :- Si è verificato un errore generico nell'elaborazione dei dati");
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
@@ -127,17 +126,17 @@ public class CloudServerInterfaces {
 	public Response deleteNode (@PathParam("nodeid") int nodeId) {
 		try {
 			System.out.println("Thread " + Thread.currentThread().getId() + " Rimozione nodo: " + nodeId);
-			CityLock.getInstance().lock();
+			CityMutex.getInstance().enter();
 			CityMap map = CityMap.getInstance();
 			if (!map.getNodes().getNodesList().stream().anyMatch(node -> node.getId() == nodeId)) {
-				CityLock.getInstance().unlock();
+				CityMutex.getInstance().exit();
 				return Response.status(Response.Status.NOT_FOUND).build();
 			}
 			map.removeNode(nodeId);
-			CityLock.getInstance().unlock();
+			CityMutex.getInstance().exit();
 			return Response.ok().build();
 		} catch (Exception e) {
-			CityLock.getInstance().unlock();
+			CityMutex.getInstance().exit();
 			System.out.println("Errore :- Si è verificato un errore generico nell'elaborazione dei dati");
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
@@ -150,11 +149,11 @@ public class CloudServerInterfaces {
 	public Response getNodeFather (@PathParam("nodeId") int nodeId) {
 		try {
 			System.out.println("Thread " + Thread.currentThread().getId() + " Trovo il padre di " + nodeId);
-			CityLock.getInstance().lock();
+			CityMutex.getInstance().enter();
 			System.out.println("Thread " + Thread.currentThread().getId() + " Entro nel lock");
 			CityMap map = CityMap.getInstance();
 			SmartCity.Node father = map.getNodeFather(null, map.getTreeRoot(), nodeId);
-			CityLock.getInstance().unlock();
+			CityMutex.getInstance().exit();
 			if (father == null) {
 				//System.out.println(nodeId + " mi ha chiesto chi è suo padre");
 				System.out.println("Thread " + Thread.currentThread().getId() + " Non ha un padre");
@@ -164,7 +163,7 @@ public class CloudServerInterfaces {
 			return Response.ok().entity(father.toByteArray()).build();
 		} catch (Exception e) {
 			System.out.println("Errore :- Si è verificato un errore generico nell'elaborazione dei dati");
-			CityLock.getInstance().unlock();
+			CityMutex.getInstance().exit();
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
@@ -177,7 +176,7 @@ public class CloudServerInterfaces {
 	public Response refreshCoordinator (byte[] coordinator) {
 		try {
 			System.out.println("Thread " + Thread.currentThread().getId() + " Aggiornamento coordinatore");
-			CityLock.getInstance().lock();
+			CityMutex.getInstance().enter();
 			CityMap cityMap = CityMap.getInstance();
 			SmartCity.Node node = SmartCity.Node.parseFrom(coordinator);
 
@@ -188,18 +187,19 @@ public class CloudServerInterfaces {
 				//Rimuovo il vecchio padre perchè se è stata richiamata la refresh vuol dire che non è piu presente
 				//citynodes.removeIf(cityNode -> cityNode.getNode().getId() == cityMap.getTreeRoot().getNode().getId());
 				//this.deleteNode(cityMap.getTreeRoot().getNode().getId());
+				CityNode olderRoot = cityMap.getTreeRoot();
 				cityMap.setTreeRoot(node);
 				CityNode currentRoot = cityMap.getTreeRoot();
 				//Non voglio considerare anche la root tra i nodi da aggiungere all'albero
-				citynodes = citynodes.stream().filter(cityNode -> cityNode.getNode().getId() != currentRoot.getNode().getId()).collect(Collectors.toList());
+				citynodes = citynodes.stream().filter(cityNode -> cityNode.getNode().getId() != currentRoot.getNode().getId() && cityNode.getNode().getId() != olderRoot.getNode().getId()).collect(Collectors.toList());
 				citynodes.stream().forEach(cityNode -> cityMap.addChildNode(currentRoot, cityNode));
 				System.out.println("Thread " + Thread.currentThread().getId() + " nuovo albero: " + cityMap.getTreeRoot());
 			}
-			CityLock.getInstance().unlock();
+			CityMutex.getInstance().exit();
 			System.out.println("Thread " + Thread.currentThread().getId() + " Il coordinatore diventa: " + node.getId());
 			return Response.status(Response.Status.OK).build();
 		} catch (Exception e) {
-			CityLock.getInstance().unlock();
+			CityMutex.getInstance().exit();
 			System.out.println("Errore :- Si è verificato un errore generico nell'elaborazione dei dati");
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}

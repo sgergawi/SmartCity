@@ -109,7 +109,7 @@ public class CityMap {
 
 	public synchronized void removeNode (int nodeId) {
 		this.cityNodes.removeIf(cn -> cn.getNode().getId() == nodeId);
-		this.removeNodeFromTree(null, this.getTreeRoot(), nodeId);
+		//this.removeNodeFromTree(null, this.getTreeRoot(), nodeId);
 	}
 
 	public List<CityNode> getCityNodes () {
