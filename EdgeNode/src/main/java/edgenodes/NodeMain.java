@@ -256,6 +256,24 @@ public class NodeMain {
 		WebResource resource = client.resource(CLOUDHOST + ":" + CLOUDPORT + ROOT + "/" + node.getId());
 		ClientResponse response = resource.accept(MediaType.APPLICATION_OCTET_STREAM).delete(ClientResponse.class);
 		response.close();
+		SocketsPool.getInstance().getOtherNodesSockets().forEach(socket -> {
+			try {
+				if (!socket.isClosed()) {
+					socket.close();
+				}
+			} catch (IOException e) {
+
+			}
+		});
+		SocketsPool.getInstance().getSensorsSockets().forEach(socket -> {
+			try {
+				if (!socket.isClosed()) {
+					socket.close();
+				}
+			} catch (IOException e) {
+
+			}
+		});
 		System.exit(1);
 		ElectionMutex.getInstance().exit();
 	}
